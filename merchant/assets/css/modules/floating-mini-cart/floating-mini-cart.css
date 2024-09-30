@@ -6,7 +6,7 @@
   position: fixed;
   bottom: var(--mrc-fmci-corner-offset, 30px);
   font-size: var(--mrc-fmci-icon-size, 25px);
-  z-index: 999;
+  z-index: 9999;
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
@@ -539,6 +539,105 @@ form.cart .js-merchant-quantity-btn {
 .merchant-floating-side-mini-cart-show .merchant-floating-side-mini-cart {
   -webkit-transform: none;
           transform: none;
+}
+
+.merchant-mini-cart-upsell-wrap .component-title {
+  font-size: 16px;
+  text-align: center;
+  margin-top: 0;
+}
+.merchant-mini-cart-upsell-wrap .merchant-mini-cart-upsell-item-wrap {
+  margin-bottom: 30px;
+}
+.merchant-mini-cart-upsell-wrap .merchant-mini-cart-upsell-item-wrap .column-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: 15px;
+}
+.merchant-mini-cart-upsell-wrap .merchant-mini-cart-upsell-item-wrap .column-container .column {
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+}
+.merchant-mini-cart-upsell-wrap .merchant-mini-cart-upsell-item-wrap .column-container .column-left {
+  text-align: left;
+}
+.merchant-mini-cart-upsell-wrap .merchant-mini-cart-upsell-item-wrap .column-container .column-middle {
+  -webkit-box-flex: 2;
+      -ms-flex: 2;
+          flex: 2;
+  margin: 0 auto;
+}
+.merchant-mini-cart-upsell-wrap .merchant-mini-cart-upsell-item-wrap .column-container .column-right {
+  text-align: right;
+}
+.merchant-mini-cart-upsell-wrap .merchant-mini-cart-upsell-item-wrap .product-price {
+  font-size: 14px;
+  font-weight: 600;
+}
+.merchant-mini-cart-upsell-wrap .merchant-mini-cart-upsell-item-wrap .add-to-cart-wrap .rebuy-button {
+  padding: 2px 12px;
+}
+.merchant-mini-cart-upsell-wrap .merchant-mini-cart-upsell-item-wrap .product-variations {
+  margin-top: 10px;
+  position: relative;
+}
+.merchant-mini-cart-upsell-wrap .merchant-mini-cart-upsell-item-wrap .product-variations .product-attribute {
+  margin-bottom: 10px;
+}
+.merchant-mini-cart-upsell-wrap .merchant-mini-cart-upsell-item-wrap .product-variations .product-attribute .variation-selector {
+  padding: 5px 10px;
+  min-height: 20px;
+  font-size: 13px;
+}
+.merchant-mini-cart-upsell-wrap .slick-arrow {
+  position: absolute;
+  top: 20px;
+  border: none;
+  opacity: 0.3;
+  -webkit-transition: 300ms;
+  transition: 300ms;
+  background-image: url(../../../images/arrow-2.svg);
+  background-position: center;
+  background-size: 40px;
+  padding: 5px;
+  border-radius: 50%;
+  width: 25px;
+  height: 25px;
+  font-size: 0;
+}
+.merchant-mini-cart-upsell-wrap .slick-arrow:hover {
+  opacity: 1;
+}
+@media (max-width: 768px) {
+  .merchant-mini-cart-upsell-wrap .slick-arrow {
+    opacity: 1;
+  }
+}
+.merchant-mini-cart-upsell-wrap .slick-arrow.slick-prev {
+  left: -30px;
+  -webkit-transform: rotate(270deg);
+          transform: rotate(270deg);
+}
+.merchant-mini-cart-upsell-wrap .slick-arrow.slick-next {
+  right: -30px;
+  -webkit-transform: rotate(90deg);
+          transform: rotate(90deg);
+}
+
+.merchant-upsell-widget {
+  display: none !important;
+}
+
+.merchant-floating-side-mini-cart-body .merchant-upsell-widget {
+  display: block !important;
 }
 
 .rtl .merchant-floating-side-mini-cart .merchant-floating-side-mini-cart-close-button {

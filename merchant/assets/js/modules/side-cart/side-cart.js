@@ -4,8 +4,10 @@
  * Merchant side cart
  *
  */
-
 jQuery(document).ready(function ($) {
+  'use strict';
+
+  // Toggle side cart
   if (merchant.setting.hasOwnProperty('show_after_add_to_cart_single_product')) {
     var isSingleProductPage = $('body.single-product').length;
     var isNoticeVisible = $('.woocommerce-notices-wrapper').is(':visible') && !$('.woocommerce-notices-wrapper').is(':empty');
@@ -80,6 +82,8 @@ jQuery(document).ready(function ($) {
             $(document.body).trigger('added_to_cart', [response.fragments, response.cart_hash, $input, 'side-cart']);
             if ($cart_item.length) {
               $cart_item.unblock();
+              $(document).trigger('merchant_destroy_carousel');
+              $(document).trigger('merchant_init_carousel');
             }
           },
           error: function error(_error) {
@@ -120,4 +124,228 @@ jQuery(document).ready(function ($) {
     // Update quantity helper
     var debounceTimer;
   }
+  var merchant_upsells = {
+    init: function init() {
+      this.bindEvents();
+      setTimeout(function () {
+        $(document).trigger('merchant_init_carousel');
+
+        // Pause the slider on hover
+        $(document).find('.woocommerce-mini-cart-item.merchant-upsell-widget').on('mouseenter', function () {
+          if ($(document).find('.merchant-mini-cart-upsells.upsells-layout-carousel').hasClass('slick-initialized')) {
+            $('.merchant-mini-cart-upsells.upsells-layout-carousel').slick('slickPause');
+          }
+        });
+
+        // Resume the slider on mouse leave
+        $(document).find('.woocommerce-mini-cart-item.merchant-upsell-widget').on('mouseleave', function () {
+          if ($(document).find('.merchant-mini-cart-upsells.upsells-layout-carousel').hasClass('slick-initialized')) {
+            $('.merchant-mini-cart-upsells.upsells-layout-carousel').slick('slickPlay');
+          }
+        });
+      }, 500);
+    },
+    bindEvents: function bindEvents() {
+      $(document).on('change', '.merchant-mini-cart-upsell-item-wrap .variation-selector', this.handleVariationChange.bind(this));
+      $(document).on('click', '.add-to-cart-wrap .merchant-upsell-add-to-cart:not(.disabled)', this.handleAddToCartClick.bind(this));
+      $(document).on('merchant_init_carousel', this.initCarousel.bind(this));
+      $(document).on('merchant_destroy_carousel', this.destroyCarousel.bind(this));
+      $(document).on('added_to_cart', this.handleAddToCart.bind(this));
+      $(document).on('removed_from_cart', this.handleRemoveFromCart.bind(this));
+    },
+    handleVariationChange: function handleVariationChange(event) {
+      var variationField = $(event.target),
+        container = variationField.closest('.merchant-mini-cart-upsell-item-wrap'),
+        variations = container.attr('data-variations') && JSON.parse(container.attr('data-variations')) || [],
+        dropDowns = container.find('.variation-selector');
+      container.attr('data-variation-id', 0); // reset variation ID
+      var currentField = {
+        name: $(event.target).attr('data-attribute_name'),
+        value: $(event.target).val()
+      };
+      var availableOptions = [];
+      var matchingVariations = variations.filter(function (variation) {
+        return typeof variation.attributes[currentField.name.toLowerCase()] !== 'undefined' && variation.attributes[currentField.name.toLowerCase()] === currentField.value;
+      });
+
+      // Hide not available options
+      dropDowns.each(function () {
+        var dropdown = $(this);
+        var attribute_name = dropdown.attr('data-attribute_name');
+        // Collect available options for this attribute
+        matchingVariations.forEach(function (variation) {
+          var optionValue = variation.attributes[attribute_name.toLowerCase()];
+          if (typeof optionValue !== 'undefined' && optionValue !== '' && !availableOptions.includes(optionValue)) {
+            availableOptions.push(optionValue);
+          }
+        });
+        if (currentField.name.toLowerCase() !== attribute_name.toLowerCase()) {
+          dropdown.find('option').each(function () {
+            var optionValue = $(this).attr('value');
+            if (optionValue !== '') {
+              if (availableOptions.includes(optionValue)) {
+                $(this).show();
+              } else {
+                $(this).hide();
+              }
+            }
+          });
+        }
+      });
+      if (this.isAllVariationsSelected(container)) {
+        this.fetchVariationDetails(container, container.attr('data-product-id'), this.getSelectedAttributes(container), this);
+        // ajax call here to get product information...
+        this.handleAddToCartBtnState(container, true);
+      } else {
+        this.handleAddToCartBtnState(container, false);
+      }
+    },
+    /**
+     * Fetches variation details via AJAX.
+     *
+     * @param {Object} container - The container element.
+     * @param {Object} productID - The product ID.
+     * @param {Object} selectedAttributes - The selected variation attributes.
+     * @param {Object} self - The current object.
+     *
+     * @return {void}
+     */
+    fetchVariationDetails: function fetchVariationDetails(container, productID, selectedAttributes, self) {
+      $.ajax({
+        type: 'POST',
+        url: merchant_side_cart_params.ajax_url,
+        data: {
+          action: 'merchant_get_variation_data',
+          product_id: productID,
+          nonce: merchant_side_cart_params.variation_info_nonce,
+          attributes: selectedAttributes
+        },
+        success: function success(response) {
+          if (response.success) {
+            console.log(response.data);
+            container.attr('data-variation-id', response.data.id);
+            self.updateProductThumbnail(container, response.data.thumbnail_url);
+          }
+        },
+        error: function error(_error2) {
+          console.log('Error:', _error2);
+        }
+      });
+    },
+    updateProductThumbnail: function updateProductThumbnail(container, thumbnailUrl) {
+      var productThumbnail = container.find('.product-thumbnail a img');
+      productThumbnail.attr('src', thumbnailUrl);
+    },
+    getSelectedAttributes: function getSelectedAttributes(container) {
+      var attributes = {};
+      container.find('.variation-selector').each(function () {
+        attributes[$(this).attr('name')] = $(this).val();
+      });
+      return attributes;
+    },
+    handleAddToCartBtnState: function handleAddToCartBtnState(container, allSelected) {
+      var btn = container.find('.add-to-cart-wrap .merchant-upsell-add-to-cart');
+      if (allSelected) {
+        btn.removeClass('disabled');
+        btn.prop('disabled', false);
+      } else {
+        btn.addClass('disabled');
+        btn.prop('disabled', true);
+      }
+    },
+    isAllVariationsSelected: function isAllVariationsSelected(container) {
+      var variationFields = container.find('.variation-selector');
+      return variationFields.length && variationFields.toArray().every(function (field) {
+        return $(field).val() !== '';
+      });
+    },
+    handleAddToCartClick: function handleAddToCartClick(event) {
+      event.preventDefault();
+      var self = this,
+        btn = $(event.currentTarget),
+        container = btn.closest('.merchant-mini-cart-upsell-item-wrap'),
+        productType = container.attr('data-product-type'),
+        productId = container.attr('data-product-id'),
+        variationId = container.attr('data-variation-id');
+      if (productType === 'variable' && variationId !== '0') {
+        this.addToCart(self, 'variable', productId, variationId, btn);
+      } else if (productType === 'simple') {
+        this.addToCart(self, 'simple', productId, variationId, btn);
+      } else {
+        console.log('Unsupported product type:', productType);
+      }
+    },
+    addToCart: function addToCart(self, productType, productId, variationId, btn) {
+      var data = {
+        action: 'merchant_side_cart_upsells_add_to_cart',
+        product_id: productId,
+        variation_id: variationId,
+        nonce: merchant_side_cart_params.nonce
+      };
+      $.ajax({
+        type: 'POST',
+        url: merchant_side_cart_params.ajax_url,
+        data: data,
+        beforeSend: function beforeSend() {
+          btn.addClass('loading');
+        },
+        success: function success(response) {
+          self.handleSuccess(response);
+        },
+        error: function error(_error3) {
+          self.handleError(_error3);
+        },
+        complete: function complete() {
+          btn.removeClass('loading');
+        }
+      });
+    },
+    handleSuccess: function handleSuccess(response) {
+      if (response.data.fragments) {
+        $(document).trigger('merchant_destroy_carousel');
+        $(document.body).trigger('added_to_cart', [response.data.fragments, response.data.cart_hash, null, 'side-cart']);
+        $(document).trigger('merchant_init_carousel');
+      }
+    },
+    handleError: function handleError(error) {
+      console.log('Error:', error);
+    },
+    handleAddToCart: function handleAddToCart(event, fragments, cart_hash, $button, $context) {
+      $(document).trigger('merchant_destroy_carousel');
+      $(document).trigger('merchant_init_carousel');
+    },
+    handleRemoveFromCart: function handleRemoveFromCart(event) {
+      $(document).trigger('merchant_destroy_carousel');
+      $(document).trigger('merchant_init_carousel');
+    },
+    initCarousel: function initCarousel() {
+      // check if slick is initialized
+      var carousel = $(document).find('.merchant-mini-cart-upsells.upsells-layout-carousel');
+      if ('carousel' === merchant_side_cart_params.upsells_style && !carousel.hasClass('slick-initialized')) {
+        carousel.slick({
+          infinite: true,
+          arrows: true,
+          slidesToShow: 1,
+          dots: false,
+          autoplay: false,
+          autoplaySpeed: 2000,
+          fade: true,
+          cssEase: 'linear',
+          pauseOnFocus: true,
+          pauseOnHover: true,
+          prevArrow: '<button type="button" class="slick-prev"><</button>',
+          nextArrow: '<button type="button" class="slick-next">></button>',
+          rtl: merchant_side_cart_params.is_rtl
+        });
+      }
+    },
+    destroyCarousel: function destroyCarousel() {
+      // check if slick is initialized
+      var carousel = $(document).find('.merchant-mini-cart-upsells.upsells-layout-carousel');
+      if ('carousel' === merchant_side_cart_params.upsells_style && carousel.hasClass('slick-initialized')) {
+        carousel.slick('unslick');
+      }
+    }
+  };
+  merchant_upsells.init();
 });
