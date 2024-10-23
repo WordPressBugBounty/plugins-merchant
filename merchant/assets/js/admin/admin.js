@@ -276,9 +276,16 @@
       }
     };
 
-    // Intialize Sortable.
+    // Initialize Sortable.
     SortableField.init();
     flexibleToggleField.init();
+
+    // When adding/duplicating new item, refresh sorting
+    $(document).on('merchant-flexible-content-added', function (e, $layout) {
+      var $sortableWrapper = $layout.find('.merchant-sortable-repeater-control');
+      var $sortableElement = $sortableWrapper.find('.merchant-sortable-repeater.sortable');
+      SortableRepeaterField.makeFieldsSortable($sortableElement);
+    });
 
     // Sortable Repeater.
     var SortableRepeaterField = {
@@ -296,21 +303,22 @@
 
             // Create a new row for each new value
             if (numRepeaterItems > 1) {
-              var i;
-              for (i = 1; i < numRepeaterItems; ++i) {
+              // var i;
+              for (var i = 1; i < numRepeaterItems; ++i) {
                 self.appendRow($(this), defaultValuesArray[i]);
               }
             }
           }
 
-          // Make our Repeater fields sortable.
-          if (!$(this).hasClass('disable-sorting')) {
-            $(this).find('.merchant-sortable-repeater.sortable').sortable({
-              update: function update(event, ui) {
-                self.getAllInputs($(this).parent());
-              }
-            });
-          }
+          // Todo: remove
+          // Make our Repeater fields sortable. Doesn't work with flexible content
+          // if (!$(this).hasClass('disable-sorting')) {
+          //     $(this).find('.merchant-sortable-repeater.sortable').sortable({
+          //         update: function (event, ui) {
+          //             self.getAllInputs($(this).parent());
+          //         }
+          //     });
+          // }
         });
 
         // Events.
@@ -320,27 +328,28 @@
         var self = this;
 
         // Remove item starting from its parent element
-        $('.merchant-sortable-repeater.sortable').on('click', '.customize-control-sortable-repeater-delete', function (event) {
+        $(document).on('click', '.merchant-sortable-repeater.sortable .customize-control-sortable-repeater-delete', function (event) {
           event.preventDefault();
           $(this).parent().slideUp('fast', function () {
             var parentContainer = $(this).parent().parent();
             $(this).remove();
             self.getAllInputs(parentContainer);
           });
+          $(document).trigger('merchant-sortable-repeater-item-deleted');
         });
 
         // Add new item
-        $('.customize-control-sortable-repeater-add').click(function (event) {
+        $(document).on('click', '.customize-control-sortable-repeater-add', function (event) {
           event.preventDefault();
           self.appendRow($(this).parent());
           self.getAllInputs($(this).parent());
         });
 
         // Refresh our hidden field if any fields change
-        $('.merchant-sortable-repeater.sortable').change(function () {
+        $(document).on('change', '.merchant-sortable-repeater.sortable', function () {
           self.getAllInputs($(this).parent());
         });
-        $('.merchant-sortable-repeater.sortable').on('focusout', '.repeater-input', function () {
+        $(document).on('focusout', '.merchant-sortable-repeater.sortable .repeater-input', function () {
           self.getAllInputs($(this).parent());
         });
       },
@@ -352,9 +361,23 @@
         var defaultValue = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
         var newRow = '<div class="repeater" style="display:none"><input type="text" value="' + defaultValue + '" class="repeater-input" /><span class="dashicons dashicons-menu"></span><a class="customize-control-sortable-repeater-delete" href="#"><span class="dashicons dashicons-no-alt"></span></a></div>';
         $element.find('.sortable').append(newRow);
-        $element.find('.sortable').find('.repeater:last').slideDown('slow', function () {
+        var $newItem = $element.find('.sortable').find('.repeater:last');
+        $newItem.slideDown('slow', function () {
           $(this).find('input').focus();
         });
+
+        // Make Repeater fields sortable; Putting here works better with flexible content
+        this.makeFieldsSortable($element.find('.sortable'));
+        $(document).trigger('merchant-sortable-repeater-item-added', [$newItem, $element.find('.sortable')]);
+      },
+      makeFieldsSortable: function makeFieldsSortable($sortableElement) {
+        if (!$sortableElement.hasClass('disable-sorting')) {
+          $sortableElement.sortable({
+            update: function update(event, ui) {
+              SortableRepeaterField.getAllInputs($sortableElement.parent());
+            }
+          });
+        }
       },
       /**
        * Get the values from the repeater input fields and add to our hidden field.
@@ -374,6 +397,7 @@
         $element.find('.merchant-sortable-repeater-input').val(JSON.stringify(inputValues));
         // Important! Make sure to trigger change event so Customizer knows it has to save the field
         $element.find('.merchant-sortable-repeater-input').trigger('change');
+        $element.find('.merchant-sortable-repeater-input').trigger('sortable.repeater.change');
       }
     };
 
@@ -828,8 +852,8 @@
         }
       });
     }).trigger('merchant.change');
-    $(document).on('merchant-admin-check-fields merchant-flexible-content-added keyup', function () {
-      $('.merchant-module-page-setting-field').each(function () {
+    $(document).on('merchant-admin-check-fields merchant-flexible-content-added change keyup', function () {
+      $(document).find('.merchant-module-page-setting-field').each(function () {
         var $field = $(this);
         if ($field.data('conditions')) {
           var conditions = $field.data('conditions'),
@@ -1342,9 +1366,16 @@
         // Maybe the field is a multiple field
         $target = $('input[name="merchant[' + condition.field + '][]"],select[name="merchant[' + condition.field + '][]"]');
       }
+      if (!$target.length) {
+        // Maybe the field is inside fields group
+        $target = $('.merchant-group-fields-container').find('.merchant-field-' + condition.field + ' input[name*="' + condition.field + '"],.merchant-field-' + condition.field + ' select[name*="' + condition.field + '"]');
+      }
       var value = $target.val();
-      if ($target.attr('type') === 'checkbox' || $target.attr('type') === 'radio') {
+      if ($target.attr('type') === 'checkbox') {
         value = $target.is(':checked');
+      }
+      if ($target.attr('type') === 'radio') {
+        value = $target.filter(':checked').val();
       }
 
       // check if the field is multiple checkbox

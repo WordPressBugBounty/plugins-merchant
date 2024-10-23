@@ -54,6 +54,7 @@
         }
         // Do something
       },
+
       error: function error(_error) {
         console.log(_error);
       }

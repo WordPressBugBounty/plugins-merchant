@@ -224,3 +224,16 @@
 .mrc-fbt-savings-total-mini-cart strong {
   font-weight: 500;
 }
+
+tr.mrc-fbt-savings-total {
+  text-align: left;
+  border: none !important;
+}
+tr.mrc-fbt-savings-total th {
+  border: none;
+  padding-inline: 0;
+}
+tr.mrc-fbt-savings-total th,
+tr.mrc-fbt-savings-total .woocommerce-Price-amount {
+  font-weight: 400;
+}
