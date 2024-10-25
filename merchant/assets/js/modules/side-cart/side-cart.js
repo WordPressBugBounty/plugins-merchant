@@ -13,7 +13,8 @@ jQuery(document).ready(function ($) {
    * @returns {boolean}
    */
   function merchant_is_allowed_device() {
-    var allowed_devices = merchant_side_cart_params.allowed_devices;
+    var _merchant_side_cart_p;
+    var allowed_devices = (_merchant_side_cart_p = merchant_side_cart_params) === null || _merchant_side_cart_p === void 0 ? void 0 : _merchant_side_cart_p.allowed_devices;
     var screenWidth = window.innerWidth;
     if (screenWidth <= 768 && allowed_devices.includes('mobile')) {
       return true;
@@ -231,13 +232,14 @@ jQuery(document).ready(function ($) {
      * @return {void}
      */
     fetchVariationDetails: function fetchVariationDetails(container, productID, selectedAttributes, self) {
+      var _merchant_side_cart_p2, _merchant_side_cart_p3;
       $.ajax({
         type: 'POST',
-        url: merchant_side_cart_params.ajax_url,
+        url: (_merchant_side_cart_p2 = merchant_side_cart_params) === null || _merchant_side_cart_p2 === void 0 ? void 0 : _merchant_side_cart_p2.ajax_url,
         data: {
           action: 'merchant_get_variation_data',
           product_id: productID,
-          nonce: merchant_side_cart_params.variation_info_nonce,
+          nonce: (_merchant_side_cart_p3 = merchant_side_cart_params) === null || _merchant_side_cart_p3 === void 0 ? void 0 : _merchant_side_cart_p3.variation_info_nonce,
           attributes: selectedAttributes
         },
         success: function success(response) {
@@ -296,15 +298,16 @@ jQuery(document).ready(function ($) {
       }
     },
     addToCart: function addToCart(self, productType, productId, variationId, btn) {
+      var _merchant_side_cart_p4, _merchant_side_cart_p5;
       var data = {
         action: 'merchant_side_cart_upsells_add_to_cart',
         product_id: productId,
         variation_id: variationId,
-        nonce: merchant_side_cart_params.nonce
+        nonce: (_merchant_side_cart_p4 = merchant_side_cart_params) === null || _merchant_side_cart_p4 === void 0 ? void 0 : _merchant_side_cart_p4.nonce
       };
       $.ajax({
         type: 'POST',
-        url: merchant_side_cart_params.ajax_url,
+        url: (_merchant_side_cart_p5 = merchant_side_cart_params) === null || _merchant_side_cart_p5 === void 0 ? void 0 : _merchant_side_cart_p5.ajax_url,
         data: data,
         beforeSend: function beforeSend() {
           btn.addClass('loading');
@@ -339,9 +342,11 @@ jQuery(document).ready(function ($) {
       $(document).trigger('merchant_init_carousel');
     },
     initCarousel: function initCarousel() {
+      var _merchant_side_cart_p6;
       // check if slick is initialized
       var carousel = $(document).find('.merchant-mini-cart-upsells.upsells-layout-carousel');
-      if ('carousel' === merchant_side_cart_params.upsells_style && !carousel.hasClass('slick-initialized')) {
+      if ('carousel' === ((_merchant_side_cart_p6 = merchant_side_cart_params) === null || _merchant_side_cart_p6 === void 0 ? void 0 : _merchant_side_cart_p6.upsells_style) && !carousel.hasClass('slick-initialized')) {
+        var _merchant_side_cart_p7;
         carousel.slick({
           infinite: true,
           arrows: true,
@@ -355,14 +360,15 @@ jQuery(document).ready(function ($) {
           pauseOnHover: true,
           prevArrow: '<button type="button" class="slick-prev"><</button>',
           nextArrow: '<button type="button" class="slick-next">></button>',
-          rtl: merchant_side_cart_params.is_rtl === '1'
+          rtl: ((_merchant_side_cart_p7 = merchant_side_cart_params) === null || _merchant_side_cart_p7 === void 0 ? void 0 : _merchant_side_cart_p7.is_rtl) === '1'
         });
       }
     },
     destroyCarousel: function destroyCarousel() {
+      var _merchant_side_cart_p8;
       // check if slick is initialized
       var carousel = $(document).find('.merchant-mini-cart-upsells.upsells-layout-carousel');
-      if ('carousel' === merchant_side_cart_params.upsells_style && carousel.hasClass('slick-initialized')) {
+      if ('carousel' === ((_merchant_side_cart_p8 = merchant_side_cart_params) === null || _merchant_side_cart_p8 === void 0 ? void 0 : _merchant_side_cart_p8.upsells_style) && carousel.hasClass('slick-initialized')) {
         carousel.slick('unslick');
       }
     },
@@ -378,14 +384,15 @@ jQuery(document).ready(function ($) {
       this.applyCoupon(self, couponCode, container);
     },
     applyCoupon: function applyCoupon(self, couponCode, container) {
+      var _merchant_side_cart_p9, _merchant_side_cart_p10;
       var data = {
         action: 'merchant_side_cart_apply_coupon',
         coupon_code: couponCode,
-        nonce: merchant_side_cart_params.nonce
+        nonce: (_merchant_side_cart_p9 = merchant_side_cart_params) === null || _merchant_side_cart_p9 === void 0 ? void 0 : _merchant_side_cart_p9.nonce
       };
       $.ajax({
         type: 'POST',
-        url: merchant_side_cart_params.ajax_url,
+        url: (_merchant_side_cart_p10 = merchant_side_cart_params) === null || _merchant_side_cart_p10 === void 0 ? void 0 : _merchant_side_cart_p10.ajax_url,
         data: data,
         beforeSend: function beforeSend() {
           container.addClass('loading');
@@ -402,14 +409,15 @@ jQuery(document).ready(function ($) {
       });
     },
     removeCoupon: function removeCoupon(self, couponCode) {
+      var _merchant_side_cart_p11, _merchant_side_cart_p12;
       var data = {
         action: 'merchant_side_cart_remove_coupon',
         coupon_code: couponCode,
-        nonce: merchant_side_cart_params.nonce
+        nonce: (_merchant_side_cart_p11 = merchant_side_cart_params) === null || _merchant_side_cart_p11 === void 0 ? void 0 : _merchant_side_cart_p11.nonce
       };
       $.ajax({
         type: 'POST',
-        url: merchant_side_cart_params.ajax_url,
+        url: (_merchant_side_cart_p12 = merchant_side_cart_params) === null || _merchant_side_cart_p12 === void 0 ? void 0 : _merchant_side_cart_p12.ajax_url,
         data: data,
         beforeSend: function beforeSend() {},
         success: function success(response) {
@@ -439,10 +447,11 @@ jQuery(document).ready(function ($) {
       this.removeCoupon(self, couponCode);
     },
     sideCartBtns: function sideCartBtns() {
-      var showCheckoutBtn = merchant_side_cart_params.show_checkout_btn === '1',
-        showViewCartBtn = merchant_side_cart_params.show_view_cart_btn === '1',
-        checkoutBtnTxt = merchant_side_cart_params.checkout_btn_text,
-        viewCartBtnTxt = merchant_side_cart_params.view_cart_btn_text,
+      var _merchant_side_cart_p13, _merchant_side_cart_p14, _merchant_side_cart_p15, _merchant_side_cart_p16;
+      var showCheckoutBtn = ((_merchant_side_cart_p13 = merchant_side_cart_params) === null || _merchant_side_cart_p13 === void 0 ? void 0 : _merchant_side_cart_p13.show_checkout_btn) === '1',
+        showViewCartBtn = ((_merchant_side_cart_p14 = merchant_side_cart_params) === null || _merchant_side_cart_p14 === void 0 ? void 0 : _merchant_side_cart_p14.show_view_cart_btn) === '1',
+        checkoutBtnTxt = (_merchant_side_cart_p15 = merchant_side_cart_params) === null || _merchant_side_cart_p15 === void 0 ? void 0 : _merchant_side_cart_p15.checkout_btn_text,
+        viewCartBtnTxt = (_merchant_side_cart_p16 = merchant_side_cart_params) === null || _merchant_side_cart_p16 === void 0 ? void 0 : _merchant_side_cart_p16.view_cart_btn_text,
         buttonsWrapper = $(document).find('.merchant-floating-side-mini-cart-body .woocommerce-mini-cart__buttons'),
         checkoutBtn = buttonsWrapper.find('.checkout'),
         viewCartBtn = buttonsWrapper.find('a:not(.checkout)');
