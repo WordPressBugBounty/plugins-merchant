@@ -218,7 +218,6 @@
                 }));
               }
             }
-            console.log(fieldOptions.timeZone);
             options = Object.assign(options, fieldOptions);
           }
           new AirDatepicker(input.getPath(), options);
