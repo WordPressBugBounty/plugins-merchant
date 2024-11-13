@@ -25,8 +25,18 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
     _createClass(MerchantSideCartAdminPreview, [{
       key: "init",
       value: function init() {
+        this.preview();
         this.events();
         this.flexibleContentLabel();
+      }
+    }, {
+      key: "preview",
+      value: function preview() {
+        $(document).on('change', '.merchant-field-slide_direction input', function () {
+          if ($(this).is(':checked')) {
+            $('.merchant-side-cart').removeClass('slide-left slide-right').addClass('slide-' + $(this).val());
+          }
+        });
       }
 
       /**
