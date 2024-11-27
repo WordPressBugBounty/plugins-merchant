@@ -271,6 +271,9 @@
           order: 2;
   margin-bottom: 0;
 }
+.merchant-login-popup-content .woocommerce-form-login__rememberme input {
+  margin-right: 5px;
+}
 .merchant-login-popup-content .woocommerce-LostPassword {
   margin-top: 20px;
   margin-bottom: 0;

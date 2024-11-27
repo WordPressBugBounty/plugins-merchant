@@ -2686,11 +2686,6 @@ body.merchant-module-disabled .merchant-module-page-link-preview svg path {
   border-color: #3858E9;
 }
 
-.merchant-code-snippets-textarea textarea,
-.merchant-code-snippets-textarea_code textarea {
-  min-height: 200px;
-}
-
 .merchant-module-page-setting-field-radio div:not(.merchant-module-page-setting-field-desc),
 .merchant-module-page-setting-field-radio_alt div:not(.merchant-module-page-setting-field-desc),
 .merchant-module-page-setting-field-checkbox div:not(.merchant-module-page-setting-field-desc),
