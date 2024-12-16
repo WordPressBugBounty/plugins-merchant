@@ -26,6 +26,9 @@
     display: flex;
   }
 }
+.merchant-product-labels ~ .merchant-product-labels {
+  display: none;
+}
 .merchant-product-labels__regular {
   position: absolute;
   top: 10px;
