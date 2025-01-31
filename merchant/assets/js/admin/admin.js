@@ -774,8 +774,22 @@
         $('.merchant-flexible-content-control').each(function () {
           var hasAccordion = $(this).hasClass('has-accordion'),
             $content = $(this).find('.merchant-flexible-content');
+          var campaignId = params.get('campaign_id');
+          var campaignIndex = 0;
+
+          // Find the campaignIndex based on campaignId
+          if (campaignId) {
+            $content.find('input.flexible-id').each(function (index) {
+              if ($(this).val() === campaignId) {
+                campaignIndex = index;
+                return false;
+              }
+            });
+          }
           if (hasAccordion) {
             $content.accordion({
+              active: campaignIndex,
+              // Open the campaign with campaign index
               collapsible: true,
               //header: "> div > .layout-header",
               header: function header(elem) {
@@ -839,6 +853,13 @@
         });
         $('.merchant-module-page-setting-fields');
       },
+      generateUUID: function generateUUID() {
+        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+          var r = Math.random() * 16 | 0;
+          var v = c === 'x' ? r : r & 0x3 | 0x8;
+          return v.toString(16);
+        });
+      },
       events: function events() {
         var self = this;
         $(document).on('change', '.merchant-module-page-setting-field[data-id="discount_type"] input', function () {
@@ -876,6 +897,7 @@
           var $layout = $layouts.find('.layout[data-type=' + $selected + ']').clone(true);
           var $content = $field.find('.merchant-flexible-content');
           var $items = $content.find('.layout');
+          var uuid = self.generateUUID();
           $layout.find('input, select, textarea').each(function () {
             if ($(this).data('name')) {
               $(this).attr('name', $(this).data('name').replace('0', $items.length));
@@ -884,7 +906,9 @@
               $(this).prop('checked', true);
             }
           });
+          $layout.attr('data-layout-id', uuid);
           $layout.find('.layout-count').text($items.length + 1);
+          $layout.find('.flexible-id').val(uuid);
           $content.append($layout);
           $content.removeClass('empty');
           $(this).parent().removeClass('active');

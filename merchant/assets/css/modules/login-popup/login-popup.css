@@ -199,8 +199,12 @@
 .merchant-login-popup-content a:hover {
   color: var(--merchant-popup-link-color-hover, #515151);
 }
+.merchant-login-popup-content #customer_login {
+  margin: 0;
+}
 .merchant-login-popup-content .col-1,
 .merchant-login-popup-content .col-2 {
+  min-width: 100%;
   display: none;
   padding: 0;
   margin: 0;
@@ -218,6 +222,9 @@
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
+  padding: 0 !important;
+  border: none !important;
+  min-height: auto !important;
 }
 .merchant-login-popup-content p {
   margin: 0;

@@ -1,6 +1,10 @@
 .merchant-volume-discounts {
   margin: 20px 0;
 }
+.merchant-volume-discounts .added_to_cart,
+.merchant-volume-discounts .wc-forward {
+  display: none !important;
+}
 
 .merchant-volume-discounts-title {
   font-size: 16px;

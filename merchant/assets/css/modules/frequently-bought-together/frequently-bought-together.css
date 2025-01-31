@@ -19,6 +19,10 @@
 .merchant-frequently-bought-together.after-tabs {
   padding-bottom: 40px;
 }
+.merchant-frequently-bought-together .added_to_cart,
+.merchant-frequently-bought-together .wc-forward {
+  display: none !important;
+}
 
 .merchant-frequently-bought-together-bundles {
   display: -webkit-box;
