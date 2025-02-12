@@ -1,5 +1,6 @@
 "use strict";
 
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
 ;
 (function ($, window, document, undefined) {
   'use strict';
@@ -12,7 +13,10 @@
     var $ajaxForm = $('.merchant-module-page-ajax-form');
     var $ajaxHeader = $('.merchant-module-page-ajax-header');
     var $ajaxSaveBtn = $('.merchant-module-save-button');
-    $('.merchant-module-page-content').on('change keypress change.merchant', function () {
+    $('.merchant-module-page-content').on('change keypress change.merchant', function (e) {
+      if ($(e.target).hasClass('merchant-backup-file')) {
+        return; // Ignore backup file input
+      }
       if (!$(this).is('.merchant-module-question-answer-textarea, .merchant-license-code-input')) {
         if (!merchant.show_save) {
           $ajaxHeader.addClass('merchant-show');
@@ -166,6 +170,143 @@
       $(this).find('span:first').text($trigger.text() === showText ? hiddenText : showText);
       $(this).closest('.merchant-module-page-setting-field').find('.merchant-module-page-setting-field-hidden-desc').stop(true, true).slideToggle('fast');
     });
+    var moduleBackup = {
+      init: function init() {
+        this.events();
+      },
+      events: function events() {
+        $(document).on('click', '#download-backup-button', this.download.bind(this));
+        $(document).on('click', '#restore-backup-button', this.restore.bind(this));
+        $(document).on('change', '#merchant-backup-file', this.removeBackupFile.bind(this));
+      },
+      download: function download(e) {
+        var self = this;
+        e.preventDefault();
+        var container = $('.merchant-module-page-setting-fields .backup-section');
+        self.hideError(container);
+        var module_id = $(e.target).attr('data-module-id');
+        // ajax get
+        $.ajax({
+          url: merchant_admin_options.ajaxurl,
+          type: 'GET',
+          data: {
+            action: 'merchant_get_module_settings',
+            nonce: merchant_admin_options.ajaxnonce,
+            module_id: module_id
+          },
+          beforeSend: function beforeSend() {
+            self.showLoadingIndicator(container);
+          },
+          success: function success(response) {
+            if (response.success) {
+              var moduleSettings = response.data;
+              var fileName = 'merchant-' + module_id + '-backup-' + new Date().toISOString().slice(0, 10) + '-' +
+              //time
+              new Date().getHours() + '-' + new Date().getMinutes() + '-' + new Date().getSeconds() + '.json';
+              self.downloadJson(moduleSettings, fileName);
+              self.hideLoadingIndicator(container);
+            } else {
+              self.displayError(response.data.message, container);
+              self.hideLoadingIndicator(container);
+            }
+          },
+          error: function error(xhr, status, _error) {
+            self.displayError(_error, container);
+            self.hideLoadingIndicator(container);
+          }
+        });
+      },
+      restore: function restore(e) {
+        var self = this;
+        e.preventDefault();
+        var container = $('.merchant-module-page-setting-fields .restore-section');
+        self.hideError(container);
+        var module_id = $(e.target).attr('data-module-id');
+        var file = $('.merchant-backup-file').prop('files')[0];
+
+        // Check if file is selected and it's a JSON file
+        if (file && file.type === 'application/json') {
+          var reader = new FileReader();
+          reader.onload = function (e) {
+            // Send the raw file content instead of parsing it
+            var moduleSettings = e.target.result;
+            // AJAX post
+            $.ajax({
+              url: merchant_admin_options.ajaxurl,
+              type: 'POST',
+              data: {
+                action: 'merchant_restore_module_settings',
+                nonce: merchant_admin_options.ajaxnonce,
+                module_id: module_id,
+                module_settings: moduleSettings
+              },
+              beforeSend: function beforeSend() {
+                self.showLoadingIndicator(container);
+              },
+              success: function success(response) {
+                if (response.success) {
+                  window.location.href = response.data.redirect_url;
+                } else {
+                  self.displayError(response.data.message, container);
+                }
+                self.hideLoadingIndicator(container);
+              },
+              error: function error(xhr, status, _error2) {
+                self.displayError(_error2, container);
+                self.hideLoadingIndicator(container);
+              }
+            });
+          };
+          reader.readAsText(file);
+        } else {
+          self.displayError(merchant_admin_options.invalid_file, container);
+        }
+      },
+      removeBackupFile: function removeBackupFile(e) {
+        var _file$;
+        var file = $(e.target);
+        if (!file.length) {
+          return;
+        }
+        var crossIcon = $('.backup-file-remove');
+        if (((_file$ = file[0]) === null || _file$ === void 0 ? void 0 : _file$.files.length) > 0) {
+          crossIcon.show();
+        } else {
+          crossIcon.hide();
+        }
+        crossIcon.on('click', function () {
+          file.val('');
+          $(this).hide();
+        });
+      },
+      downloadJson: function downloadJson(data, filename) {
+        if (_typeof(data) === 'object') {
+          data = JSON.stringify(data);
+        }
+        var blob = new Blob([data], {
+          type: "application/json"
+        });
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        a.click();
+        URL.revokeObjectURL(url);
+      },
+      displayError: function displayError(errorMsg, container) {
+        container.append("<div class=\"error-message\"><p>".concat(errorMsg, "</p></div>"));
+      },
+      hideError: function hideError(container) {
+        container.find('.error-message').remove();
+      },
+      showLoadingIndicator: function showLoadingIndicator(container) {
+        container.find('.merchant-loading-spinner').addClass('show');
+      },
+      hideLoadingIndicator: function hideLoadingIndicator(container) {
+        container.find('.merchant-loading-spinner').removeClass('show');
+      }
+    };
+    moduleBackup.init();
 
     // Add support for toggle field inside flexible content.
     var flexibleToggleField = {

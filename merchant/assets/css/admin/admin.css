@@ -5831,3 +5831,124 @@ body.merchant-module-disabled .merchant-module-page-link-preview svg path {
   border-radius: 5px;
   border: 1px solid #f0f0f1;
 }
+
+.merchant-module-page-settings.backup-restore-section {
+  border-radius: 8px;
+}
+.merchant-module-page-settings.backup-restore-section .merchant-module-page-setting-box {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.merchant-module-page-settings.backup-restore-section section {
+  background: white;
+  border-radius: 8px;
+  margin-bottom: 24px;
+}
+.merchant-module-page-settings.backup-restore-section section:last-child {
+  margin-bottom: 0;
+}
+.merchant-module-page-settings.backup-restore-section section h3 {
+  color: #23282d;
+  position: relative;
+  margin-block: 0 10px;
+}
+.merchant-module-page-settings.backup-restore-section section .form-field label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: #23282d;
+}
+.merchant-module-page-settings.backup-restore-section section .form-field button {
+  padding: 0.75rem 1.5rem;
+  margin-right: 15px;
+  border: 1px solid #3858e9;
+  background-color: rgba(0, 0, 0, 0);
+  color: #3858e9;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
+  -webkit-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+}
+.merchant-module-page-settings.backup-restore-section section .form-field button:hover {
+  opacity: 0.8;
+}
+.merchant-module-page-settings.backup-restore-section section .form-field button:focus {
+  background-color: rgba(0, 0, 0, 0);
+  outline: 2px solid #3858e9;
+  outline-offset: 2px;
+}
+.merchant-module-page-settings.backup-restore-section section .form-field button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.merchant-module-page-settings.backup-restore-section section .form-field button.download-button, .merchant-module-page-settings.backup-restore-section section .form-field button.restore-button {
+  display: block;
+  margin: 10px 0 0;
+}
+.merchant-module-page-settings.backup-restore-section section .form-field p.description {
+  font-size: 0.875rem;
+  color: #666;
+  margin-top: 0.5rem;
+  font-style: italic;
+}
+.merchant-module-page-settings.backup-restore-section section .form-field .backup-file-remove {
+  color: #c5280c;
+  border-radius: 50%;
+  position: relative;
+  top: 5px;
+  right: 5px;
+  cursor: pointer;
+}
+.merchant-module-page-settings.backup-restore-section section .error-message p {
+  margin-bottom: 0;
+}
+@media (max-width: 768px) {
+  .merchant-module-page-settings.backup-restore-section {
+    padding: 1.5rem;
+  }
+  .merchant-module-page-settings.backup-restore-section section {
+    padding: 1.5rem;
+  }
+}
+
+.merchant-loading-spinner {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  border-radius: 50%;
+  border-top-color: #3D65E9;
+  -webkit-animation: spin 1s ease-in-out infinite;
+          animation: spin 1s ease-in-out infinite;
+  vertical-align: middle;
+  -webkit-transition: 300ms;
+  transition: 300ms;
+  opacity: 0;
+  visibility: hidden;
+}
+.merchant-loading-spinner.show {
+  opacity: 1;
+  visibility: visible;
+}
+@-webkit-keyframes spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+  }
+}
+@keyframes spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+  }
+}
