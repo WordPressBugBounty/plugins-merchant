@@ -89,7 +89,7 @@
     height: 7vw;
   }
 }
-.merchant-module-page-setting-field-inner {
+.merchant-module-page-setting-field-inner:not(.merchant-field-included_products, .merchant-field-excluded_products) {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
