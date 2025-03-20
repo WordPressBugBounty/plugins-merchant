@@ -64,7 +64,7 @@ jQuery(document).ready(function ($) {
   // Add to cart AJAX event.
   if (sideCartObj.hasOwnProperty('add_to_cart_slide_out') && merchant_is_allowed_device()) {
     $(document.body).on('added_to_cart', function (event, fragments, cart_hash, $button, $context) {
-      if ($context !== 'side-cart') {
+      if ($context !== 'side-cart' && $context !== 'free-gifts') {
         $body.toggleClass('merchant-side-cart-show');
       }
       $(window).trigger('merchant.side-cart-resize');
@@ -81,89 +81,90 @@ jQuery(document).ready(function ($) {
   }
 
   // Update Product quantity in Side Cart
-  if (sideCartObj.hasOwnProperty('add_to_cart_slide_out') && merchant_is_allowed_device()) {
-    var merchant_update_side_cart_quantity = function merchant_update_side_cart_quantity($input) {
-      if (!$input.length || !ajax_url || !nonce) {
-        return;
-      }
-      var cartItemKey = $input.attr('name');
-      var quantity = Math.round(parseFloat($input.val() || 1));
-      var $cart_item = $input.closest('.js-side-cart-item');
+  // if ( sideCartObj.hasOwnProperty('add_to_cart_slide_out') && merchant_is_allowed_device() ) {
+  // Update quantity on plus/minus click
+  $(document).on('click', '.js-merchant-quantity-btn', function (e) {
+    e.preventDefault();
+    var $btn = $(this);
+    var $input = $btn.closest('.merchant-quantity-wrap').find('.js-update-quantity');
+    if (!$input.length) {
+      return;
+    }
+    var quantity = +($input.val() || 1);
+    var minimum = +$input.attr('min');
+    var maximum = +$input.attr('max');
+    var stepSize = Math.round(parseFloat($input.attr('step')));
+    if ($btn.hasClass('merchant-quantity-plus')) {
+      quantity += stepSize;
+      quantity = maximum && maximum !== -1 ? Math.min(quantity, maximum) : quantity;
+    } else if ($btn.hasClass('merchant-quantity-minus')) {
+      quantity -= stepSize;
+      quantity = minimum ? Math.max(quantity, minimum) : quantity;
+    }
+    $input.val(quantity);
+    merchant_update_side_cart_quantity($input);
+  });
 
-      // Clear previous timer
-      clearTimeout(debounceTimer);
+  // Update quantity on input value change
+  $(document).on('input change', '.js-update-quantity', function (e) {
+    e.preventDefault();
+    merchant_update_side_cart_quantity($(this));
+  });
 
-      // Set a new timer to delay the AJAX request
-      debounceTimer = setTimeout(function () {
-        $.ajax({
-          type: 'POST',
-          url: ajax_url,
-          data: {
-            action: 'update_side_cart_quantity',
-            cart_item_key: cartItemKey,
-            quantity: quantity,
-            nonce: nonce
-          },
-          beforeSend: function beforeSend() {
-            if ($cart_item.length) {
-              $cart_item.block({
-                message: null,
-                overlayCSS: {
-                  background: '#fff',
-                  opacity: 0.6
-                }
-              });
-            }
-          },
-          success: function success(response) {
-            if (!response || !response.fragments) {
-              return;
-            }
-            $(document.body).trigger('added_to_cart', [response.fragments, response.cart_hash, $input, 'side-cart']);
-            if ($cart_item.length) {
-              $cart_item.unblock();
-              $(document).trigger('merchant_destroy_carousel');
-              $(document).trigger('merchant_init_carousel');
-            }
-          },
-          error: function error(_error) {
-            console.log('Error:', _error);
+  // Update quantity helper
+  var debounceTimer;
+  function merchant_update_side_cart_quantity($input) {
+    if (!$input.length || !ajax_url || !nonce) {
+      return;
+    }
+    var cartItemKey = $input.attr('name');
+    var quantity = Math.round(parseFloat($input.val() || 1));
+    var $cart_item = $input.closest('.js-side-cart-item');
+
+    // Clear previous timer
+    clearTimeout(debounceTimer);
+
+    // Set a new timer to delay the AJAX request
+    debounceTimer = setTimeout(function () {
+      $.ajax({
+        type: 'POST',
+        url: ajax_url,
+        data: {
+          action: 'update_side_cart_quantity',
+          cart_item_key: cartItemKey,
+          quantity: quantity,
+          nonce: nonce
+        },
+        beforeSend: function beforeSend() {
+          if ($cart_item.length) {
+            $cart_item.block({
+              message: null,
+              overlayCSS: {
+                background: '#fff',
+                opacity: 0.6
+              }
+            });
           }
-        });
-      }, 350);
-    };
-    // Update quantity on plus/minus click
-    $(document).on('click', '.js-merchant-quantity-btn', function (e) {
-      e.preventDefault();
-      var $btn = $(this);
-      var $input = $btn.closest('.merchant-quantity-wrap').find('.js-update-quantity');
-      if (!$input.length) {
-        return;
-      }
-      var quantity = +($input.val() || 1);
-      var minimum = +$input.attr('min');
-      var maximum = +$input.attr('max');
-      var stepSize = Math.round(parseFloat($input.attr('step')));
-      if ($btn.hasClass('merchant-quantity-plus')) {
-        quantity += stepSize;
-        quantity = maximum && maximum !== -1 ? Math.min(quantity, maximum) : quantity;
-      } else if ($btn.hasClass('merchant-quantity-minus')) {
-        quantity -= stepSize;
-        quantity = minimum ? Math.max(quantity, minimum) : quantity;
-      }
-      $input.val(quantity);
-      merchant_update_side_cart_quantity($input);
-    });
-
-    // Update quantity on input value change
-    $(document).on('input change', '.js-update-quantity', function (e) {
-      e.preventDefault();
-      merchant_update_side_cart_quantity($(this));
-    });
-
-    // Update quantity helper
-    var debounceTimer;
+        },
+        success: function success(response) {
+          if (!response || !response.fragments) {
+            return;
+          }
+          $(document.body).trigger('added_to_cart', [response.fragments, response.cart_hash, $input, 'side-cart']);
+          if ($cart_item.length) {
+            $cart_item.unblock();
+            $(document).trigger('merchant_destroy_carousel');
+            $(document).trigger('merchant_init_carousel');
+          }
+        },
+        error: function error(_error) {
+          console.log('Error:', _error);
+        }
+      });
+    }, 350);
   }
+  // }
+
   var merchant_upsells = {
     init: function init() {
       var self = this;

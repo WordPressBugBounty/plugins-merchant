@@ -124,7 +124,12 @@
   $(document).on('change.merchant keyup click', 'input[type="text"]:not(.merchant-color-input)', function (e) {
     var widget = $('.merchant-recent-sales-notifications-widget');
     var message = widget.find('.merchant-notification-message');
-    message.text($(this).val().replace('{customer_name}', 'John Doe').replace('{country_code}', 'US').replace('{city}', 'New York').replace('{count}', '7'));
+    var customerName = getFormattedCustomerName($('.merchant-field-customer_name_format select').val());
+    message.html($(this).val().replace('{customer_name}', "<span class=\"customer-name\">".concat(customerName, "</span>")).replace('{country_code}', 'US').replace('{city}', 'New York').replace('{count}', '7'));
+  });
+  $(document).on('change', '.merchant-field-customer_name_format select', function (e) {
+    var customerName = getFormattedCustomerName($(this).val());
+    $('.customer-name').text(customerName);
   });
   $(document).on('change.merchant keyup', function (e) {
     merchantInitPreview(e);
@@ -132,4 +137,27 @@
   $(document).ready(function () {
     merchantInitPreview();
   });
+
+  // Helpers
+  function getFormattedCustomerName(format) {
+    var customerName;
+    switch (format) {
+      case 'firstname':
+        customerName = 'John';
+        break;
+      case 'lastname':
+        customerName = 'Doe';
+        break;
+      case 'firstname_initial':
+        customerName = 'John D.';
+        break;
+      case 'lastname_initial':
+        customerName = 'J. Doe';
+        break;
+      case 'full':
+      default:
+        customerName = 'John Doe';
+    }
+    return customerName;
+  }
 })(jQuery);

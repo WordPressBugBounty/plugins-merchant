@@ -3925,9 +3925,6 @@ body.merchant-module-disabled .merchant-module-page-link-preview svg path {
       -ms-flex-positive: 1;
           flex-grow: 1;
 }
-.merchant-flexible-content-control .layout .layout-field:last-of-type .merchant-module-page-setting-field {
-  margin-bottom: 0;
-}
 .merchant-flexible-content-control .layout .dashicons-menu {
   display: -webkit-box;
   display: -ms-flexbox;
