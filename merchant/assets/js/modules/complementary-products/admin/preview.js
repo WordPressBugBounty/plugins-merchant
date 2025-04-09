@@ -40,7 +40,7 @@
     var title = $('.mrc-preview-bundle-title');
     title.replaceWith("<".concat(headingSize, " class=\"mrc-preview-bundle-title\">").concat(title.text(), "</").concat(headingSize, ">"));
     title.text(singleBundleTitle);
-    $('.mrc-preview-bundle-wrapper').removeClass('slider classic').addClass(singleLayout);
+    $('.mrc-preview-bundle-wrapper').removeClass('slider compact classic').addClass(singleLayout);
     $('.mrc-preview-bundle-description').text(singleBundleDescription.replace('{discount_amount}', '10%'));
     $(":root").css({
       "--merchant-cp-product-border-color": borderColor,
@@ -57,7 +57,7 @@
     $('.merchant-cart-preview .upsell-offer').text(cartBundleTitle.replace('{discount_amount}', '10%'));
     $('.merchant-cart-preview .add-to-cart').text(cartBundleBtnTitle);
     $('.merchant-checkout-preview .offer-title').text(checkoutBundleTitle.replace('{discount_amount}', '10%'));
-    $('.merchant-checkout-preview .offer-desc').text(checkoutBundleDesc);
+    $('.merchant-checkout-preview .offer-desc').text(checkoutBundleDesc.replace('{discount_amount}', '10%'));
     $('.merchant-checkout-preview .add-to-order').text(checkoutBundleBtnTitle);
     $('.merchant-thank-you-preview .offer-title').text(thankYouBundleTitle.replace('{discount_amount}', '10%'));
     $('.merchant-thank-you-preview .add-to-order').text(thankYouBundleBtnTitle);

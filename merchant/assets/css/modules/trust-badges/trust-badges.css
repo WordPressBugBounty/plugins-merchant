@@ -60,6 +60,6 @@
   max-width: var(--mrc-tb-image-max-width, 70px) !important;
   max-height: var(--mrc-tb-image-max-height, 70px) !important;
 }
-.merchant-trust-badges-images.is-placeholder img {
+.merchant-trust-badges-images .is-placeholder {
   width: 100%;
 }

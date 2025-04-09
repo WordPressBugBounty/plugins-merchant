@@ -9,7 +9,7 @@
       $(this).on('change keyup', function () {
         var input = $(this).val();
         var layout = $(this).closest('.layout');
-        var socialMediaIcons = ['facebook', 'instagram', 'twitter', 'tiktok', 'pinterest', 'whatsapp', 'telegram', 'flickr', 'linkedin', 'youtube', 'discord', 'xing', 'dribble', 'vk', 'weibo', 'vimeo', 'mix', 'behance', 'spotify', 'soundcloud', 'twitch', 'etsy', 'bandcamp', 'reddit', 'github'];
+        var socialMediaIcons = ['facebook', 'instagram', 'twitter', 'tiktok', 'pinterest', 'whatsapp', 'telegram', 'flickr', 'linkedin', 'youtube', 'discord', 'xing', 'dribble', 'vk', 'weibo', 'vimeo', 'mix', 'behance', 'spotify', 'soundcloud', 'twitch', 'etsy', 'bandcamp', 'reddit', 'github', 'bsky'];
         for (var i = 0; i < socialMediaIcons.length; i++) {
           var socialMediaIcon = socialMediaIcons[i];
           if (input.includes(socialMediaIcon)) {

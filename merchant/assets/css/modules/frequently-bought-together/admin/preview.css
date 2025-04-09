@@ -1,3 +1,4 @@
+@charset "UTF-8";
 /**
 * Admin Preview
 * Frequently Bought Together
@@ -31,7 +32,7 @@
           flex-grow: 0;
   width: 100%;
   margin: auto;
-  padding: 35px 25px 50px;
+  padding: 35px 20px 50px;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -518,10 +519,85 @@
 }
 .merchant-frequently-bought-together {
   margin: 0 auto;
+  width: 100%;
+}
+
+.merchant-frequently-bought-together-bundle {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  gap: 15px;
+}
+
+.merchant-frequently-bought-together-bundle-products {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  gap: 25px;
+}
+
+.merchant-frequently-bought-together-bundle-offer .merchant-frequently-bought-together-bundle-total-price {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: 10px;
+}
+.merchant-frequently-bought-together-bundle-offer .merchant-frequently-bought-together-bundle-total-price ins {
+  text-decoration: none;
+  font-weight: 700;
 }
 
 .merchant-frequently-bought-together-bundle-product {
+  padding: 0;
   max-width: 140px;
+  border: none;
+  margin-right: 10px;
+  position: relative;
+}
+.merchant-frequently-bought-together-bundle-product .optional-product {
+  position: absolute;
+  top: 10px;
+  right: 5px;
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  width: 20px;
+  height: 20px;
+  border: 1px solid var(--merchant-fbt-checkbox-color, #000);
+  background: #fff;
+  cursor: pointer;
+  border-radius: var(--merchant-fbt-checkbox-border-radius, 0);
+}
+.merchant-frequently-bought-together-bundle-product .optional-product:focus {
+  outline: none;
+  -webkit-box-shadow: none;
+          box-shadow: none;
+  border: 1px solid var(--merchant-fbt-checkbox-color, #000);
+}
+.merchant-frequently-bought-together-bundle-product .optional-product:checked {
+  background: var(--merchant-fbt-checkbox-color, #000);
+}
+.merchant-frequently-bought-together-bundle-product .optional-product:checked:before {
+  display: none;
+}
+.merchant-frequently-bought-together-bundle-product .optional-product:checked:after {
+  content: "✓";
+  color: #fff;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  font-size: 14px;
+}
+
+.merchant-frequently-bought-together-bundle-product img,
+.merchant-frequently-bought-together-bundle-product:not(:first-child) img {
+  width: 100%;
+  height: auto;
 }
 
 .merchant-frequently-bought-together-bundle-product:not(:first-child) {
@@ -532,15 +608,41 @@
   .merchant-frequently-bought-together-bundle-product {
     max-width: 120px;
   }
-  .merchant-frequently-bought-together-bundle-product:not(:first-child) img {
-    max-width: 80px;
-  }
 }
 .merchant-frequently-bought-together-bundle-product-plus {
   right: -34px;
   font-size: 20px;
   width: 25px;
   height: 25px;
+}
+
+.plus-icon {
+  position: relative;
+  margin-right: 10px;
+}
+.plus-icon .bundle-product-plus {
+  position: absolute;
+  right: 50%;
+  top: 60px;
+  -webkit-transform: translateX(50%);
+          transform: translateX(50%);
+  font-size: 25px;
+  background-color: #212121;
+  color: #fff;
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  z-index: 2;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  font-family: arial, serif;
 }
 
 .merchant-frequently-bought-together-bundles .woocommerce-loop-product__title a {
@@ -551,18 +653,4 @@
   color: #FFF;
   border-color: #212121;
   pointer-events: none;
-}
-
-.merchant-frequently-bought-together-bundle-total-price {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  gap: 10px;
-}
-.merchant-frequently-bought-together-bundle-total-price ins {
-  text-decoration: none;
-  font-weight: 700;
 }
