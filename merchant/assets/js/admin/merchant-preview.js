@@ -310,28 +310,28 @@ function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length)
         }
       }
       if (hasManipulators(manipulators.classes)) {
-        for (var _key10 in manipulators.classes) {
-          triggerChangeOnInput($('[name="merchant[' + manipulators.classes[_key10].setting + ']"]'));
+        for (var _key0 in manipulators.classes) {
+          triggerChangeOnInput($('[name="merchant[' + manipulators.classes[_key0].setting + ']"]'));
         }
       }
       if (hasManipulators(manipulators.icons)) {
-        for (var _key11 in manipulators.icons) {
-          triggerChangeOnInput($('[name="merchant[' + manipulators.icons[_key11].setting + ']"]'));
+        for (var _key1 in manipulators.icons) {
+          triggerChangeOnInput($('[name="merchant[' + manipulators.icons[_key1].setting + ']"]'));
         }
       }
       if (hasManipulators(manipulators.svg_icons)) {
-        for (var _key12 in manipulators.svg_icons) {
-          triggerChangeOnInput($('[name="merchant[' + manipulators.svg_icons[_key12].setting + ']"]'));
+        for (var _key10 in manipulators.svg_icons) {
+          triggerChangeOnInput($('[name="merchant[' + manipulators.svg_icons[_key10].setting + ']"]'));
         }
       }
       if (hasManipulators(manipulators.repeater_content)) {
-        for (var _key13 in manipulators.repeater_content) {
-          triggerChangeOnInput($('[name="merchant[' + manipulators.repeater_content[_key13].setting + ']"]'));
+        for (var _key11 in manipulators.repeater_content) {
+          triggerChangeOnInput($('[name="merchant[' + manipulators.repeater_content[_key11].setting + ']"]'));
         }
       }
       if (hasManipulators(manipulators.flexible_content)) {
-        for (var _key14 in manipulators.flexible_content) {
-          var field = $('.merchant-flexible-content-control[data-id=' + manipulators.flexible_content[_key14].setting + ']');
+        for (var _key12 in manipulators.flexible_content) {
+          var field = $('.merchant-flexible-content-control[data-id=' + manipulators.flexible_content[_key12].setting + ']');
           triggerChangeOnInput(field.find('input'));
           field.find('.customize-control-flexible-content-delete').on('click', function () {
             return updateElements();
@@ -342,8 +342,8 @@ function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length)
         }
       }
       if (hasManipulators(manipulators.update)) {
-        for (var _key15 in manipulators.update) {
-          triggerChangeOnInput($('[name="merchant[' + manipulators.update[_key15].setting + ']"]'));
+        for (var _key13 in manipulators.update) {
+          triggerChangeOnInput($('[name="merchant[' + manipulators.update[_key13].setting + ']"]'));
         }
       }
 
