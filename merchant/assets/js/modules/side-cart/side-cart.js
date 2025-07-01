@@ -334,6 +334,7 @@ jQuery(document).ready(function ($) {
         },
         success: function success(response) {
           self.handleSuccess(response);
+          $(document).trigger('add_to_cart', [response.data.fragments, response.data.cart_hash, btn, 'side-cart']);
         },
         error: function error(_error3) {
           self.handleError(_error3);

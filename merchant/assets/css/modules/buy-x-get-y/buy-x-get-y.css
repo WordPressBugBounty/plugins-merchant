@@ -24,12 +24,18 @@
   display: -ms-flexbox;
   display: flex;
   grid-gap: 20px;
+  -webkit-transition: opacity 0.3s ease;
+  transition: opacity 0.3s ease;
 }
 .merchant-bogo-offer > div {
   position: relative;
 }
 .merchant-bogo-offer:not(:last-child) {
   margin-bottom: 20px;
+}
+.merchant-bogo-offer.hidden {
+  opacity: 0;
+  pointer-events: none;
 }
 @media (max-width: 1024px) and (min-width: 769px) {
   .merchant-quick-view-content .merchant-bogo-offer .merchant-bogo-product-x {

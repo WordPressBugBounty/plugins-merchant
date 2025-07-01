@@ -12,7 +12,8 @@ function _unsupportedIterableToArray(r, a) { if (r) { if ("string" == typeof r) 
 function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length); for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e]; return n; }
 function _iterableToArrayLimit(r, l) { var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (null != t) { var e, n, i, u, a = [], f = !0, o = !1; try { if (i = (t = t.call(r)).next, 0 === l) { if (Object(t) !== t) return; f = !1; } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0); } catch (r) { o = !0, n = r; } finally { try { if (!f && null != t.return && (u = t.return(), Object(u) !== u)) return; } finally { if (o) throw n; } } return a; } }
 function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
-function _regeneratorRuntime() { "use strict"; /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/babel/babel/blob/main/packages/babel-helpers/LICENSE */ _regeneratorRuntime = function _regeneratorRuntime() { return r; }; var t, r = {}, e = Object.prototype, n = e.hasOwnProperty, o = "function" == typeof Symbol ? Symbol : {}, i = o.iterator || "@@iterator", a = o.asyncIterator || "@@asyncIterator", u = o.toStringTag || "@@toStringTag"; function c(t, r, e, n) { return Object.defineProperty(t, r, { value: e, enumerable: !n, configurable: !n, writable: !n }); } try { c({}, ""); } catch (t) { c = function c(t, r, e) { return t[r] = e; }; } function h(r, e, n, o) { var i = e && e.prototype instanceof Generator ? e : Generator, a = Object.create(i.prototype); return c(a, "_invoke", function (r, e, n) { var o = 1; return function (i, a) { if (3 === o) throw Error("Generator is already running"); if (4 === o) { if ("throw" === i) throw a; return { value: t, done: !0 }; } for (n.method = i, n.arg = a;;) { var u = n.delegate; if (u) { var c = d(u, n); if (c) { if (c === f) continue; return c; } } if ("next" === n.method) n.sent = n._sent = n.arg;else if ("throw" === n.method) { if (1 === o) throw o = 4, n.arg; n.dispatchException(n.arg); } else "return" === n.method && n.abrupt("return", n.arg); o = 3; var h = s(r, e, n); if ("normal" === h.type) { if (o = n.done ? 4 : 2, h.arg === f) continue; return { value: h.arg, done: n.done }; } "throw" === h.type && (o = 4, n.method = "throw", n.arg = h.arg); } }; }(r, n, new Context(o || [])), !0), a; } function s(t, r, e) { try { return { type: "normal", arg: t.call(r, e) }; } catch (t) { return { type: "throw", arg: t }; } } r.wrap = h; var f = {}; function Generator() {} function GeneratorFunction() {} function GeneratorFunctionPrototype() {} var l = {}; c(l, i, function () { return this; }); var p = Object.getPrototypeOf, y = p && p(p(x([]))); y && y !== e && n.call(y, i) && (l = y); var v = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(l); function g(t) { ["next", "throw", "return"].forEach(function (r) { c(t, r, function (t) { return this._invoke(r, t); }); }); } function AsyncIterator(t, r) { function e(o, i, a, u) { var c = s(t[o], t, i); if ("throw" !== c.type) { var h = c.arg, f = h.value; return f && "object" == _typeof(f) && n.call(f, "__await") ? r.resolve(f.__await).then(function (t) { e("next", t, a, u); }, function (t) { e("throw", t, a, u); }) : r.resolve(f).then(function (t) { h.value = t, a(h); }, function (t) { return e("throw", t, a, u); }); } u(c.arg); } var o; c(this, "_invoke", function (t, n) { function i() { return new r(function (r, o) { e(t, n, r, o); }); } return o = o ? o.then(i, i) : i(); }, !0); } function d(r, e) { var n = e.method, o = r.i[n]; if (o === t) return e.delegate = null, "throw" === n && r.i.return && (e.method = "return", e.arg = t, d(r, e), "throw" === e.method) || "return" !== n && (e.method = "throw", e.arg = new TypeError("The iterator does not provide a '" + n + "' method")), f; var i = s(o, r.i, e.arg); if ("throw" === i.type) return e.method = "throw", e.arg = i.arg, e.delegate = null, f; var a = i.arg; return a ? a.done ? (e[r.r] = a.value, e.next = r.n, "return" !== e.method && (e.method = "next", e.arg = t), e.delegate = null, f) : a : (e.method = "throw", e.arg = new TypeError("iterator result is not an object"), e.delegate = null, f); } function w(t) { this.tryEntries.push(t); } function m(r) { var e = r[4] || {}; e.type = "normal", e.arg = t, r[4] = e; } function Context(t) { this.tryEntries = [[-1]], t.forEach(w, this), this.reset(!0); } function x(r) { if (null != r) { var e = r[i]; if (e) return e.call(r); if ("function" == typeof r.next) return r; if (!isNaN(r.length)) { var o = -1, a = function e() { for (; ++o < r.length;) if (n.call(r, o)) return e.value = r[o], e.done = !1, e; return e.value = t, e.done = !0, e; }; return a.next = a; } } throw new TypeError(_typeof(r) + " is not iterable"); } return GeneratorFunction.prototype = GeneratorFunctionPrototype, c(v, "constructor", GeneratorFunctionPrototype), c(GeneratorFunctionPrototype, "constructor", GeneratorFunction), GeneratorFunction.displayName = c(GeneratorFunctionPrototype, u, "GeneratorFunction"), r.isGeneratorFunction = function (t) { var r = "function" == typeof t && t.constructor; return !!r && (r === GeneratorFunction || "GeneratorFunction" === (r.displayName || r.name)); }, r.mark = function (t) { return Object.setPrototypeOf ? Object.setPrototypeOf(t, GeneratorFunctionPrototype) : (t.__proto__ = GeneratorFunctionPrototype, c(t, u, "GeneratorFunction")), t.prototype = Object.create(v), t; }, r.awrap = function (t) { return { __await: t }; }, g(AsyncIterator.prototype), c(AsyncIterator.prototype, a, function () { return this; }), r.AsyncIterator = AsyncIterator, r.async = function (t, e, n, o, i) { void 0 === i && (i = Promise); var a = new AsyncIterator(h(t, e, n, o), i); return r.isGeneratorFunction(e) ? a : a.next().then(function (t) { return t.done ? t.value : a.next(); }); }, g(v), c(v, u, "Generator"), c(v, i, function () { return this; }), c(v, "toString", function () { return "[object Generator]"; }), r.keys = function (t) { var r = Object(t), e = []; for (var n in r) e.unshift(n); return function t() { for (; e.length;) if ((n = e.pop()) in r) return t.value = n, t.done = !1, t; return t.done = !0, t; }; }, r.values = x, Context.prototype = { constructor: Context, reset: function reset(r) { if (this.prev = this.next = 0, this.sent = this._sent = t, this.done = !1, this.delegate = null, this.method = "next", this.arg = t, this.tryEntries.forEach(m), !r) for (var e in this) "t" === e.charAt(0) && n.call(this, e) && !isNaN(+e.slice(1)) && (this[e] = t); }, stop: function stop() { this.done = !0; var t = this.tryEntries[0][4]; if ("throw" === t.type) throw t.arg; return this.rval; }, dispatchException: function dispatchException(r) { if (this.done) throw r; var e = this; function n(t) { a.type = "throw", a.arg = r, e.next = t; } for (var o = e.tryEntries.length - 1; o >= 0; --o) { var i = this.tryEntries[o], a = i[4], u = this.prev, c = i[1], h = i[2]; if (-1 === i[0]) return n("end"), !1; if (!c && !h) throw Error("try statement without catch or finally"); if (null != i[0] && i[0] <= u) { if (u < c) return this.method = "next", this.arg = t, n(c), !0; if (u < h) return n(h), !1; } } }, abrupt: function abrupt(t, r) { for (var e = this.tryEntries.length - 1; e >= 0; --e) { var n = this.tryEntries[e]; if (n[0] > -1 && n[0] <= this.prev && this.prev < n[2]) { var o = n; break; } } o && ("break" === t || "continue" === t) && o[0] <= r && r <= o[2] && (o = null); var i = o ? o[4] : {}; return i.type = t, i.arg = r, o ? (this.method = "next", this.next = o[2], f) : this.complete(i); }, complete: function complete(t, r) { if ("throw" === t.type) throw t.arg; return "break" === t.type || "continue" === t.type ? this.next = t.arg : "return" === t.type ? (this.rval = this.arg = t.arg, this.method = "return", this.next = "end") : "normal" === t.type && r && (this.next = r), f; }, finish: function finish(t) { for (var r = this.tryEntries.length - 1; r >= 0; --r) { var e = this.tryEntries[r]; if (e[2] === t) return this.complete(e[4], e[3]), m(e), f; } }, catch: function _catch(t) { for (var r = this.tryEntries.length - 1; r >= 0; --r) { var e = this.tryEntries[r]; if (e[0] === t) { var n = e[4]; if ("throw" === n.type) { var o = n.arg; m(e); } return o; } } throw Error("illegal catch attempt"); }, delegateYield: function delegateYield(r, e, n) { return this.delegate = { i: x(r), r: e, n: n }, "next" === this.method && (this.arg = t), f; } }, r; }
+function _regenerator() { /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/babel/babel/blob/main/packages/babel-helpers/LICENSE */ var e, t, r = "function" == typeof Symbol ? Symbol : {}, n = r.iterator || "@@iterator", o = r.toStringTag || "@@toStringTag"; function i(r, n, o, i) { var c = n && n.prototype instanceof Generator ? n : Generator, u = Object.create(c.prototype); return _regeneratorDefine2(u, "_invoke", function (r, n, o) { var i, c, u, f = 0, p = o || [], y = !1, G = { p: 0, n: 0, v: e, a: d, f: d.bind(e, 4), d: function d(t, r) { return i = t, c = 0, u = e, G.n = r, a; } }; function d(r, n) { for (c = r, u = n, t = 0; !y && f && !o && t < p.length; t++) { var o, i = p[t], d = G.p, l = i[2]; r > 3 ? (o = l === n) && (u = i[(c = i[4]) ? 5 : (c = 3, 3)], i[4] = i[5] = e) : i[0] <= d && ((o = r < 2 && d < i[1]) ? (c = 0, G.v = n, G.n = i[1]) : d < l && (o = r < 3 || i[0] > n || n > l) && (i[4] = r, i[5] = n, G.n = l, c = 0)); } if (o || r > 1) return a; throw y = !0, n; } return function (o, p, l) { if (f > 1) throw TypeError("Generator is already running"); for (y && 1 === p && d(p, l), c = p, u = l; (t = c < 2 ? e : u) || !y;) { i || (c ? c < 3 ? (c > 1 && (G.n = -1), d(c, u)) : G.n = u : G.v = u); try { if (f = 2, i) { if (c || (o = "next"), t = i[o]) { if (!(t = t.call(i, u))) throw TypeError("iterator result is not an object"); if (!t.done) return t; u = t.value, c < 2 && (c = 0); } else 1 === c && (t = i.return) && t.call(i), c < 2 && (u = TypeError("The iterator does not provide a '" + o + "' method"), c = 1); i = e; } else if ((t = (y = G.n < 0) ? u : r.call(n, G)) !== a) break; } catch (t) { i = e, c = 1, u = t; } finally { f = 1; } } return { value: t, done: y }; }; }(r, o, i), !0), u; } var a = {}; function Generator() {} function GeneratorFunction() {} function GeneratorFunctionPrototype() {} t = Object.getPrototypeOf; var c = [][n] ? t(t([][n]())) : (_regeneratorDefine2(t = {}, n, function () { return this; }), t), u = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(c); function f(e) { return Object.setPrototypeOf ? Object.setPrototypeOf(e, GeneratorFunctionPrototype) : (e.__proto__ = GeneratorFunctionPrototype, _regeneratorDefine2(e, o, "GeneratorFunction")), e.prototype = Object.create(u), e; } return GeneratorFunction.prototype = GeneratorFunctionPrototype, _regeneratorDefine2(u, "constructor", GeneratorFunctionPrototype), _regeneratorDefine2(GeneratorFunctionPrototype, "constructor", GeneratorFunction), GeneratorFunction.displayName = "GeneratorFunction", _regeneratorDefine2(GeneratorFunctionPrototype, o, "GeneratorFunction"), _regeneratorDefine2(u), _regeneratorDefine2(u, o, "Generator"), _regeneratorDefine2(u, n, function () { return this; }), _regeneratorDefine2(u, "toString", function () { return "[object Generator]"; }), (_regenerator = function _regenerator() { return { w: i, m: f }; })(); }
+function _regeneratorDefine2(e, r, n, t) { var i = Object.defineProperty; try { i({}, "", {}); } catch (e) { i = 0; } _regeneratorDefine2 = function _regeneratorDefine(e, r, n, t) { if (r) i ? i(e, r, { value: n, enumerable: !t, configurable: !t, writable: !t }) : e[r] = n;else { var o = function o(r, n) { _regeneratorDefine2(e, r, function (e) { return this._invoke(r, n, e); }); }; o("next", 0), o("throw", 1), o("return", 2); } }, _regeneratorDefine2(e, r, n, t); }
 function asyncGeneratorStep(n, t, e, r, o, a, c) { try { var i = n[a](c), u = i.value; } catch (n) { return void e(n); } i.done ? t(u) : Promise.resolve(u).then(r, o); }
 function _asyncToGenerator(n) { return function () { var t = this, e = arguments; return new Promise(function (r, o) { var a = n.apply(t, e); function _next(n) { asyncGeneratorStep(a, r, o, _next, _throw, "next", n); } function _throw(n) { asyncGeneratorStep(a, r, o, _next, _throw, "throw", n); } _next(void 0); }); }; }
 (function ($) {
@@ -465,43 +466,43 @@ function _asyncToGenerator(n) { return function () { var t = this, e = arguments
      * @returns {Promise} - The resolved response or rejected error.
      */
     sendAjaxRequest: function () {
-      var _sendAjaxRequest = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee(data) {
+      var _sendAjaxRequest = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee(data) {
         var loadingIndicatorSelector,
           method,
-          _args = arguments;
-        return _regeneratorRuntime().wrap(function _callee$(_context) {
-          while (1) switch (_context.prev = _context.next) {
+          _args = arguments,
+          _t;
+        return _regenerator().w(function (_context) {
+          while (1) switch (_context.n) {
             case 0:
               loadingIndicatorSelector = _args.length > 1 && _args[1] !== undefined ? _args[1] : '';
               method = _args.length > 2 && _args[2] !== undefined ? _args[2] : 'GET';
-              _context.prev = 2;
+              _context.p = 1;
               if (loadingIndicatorSelector) {
                 $(loadingIndicatorSelector).addClass('show');
               }
-              _context.next = 6;
+              _context.n = 2;
               return $.ajax({
                 url: this.AJAX_URL,
                 method: method,
                 data: data
               });
-            case 6:
-              return _context.abrupt("return", _context.sent);
-            case 9:
-              _context.prev = 9;
-              _context.t0 = _context["catch"](2);
-              console.error('AJAX request failed:', _context.t0);
-              throw _context.t0;
-            case 13:
-              _context.prev = 13;
+            case 2:
+              return _context.a(2, _context.v);
+            case 3:
+              _context.p = 3;
+              _t = _context.v;
+              console.error('AJAX request failed:', _t);
+              throw _t;
+            case 4:
+              _context.p = 4;
               if (loadingIndicatorSelector) {
                 $(loadingIndicatorSelector).removeClass('show');
               }
-              return _context.finish(13);
-            case 16:
-            case "end":
-              return _context.stop();
+              return _context.f(4);
+            case 5:
+              return _context.a(2);
           }
-        }, _callee, this, [[2, 9, 13, 16]]);
+        }, _callee, this, [[1, 3, 4, 5]]);
       }));
       function sendAjaxRequest(_x) {
         return _sendAjaxRequest.apply(this, arguments);
@@ -534,33 +535,32 @@ function _asyncToGenerator(n) { return function () { var t = this, e = arguments
      * @param {object} data - The selected date.
      */
     updateImpressionsChart: function () {
-      var _updateImpressionsChart = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee2(data) {
-        var _data$formattedDate, startDate, endDate, response;
-        return _regeneratorRuntime().wrap(function _callee2$(_context2) {
-          while (1) switch (_context2.prev = _context2.next) {
+      var _updateImpressionsChart = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee2(data) {
+        var _data$formattedDate, startDate, endDate, response, _t2;
+        return _regenerator().w(function (_context2) {
+          while (1) switch (_context2.n) {
             case 0:
               _data$formattedDate = _slicedToArray(data.formattedDate, 2), startDate = _data$formattedDate[0], endDate = _data$formattedDate[1];
-              _context2.prev = 1;
-              _context2.next = 4;
+              _context2.p = 1;
+              _context2.n = 2;
               return this.sendAjaxRequest(this.prepareAjaxData('merchant_get_impressions_chart_data', startDate, endDate), '.impressions-chart-section .merchant-analytics-loading-spinner');
-            case 4:
-              response = _context2.sent;
+            case 2:
+              response = _context2.v;
               if (response.success) {
                 this.impressionsChart.updateSeries([{
                   data: response.data
                 }]);
               }
-              _context2.next = 11;
+              _context2.n = 4;
               break;
-            case 8:
-              _context2.prev = 8;
-              _context2.t0 = _context2["catch"](1);
-              console.error('Error fetching impressions data:', _context2.t0);
-            case 11:
-            case "end":
-              return _context2.stop();
+            case 3:
+              _context2.p = 3;
+              _t2 = _context2.v;
+              console.error('Error fetching impressions data:', _t2);
+            case 4:
+              return _context2.a(2);
           }
-        }, _callee2, this, [[1, 8]]);
+        }, _callee2, this, [[1, 3]]);
       }));
       function updateImpressionsChart(_x2) {
         return _updateImpressionsChart.apply(this, arguments);
@@ -572,33 +572,32 @@ function _asyncToGenerator(n) { return function () { var t = this, e = arguments
      * @param {object} data - The selected date.
      */
     updateRevenueChart: function () {
-      var _updateRevenueChart = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee3(data) {
-        var _data$formattedDate2, startDate, endDate, response;
-        return _regeneratorRuntime().wrap(function _callee3$(_context3) {
-          while (1) switch (_context3.prev = _context3.next) {
+      var _updateRevenueChart = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee3(data) {
+        var _data$formattedDate2, startDate, endDate, response, _t3;
+        return _regenerator().w(function (_context3) {
+          while (1) switch (_context3.n) {
             case 0:
               _data$formattedDate2 = _slicedToArray(data.formattedDate, 2), startDate = _data$formattedDate2[0], endDate = _data$formattedDate2[1];
-              _context3.prev = 1;
-              _context3.next = 4;
+              _context3.p = 1;
+              _context3.n = 2;
               return this.sendAjaxRequest(this.prepareAjaxData('merchant_get_revenue_chart_data', startDate, endDate), '.revenue-chart-section .merchant-analytics-loading-spinner');
-            case 4:
-              response = _context3.sent;
+            case 2:
+              response = _context3.v;
               if (response.success) {
                 this.revenueChart.updateSeries([{
                   data: response.data
                 }]);
               }
-              _context3.next = 11;
+              _context3.n = 4;
               break;
-            case 8:
-              _context3.prev = 8;
-              _context3.t0 = _context3["catch"](1);
-              console.error('Error fetching revenue data:', _context3.t0);
-            case 11:
-            case "end":
-              return _context3.stop();
+            case 3:
+              _context3.p = 3;
+              _t3 = _context3.v;
+              console.error('Error fetching revenue data:', _t3);
+            case 4:
+              return _context3.a(2);
           }
-        }, _callee3, this, [[1, 8]]);
+        }, _callee3, this, [[1, 3]]);
       }));
       function updateRevenueChart(_x3) {
         return _updateRevenueChart.apply(this, arguments);
@@ -610,33 +609,32 @@ function _asyncToGenerator(n) { return function () { var t = this, e = arguments
      * @param {object} data - The selected date.
      */
     updateAOVChart: function () {
-      var _updateAOVChart = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee4(data) {
-        var _data$formattedDate3, startDate, endDate, response;
-        return _regeneratorRuntime().wrap(function _callee4$(_context4) {
-          while (1) switch (_context4.prev = _context4.next) {
+      var _updateAOVChart = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee4(data) {
+        var _data$formattedDate3, startDate, endDate, response, _t4;
+        return _regenerator().w(function (_context4) {
+          while (1) switch (_context4.n) {
             case 0:
               _data$formattedDate3 = _slicedToArray(data.formattedDate, 2), startDate = _data$formattedDate3[0], endDate = _data$formattedDate3[1];
-              _context4.prev = 1;
-              _context4.next = 4;
+              _context4.p = 1;
+              _context4.n = 2;
               return this.sendAjaxRequest(this.prepareAjaxData('merchant_get_avg_order_value_chart_data', startDate, endDate), '.aov-chart-section .merchant-analytics-loading-spinner');
-            case 4:
-              response = _context4.sent;
+            case 2:
+              response = _context4.v;
               if (response.success) {
                 this.avgOrderValChart.updateSeries([{
                   data: response.data
                 }]);
               }
-              _context4.next = 11;
+              _context4.n = 4;
               break;
-            case 8:
-              _context4.prev = 8;
-              _context4.t0 = _context4["catch"](1);
-              console.error('Error fetching AOV data:', _context4.t0);
-            case 11:
-            case "end":
-              return _context4.stop();
+            case 3:
+              _context4.p = 3;
+              _t4 = _context4.v;
+              console.error('Error fetching AOV data:', _t4);
+            case 4:
+              return _context4.a(2);
           }
-        }, _callee4, this, [[1, 8]]);
+        }, _callee4, this, [[1, 3]]);
       }));
       function updateAOVChart(_x4) {
         return _updateAOVChart.apply(this, arguments);
@@ -649,31 +647,30 @@ function _asyncToGenerator(n) { return function () { var t = this, e = arguments
      * @returns {Promise<void>}
      */
     updateOverviewCards: function () {
-      var _updateOverviewCards = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee5(dates) {
-        var response;
-        return _regeneratorRuntime().wrap(function _callee5$(_context5) {
-          while (1) switch (_context5.prev = _context5.next) {
+      var _updateOverviewCards = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee5(dates) {
+        var response, _t5;
+        return _regenerator().w(function (_context5) {
+          while (1) switch (_context5.n) {
             case 0:
-              _context5.prev = 0;
-              _context5.next = 3;
+              _context5.p = 0;
+              _context5.n = 1;
               return this.sendAjaxRequest(this.prepareAjaxData($('.merchant-analytics-overview-section').attr('data-action'), dates.startDate, dates.endDate, dates.compareStartDate, dates.compareEndDate), '.merchant-analytics-overview-section .merchant-analytics-loading-spinner');
-            case 3:
-              response = _context5.sent;
+            case 1:
+              response = _context5.v;
               if (response.success) {
                 // Update the cards with the new data
                 this.updateCardsWithData(response.data);
               }
-              _context5.next = 10;
+              _context5.n = 3;
               break;
-            case 7:
-              _context5.prev = 7;
-              _context5.t0 = _context5["catch"](0);
-              console.error('Error fetching cards data:', _context5.t0);
-            case 10:
-            case "end":
-              return _context5.stop();
+            case 2:
+              _context5.p = 2;
+              _t5 = _context5.v;
+              console.error('Error fetching cards data:', _t5);
+            case 3:
+              return _context5.a(2);
           }
-        }, _callee5, this, [[0, 7]]);
+        }, _callee5, this, [[0, 2]]);
       }));
       function updateOverviewCards(_x5) {
         return _updateOverviewCards.apply(this, arguments);
@@ -697,31 +694,30 @@ function _asyncToGenerator(n) { return function () { var t = this, e = arguments
      * @returns {Promise<void>}
      */
     updatePerformingCampaignsTable: function () {
-      var _updatePerformingCampaignsTable = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee6(dates) {
-        var response;
-        return _regeneratorRuntime().wrap(function _callee6$(_context6) {
-          while (1) switch (_context6.prev = _context6.next) {
+      var _updatePerformingCampaignsTable = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee6(dates) {
+        var response, _t6;
+        return _regenerator().w(function (_context6) {
+          while (1) switch (_context6.n) {
             case 0:
-              _context6.prev = 0;
-              _context6.next = 3;
+              _context6.p = 0;
+              _context6.n = 1;
               return this.sendAjaxRequest(this.prepareAjaxData('merchant_get_top_performing_campaigns_table_data', dates.startDate, dates.endDate, '', ''), '.merchant-analytics-overview-section .merchant-analytics-loading-spinner');
-            case 3:
-              response = _context6.sent;
+            case 1:
+              response = _context6.v;
               if (response.success) {
                 // Update the cards with the new data
                 this.updateTopCampaignsWithData(response.data, dates.container);
               }
-              _context6.next = 10;
+              _context6.n = 3;
               break;
-            case 7:
-              _context6.prev = 7;
-              _context6.t0 = _context6["catch"](0);
-              console.error('Error fetching cards data:', _context6.t0);
-            case 10:
-            case "end":
-              return _context6.stop();
+            case 2:
+              _context6.p = 2;
+              _t6 = _context6.v;
+              console.error('Error fetching cards data:', _t6);
+            case 3:
+              return _context6.a(2);
           }
-        }, _callee6, this, [[0, 7]]);
+        }, _callee6, this, [[0, 2]]);
       }));
       function updatePerformingCampaignsTable(_x6) {
         return _updatePerformingCampaignsTable.apply(this, arguments);
@@ -734,32 +730,31 @@ function _asyncToGenerator(n) { return function () { var t = this, e = arguments
      * @returns {Promise<void>} - The resolved promise.
      */
     updateAllCampaignsTable: function () {
-      var _updateAllCampaignsTable = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee7(dates) {
-        var response;
-        return _regeneratorRuntime().wrap(function _callee7$(_context7) {
-          while (1) switch (_context7.prev = _context7.next) {
+      var _updateAllCampaignsTable = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee7(dates) {
+        var response, _t7;
+        return _regenerator().w(function (_context7) {
+          while (1) switch (_context7.n) {
             case 0:
-              _context7.prev = 0;
-              _context7.next = 3;
+              _context7.p = 0;
+              _context7.n = 1;
               return this.sendAjaxRequest(this.prepareAjaxData('merchant_get_all_campaigns_table_data', dates.startDate, dates.endDate, '', ''), '.merchant-page-campaigns .merchant-analytics-loading-spinner');
-            case 3:
-              response = _context7.sent;
+            case 1:
+              response = _context7.v;
               if (response.success) {
                 // Update the cards with the new data
                 this.updateAllCampaignsWithData(response.data, dates.container);
                 this.populateFilterSelect(dates.container);
               }
-              _context7.next = 10;
+              _context7.n = 3;
               break;
-            case 7:
-              _context7.prev = 7;
-              _context7.t0 = _context7["catch"](0);
-              console.error('Error fetching cards data:', _context7.t0);
-            case 10:
-            case "end":
-              return _context7.stop();
+            case 2:
+              _context7.p = 2;
+              _t7 = _context7.v;
+              console.error('Error fetching cards data:', _t7);
+            case 3:
+              return _context7.a(2);
           }
-        }, _callee7, this, [[0, 7]]);
+        }, _callee7, this, [[0, 2]]);
       }));
       function updateAllCampaignsTable(_x7) {
         return _updateAllCampaignsTable.apply(this, arguments);
@@ -1339,14 +1334,15 @@ function _asyncToGenerator(n) { return function () { var t = this, e = arguments
      * @param singleRow - Whether to update a single row or multiple rows.
      */
     updateCampaignStatus: function () {
-      var _updateCampaignStatus = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee8(campaignData, el, checkboxes) {
+      var _updateCampaignStatus = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee8(campaignData, el, checkboxes) {
         var singleRow,
           self,
           $table,
           $loader,
-          _args8 = arguments;
-        return _regeneratorRuntime().wrap(function _callee8$(_context8) {
-          while (1) switch (_context8.prev = _context8.next) {
+          _args8 = arguments,
+          _t8;
+        return _regenerator().w(function (_context8) {
+          while (1) switch (_context8.n) {
             case 0:
               singleRow = _args8.length > 3 && _args8[3] !== undefined ? _args8[3] : false;
               self = this;
@@ -1360,8 +1356,8 @@ function _asyncToGenerator(n) { return function () { var t = this, e = arguments
                 $table.css('opacity', '.7');
                 el.closest('.bulk-action').append($loader);
               }
-              _context8.prev = 6;
-              _context8.next = 9;
+              _context8.p = 1;
+              _context8.n = 2;
               return this.sendAjaxRequest({
                 action: 'merchant_update_campaign_status',
                 nonce: self.NONCE,
@@ -1390,18 +1386,17 @@ function _asyncToGenerator(n) { return function () { var t = this, e = arguments
                   $table.css('opacity', '');
                 }
               });
-            case 9:
-              _context8.next = 14;
+            case 2:
+              _context8.n = 4;
               break;
-            case 11:
-              _context8.prev = 11;
-              _context8.t0 = _context8["catch"](6);
-              console.error('Error fetching campaign status data:', _context8.t0);
-            case 14:
-            case "end":
-              return _context8.stop();
+            case 3:
+              _context8.p = 3;
+              _t8 = _context8.v;
+              console.error('Error fetching campaign status data:', _t8);
+            case 4:
+              return _context8.a(2);
           }
-        }, _callee8, this, [[6, 11]]);
+        }, _callee8, this, [[1, 3]]);
       }));
       function updateCampaignStatus(_x8, _x9, _x0) {
         return _updateCampaignStatus.apply(this, arguments);
