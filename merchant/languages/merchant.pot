@@ -8,7 +8,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language-Team: aThemes <team@athemes.com>\n"
 "Last-Translator: aThemes <team@athemes.com>\n"
-"POT-Creation-Date: 2025-07-01 19:13+0000\n"
+"POT-Creation-Date: 2025-07-03 17:57+0000\n"
 "Report-Msgid-Bugs-To: https://athemes.com/contact/\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-KeywordsList: __;_e;_ex:1,2c;_n:1,2;_n_noop:1,2;_nx:1,2,4c;_nx_noop:1,2,3c;_x:1,2c;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c\n"
@@ -2181,42 +2181,42 @@ msgstr ""
 msgid "Shipping Date"
 msgstr ""
 
-#: inc/modules/pre-orders/class-pre-orders-main-functionality.php:852
+#: inc/modules/pre-orders/class-pre-orders-main-functionality.php:867
 msgid "We detected that your cart has pre-order products. Please remove them before being able to add this product."
 msgstr ""
 
-#: inc/modules/pre-orders/class-pre-orders-main-functionality.php:849
+#: inc/modules/pre-orders/class-pre-orders-main-functionality.php:864
 msgid "We detected that you are trying to add a pre-order product in your cart. Please remove the rest of the products before proceeding."
 msgstr ""
 
-#: inc/modules/pre-orders/class-pre-orders-main-functionality.php:916, inc/modules/pre-orders/class-pre-orders-main-functionality.php:1620, inc/modules/pre-orders/class-pre-orders.php:65, inc/modules/pre-orders/class-pre-orders.php:247
+#: inc/modules/pre-orders/class-pre-orders-main-functionality.php:931, inc/modules/pre-orders/class-pre-orders-main-functionality.php:1635, inc/modules/pre-orders/class-pre-orders.php:65, inc/modules/pre-orders/class-pre-orders.php:247
 msgid "Pre Order Now!"
 msgstr ""
 
-#: inc/modules/pre-orders/class-pre-orders-main-functionality.php:937, inc/modules/pre-orders/class-pre-orders-main-functionality.php:1056, inc/modules/pre-orders/class-pre-orders-main-functionality.php:1621, inc/modules/pre-orders/class-pre-orders.php:66
+#: inc/modules/pre-orders/class-pre-orders-main-functionality.php:952, inc/modules/pre-orders/class-pre-orders-main-functionality.php:1071, inc/modules/pre-orders/class-pre-orders-main-functionality.php:1636, inc/modules/pre-orders/class-pre-orders.php:66
 msgid "Ships on {date}."
 msgstr ""
 
-#: inc/modules/pre-orders/class-pre-orders-main-functionality.php:1071
+#: inc/modules/pre-orders/class-pre-orders-main-functionality.php:1086
 msgid "Pre Ordered"
 msgstr ""
 
 #. translators: %s: pre ordered product count
-#: inc/modules/pre-orders/class-pre-orders-main-functionality.php:1077
+#: inc/modules/pre-orders/class-pre-orders-main-functionality.php:1092
 msgid "Pre Ordered <span class=\"count\">(%s)</span>"
 msgid_plural "Pre Ordered <span class=\"count\">(%s)</span>"
 msgstr[0] ""
 msgstr[1] ""
 
-#: inc/modules/pre-orders/class-pre-orders-main-functionality.php:1089
+#: inc/modules/pre-orders/class-pre-orders-main-functionality.php:1104
 msgid "Pre-Ordered"
 msgstr ""
 
-#: inc/modules/pre-orders/class-pre-orders-main-functionality.php:1132, inc/modules/pre-orders/class-pre-orders-main-functionality.php:1322, inc/modules/pre-orders/class-pre-orders-main-functionality.php:1623, inc/modules/pre-orders/admin/options.php:398
+#: inc/modules/pre-orders/class-pre-orders-main-functionality.php:1147, inc/modules/pre-orders/class-pre-orders-main-functionality.php:1337, inc/modules/pre-orders/class-pre-orders-main-functionality.php:1638, inc/modules/pre-orders/admin/options.php:398
 msgid "Ships on"
 msgstr ""
 
-#: inc/modules/pre-orders/class-pre-orders-main-functionality.php:1614, inc/modules/pre-orders/admin/options.php:52
+#: inc/modules/pre-orders/class-pre-orders-main-functionality.php:1629, inc/modules/pre-orders/admin/options.php:52
 msgid "Custom Pre-order"
 msgstr ""
 
