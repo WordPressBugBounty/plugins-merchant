@@ -8,7 +8,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language-Team: aThemes <team@athemes.com>\n"
 "Last-Translator: aThemes <team@athemes.com>\n"
-"POT-Creation-Date: 2025-07-03 17:57+0000\n"
+"POT-Creation-Date: 2025-08-01 20:32+0000\n"
 "Report-Msgid-Bugs-To: https://athemes.com/contact/\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-KeywordsList: __;_e;_ex:1,2c;_n:1,2;_n_noop:1,2;_nx:1,2,4c;_nx_noop:1,2,3c;_x:1,2c;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c\n"
@@ -17,7 +17,7 @@ msgstr ""
 "X-Poedit-SourceCharset: UTF-8\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: admin/class-merchant-admin-loader.php:144, inc/class-merchant-loader.php:249, admin/classes/class-merchant-admin-menu.php:281, admin/classes/class-merchant-admin-menu.php:282, admin/classes/class-merchant-admin-menu.php:363, admin/classes/class-merchant-admin-menu.php:366, inc/modules/address-autocomplete/admin/options.php:27, inc/modules/agree-to-terms-checkbox/admin/options.php:28, inc/modules/auto-external-links/admin/options.php:16, inc/modules/buy-now/admin/options.php:14, inc/modules/cart-count-favicon/admin/options.php:16, inc/modules/cart-reserved-timer/admin/options.php:30, inc/modules/checkout/admin/options.php:27, inc/modules/clear-cart/admin/options.php:16, inc/modules/cookie-banner/admin/options.php:14, inc/modules/countdown-timer/admin/options.php:14, inc/modules/inactive-tab-message/admin/options.php:16, inc/modules/login-popup/admin/options.php:15, inc/modules/payment-logos/admin/options.php:33, inc/modules/product-audio/admin/options.php:15, inc/modules/product-brand-image/admin/options.php:15, inc/modules/product-labels/admin/options.php:47, inc/modules/product-navigation-links/admin/options.php:16, inc/modules/product-swatches/admin/options.php:17, inc/modules/product-video/admin/options.php:15, inc/modules/quick-social-links/admin/options.php:16, inc/modules/quick-view/admin/options.php:17, inc/modules/real-time-search/admin/options.php:14, inc/modules/reasons-to-buy/admin/options.php:14, inc/modules/recently-viewed-products/admin/options.php:15, inc/modules/size-chart/admin/options.php:15, inc/modules/spending-goal/admin/options.php:15, inc/modules/sticky-add-to-cart/admin/options.php:15, inc/modules/stock-scarcity/admin/options.php:16, inc/modules/trust-badges/admin/options.php:45
+#: admin/class-merchant-admin-loader.php:144, inc/class-merchant-loader.php:249, admin/classes/class-merchant-admin-menu.php:281, admin/classes/class-merchant-admin-menu.php:282, admin/classes/class-merchant-admin-menu.php:372, admin/classes/class-merchant-admin-menu.php:375, inc/modules/address-autocomplete/admin/options.php:27, inc/modules/agree-to-terms-checkbox/admin/options.php:28, inc/modules/auto-external-links/admin/options.php:16, inc/modules/buy-now/admin/options.php:14, inc/modules/cart-count-favicon/admin/options.php:16, inc/modules/cart-reserved-timer/admin/options.php:30, inc/modules/checkout/admin/options.php:27, inc/modules/clear-cart/admin/options.php:16, inc/modules/cookie-banner/admin/options.php:14, inc/modules/countdown-timer/admin/options.php:14, inc/modules/inactive-tab-message/admin/options.php:16, inc/modules/login-popup/admin/options.php:15, inc/modules/payment-logos/admin/options.php:33, inc/modules/product-audio/admin/options.php:15, inc/modules/product-brand-image/admin/options.php:15, inc/modules/product-labels/admin/options.php:47, inc/modules/product-navigation-links/admin/options.php:16, inc/modules/product-swatches/admin/options.php:17, inc/modules/product-video/admin/options.php:15, inc/modules/quick-social-links/admin/options.php:16, inc/modules/quick-view/admin/options.php:17, inc/modules/real-time-search/admin/options.php:14, inc/modules/reasons-to-buy/admin/options.php:14, inc/modules/recently-viewed-products/admin/options.php:15, inc/modules/size-chart/admin/options.php:15, inc/modules/spending-goal/admin/options.php:15, inc/modules/sticky-add-to-cart/admin/options.php:15, inc/modules/stock-scarcity/admin/options.php:16, inc/modules/trust-badges/admin/options.php:45
 msgid "Settings"
 msgstr ""
 
@@ -309,19 +309,19 @@ msgstr ""
 msgid "Clear"
 msgstr ""
 
-#: admin/classes/class-merchant-admin-menu.php:235, admin/classes/class-merchant-admin-menu.php:236, admin/classes/class-merchant-admin-menu.php:340, admin/classes/class-merchant-admin-menu.php:343
+#: admin/classes/class-merchant-admin-menu.php:235, admin/classes/class-merchant-admin-menu.php:236, admin/classes/class-merchant-admin-menu.php:349, admin/classes/class-merchant-admin-menu.php:352
 msgid "Dashboard"
 msgstr ""
 
-#: admin/classes/class-merchant-admin-menu.php:246, admin/classes/class-merchant-admin-menu.php:247, admin/classes/class-merchant-admin-menu.php:351, admin/classes/class-merchant-admin-menu.php:354, admin/pages/page-analytics.php:132
+#: admin/classes/class-merchant-admin-menu.php:246, admin/classes/class-merchant-admin-menu.php:247, admin/classes/class-merchant-admin-menu.php:360, admin/classes/class-merchant-admin-menu.php:363, admin/pages/page-analytics.php:132
 msgid "Modules"
 msgstr ""
 
-#: admin/classes/class-merchant-admin-menu.php:258, admin/classes/class-merchant-admin-menu.php:259, admin/classes/class-merchant-admin-menu.php:374, admin/classes/class-merchant-admin-menu.php:377
+#: admin/classes/class-merchant-admin-menu.php:258, admin/classes/class-merchant-admin-menu.php:259, admin/classes/class-merchant-admin-menu.php:383, admin/classes/class-merchant-admin-menu.php:386
 msgid "Campaigns"
 msgstr ""
 
-#: admin/classes/class-merchant-admin-menu.php:269, admin/classes/class-merchant-admin-menu.php:270, admin/classes/class-merchant-admin-menu.php:386, admin/classes/class-merchant-admin-menu.php:389
+#: admin/classes/class-merchant-admin-menu.php:269, admin/classes/class-merchant-admin-menu.php:270, admin/classes/class-merchant-admin-menu.php:395, admin/classes/class-merchant-admin-menu.php:398
 msgid "Analytics"
 msgstr ""
 
@@ -329,15 +329,15 @@ msgstr ""
 msgid "Patcher"
 msgstr ""
 
-#: admin/classes/class-merchant-admin-menu.php:305, admin/classes/class-merchant-admin-menu.php:306, admin/classes/class-merchant-admin-menu.php:398, admin/classes/class-merchant-admin-menu.php:401
+#: admin/classes/class-merchant-admin-menu.php:314, admin/classes/class-merchant-admin-menu.php:315, admin/classes/class-merchant-admin-menu.php:416, admin/classes/class-merchant-admin-menu.php:419
 msgid "Upgrade to Pro"
 msgstr ""
 
-#: admin/classes/class-merchant-admin-menu.php:329, admin/components/enabled-modules.php:76, admin/pages/page-dashboard.php:92, admin/pages/page-modules.php:62
+#: admin/classes/class-merchant-admin-menu.php:338, admin/components/enabled-modules.php:76, admin/pages/page-dashboard.php:92, admin/pages/page-modules.php:62
 msgid "Merchant"
 msgstr ""
 
-#: admin/classes/class-merchant-admin-menu.php:332
+#: admin/classes/class-merchant-admin-menu.php:341
 msgid "Merchant Dashboard"
 msgstr ""
 
@@ -1066,15 +1066,15 @@ msgstr ""
 msgid "I already rated it"
 msgstr ""
 
-#: admin/notices/class-merchant-notice-upsell.php:49
+#: admin/notices/class-merchant-notice-upsell.php:60
 msgid "Supercharge Your Store with Merchant Pro! 🚀"
 msgstr ""
 
-#: admin/notices/class-merchant-notice-upsell.php:53
+#: admin/notices/class-merchant-notice-upsell.php:64
 msgid "With Merchant Pro's 40+ powerful modules — including Product Bundles, Frequently Bought Together, and Bulk Discounts — you can boost sales, enhance customer experience, and minimize cart abandonment, all from one convenient plugin."
 msgstr ""
 
-#: admin/notices/class-merchant-notice-upsell.php:57
+#: admin/notices/class-merchant-notice-upsell.php:68
 msgid "Upgrade To Merchant Pro"
 msgstr ""
 
@@ -1122,11 +1122,11 @@ msgstr ""
 msgid "Bulk Action"
 msgstr ""
 
-#: admin/pages/page-campaigns.php:47, admin/pages/page-module.php:91, inc/modules/wishlist/admin/options.php:417
+#: admin/pages/page-campaigns.php:47, admin/pages/page-module.php:102, inc/modules/wishlist/admin/options.php:417
 msgid "Enable"
 msgstr ""
 
-#: admin/pages/page-campaigns.php:48, admin/pages/page-module.php:105
+#: admin/pages/page-campaigns.php:48, admin/pages/page-module.php:116
 msgid "Disable"
 msgstr ""
 
@@ -1290,111 +1290,111 @@ msgstr ""
 msgid "Go Back"
 msgstr ""
 
-#: admin/pages/page-module.php:96
+#: admin/pages/page-module.php:107
 msgid "Enabled"
 msgstr ""
 
-#: admin/pages/page-module.php:74
+#: admin/pages/page-module.php:85
 msgid "Buy Pro"
 msgstr ""
 
-#: admin/pages/page-module.php:115
+#: admin/pages/page-module.php:126
 msgid "Did something go wrong?"
 msgstr ""
 
-#: admin/pages/page-module.php:119
+#: admin/pages/page-module.php:130
 msgid "Submit a bug: the module doesn’t work as expected"
 msgstr ""
 
-#: admin/pages/page-module.php:122
+#: admin/pages/page-module.php:133
 msgid "Some options are missing"
 msgstr ""
 
-#: admin/pages/page-module.php:125
+#: admin/pages/page-module.php:136
 msgid "It conflicts with another feature"
 msgstr ""
 
-#: admin/pages/page-module.php:128
+#: admin/pages/page-module.php:139
 msgid "I don’t need it anymore."
 msgstr ""
 
-#: admin/pages/page-module.php:131, inc/modules/quick-social-links/admin/options.php:234, inc/modules/quick-social-links/admin/options.php:309
+#: admin/pages/page-module.php:142, inc/modules/quick-social-links/admin/options.php:234, inc/modules/quick-social-links/admin/options.php:309
 msgid "Other"
 msgstr ""
 
-#: admin/pages/page-module.php:141
+#: admin/pages/page-module.php:152
 msgid "Please tell us why, and we’ll look into it."
 msgstr ""
 
-#: admin/pages/page-module.php:146
+#: admin/pages/page-module.php:157
 msgid "What feature are you looking for?"
 msgstr ""
 
-#: admin/pages/page-module.php:150
+#: admin/pages/page-module.php:161
 msgid "Please tell us what plugin/theme it conflicts with."
 msgstr ""
 
-#: admin/pages/page-module.php:155
+#: admin/pages/page-module.php:166
 msgid "Would you mind telling us why?"
 msgstr ""
 
-#: admin/pages/page-module.php:162, templates/modules/advanced-reviews/modal.php:43
+#: admin/pages/page-module.php:173, templates/modules/advanced-reviews/modal.php:43
 msgid "Submit"
 msgstr ""
 
-#: admin/pages/page-module.php:170
+#: admin/pages/page-module.php:181
 msgid "Thank you"
 msgstr ""
 
-#: admin/pages/page-module.php:174
+#: admin/pages/page-module.php:185
 msgid "Your feedback helps us improve Merchant."
 msgstr ""
 
-#: admin/pages/page-module.php:185
+#: admin/pages/page-module.php:196
 msgid "Tutorial"
 msgstr ""
 
-#: admin/pages/page-module.php:237
+#: admin/pages/page-module.php:248
 msgid "Backup & Restore"
 msgstr ""
 
-#: admin/pages/page-module.php:241
+#: admin/pages/page-module.php:252
 msgid "Backup Module Settings"
 msgstr ""
 
-#: admin/pages/page-module.php:242
+#: admin/pages/page-module.php:253
 msgid "Download a backup of your currently saved module settings as a JSON file. To capture the most up-to-date configuration, remember to save your settings before downloading the backup. You can then use this file to restore your settings later."
 msgstr ""
 
-#: admin/pages/page-module.php:244
+#: admin/pages/page-module.php:255
 msgid "Download"
 msgstr ""
 
-#: admin/pages/page-module.php:249
+#: admin/pages/page-module.php:260
 msgid "Restore Module Settings"
 msgstr ""
 
-#: admin/pages/page-module.php:250
+#: admin/pages/page-module.php:261
 msgid "Restore the module settings by uploading a previously saved backup file. Please be aware that restoring settings will overwrite your current module configurations."
 msgstr ""
 
-#: admin/pages/page-module.php:252
+#: admin/pages/page-module.php:263
 msgid "Upload Backup File"
 msgstr ""
 
-#: admin/pages/page-module.php:256
+#: admin/pages/page-module.php:267
 msgid "Restore"
 msgstr ""
 
-#: admin/pages/page-module.php:269, admin/pages/page-settings.php:102
+#: admin/pages/page-module.php:280, admin/pages/page-settings.php:102
 msgid "Preview"
 msgstr ""
 
-#: admin/pages/page-module.php:297
+#: admin/pages/page-module.php:308
 msgid "Important info!"
 msgstr ""
 
-#: admin/pages/page-module.php:301
+#: admin/pages/page-module.php:312
 msgid "This module is currently disabled. Please enable the module to see it in your store."
 msgstr ""
 
@@ -2189,34 +2189,34 @@ msgstr ""
 msgid "We detected that you are trying to add a pre-order product in your cart. Please remove the rest of the products before proceeding."
 msgstr ""
 
-#: inc/modules/pre-orders/class-pre-orders-main-functionality.php:931, inc/modules/pre-orders/class-pre-orders-main-functionality.php:1635, inc/modules/pre-orders/class-pre-orders.php:65, inc/modules/pre-orders/class-pre-orders.php:247
+#: inc/modules/pre-orders/class-pre-orders-main-functionality.php:931, inc/modules/pre-orders/class-pre-orders-main-functionality.php:1639, inc/modules/pre-orders/class-pre-orders.php:65, inc/modules/pre-orders/class-pre-orders.php:247
 msgid "Pre Order Now!"
 msgstr ""
 
-#: inc/modules/pre-orders/class-pre-orders-main-functionality.php:952, inc/modules/pre-orders/class-pre-orders-main-functionality.php:1071, inc/modules/pre-orders/class-pre-orders-main-functionality.php:1636, inc/modules/pre-orders/class-pre-orders.php:66
+#: inc/modules/pre-orders/class-pre-orders-main-functionality.php:956, inc/modules/pre-orders/class-pre-orders-main-functionality.php:1075, inc/modules/pre-orders/class-pre-orders-main-functionality.php:1640, inc/modules/pre-orders/class-pre-orders.php:66
 msgid "Ships on {date}."
 msgstr ""
 
-#: inc/modules/pre-orders/class-pre-orders-main-functionality.php:1086
+#: inc/modules/pre-orders/class-pre-orders-main-functionality.php:1090
 msgid "Pre Ordered"
 msgstr ""
 
 #. translators: %s: pre ordered product count
-#: inc/modules/pre-orders/class-pre-orders-main-functionality.php:1092
+#: inc/modules/pre-orders/class-pre-orders-main-functionality.php:1096
 msgid "Pre Ordered <span class=\"count\">(%s)</span>"
 msgid_plural "Pre Ordered <span class=\"count\">(%s)</span>"
 msgstr[0] ""
 msgstr[1] ""
 
-#: inc/modules/pre-orders/class-pre-orders-main-functionality.php:1104
+#: inc/modules/pre-orders/class-pre-orders-main-functionality.php:1108
 msgid "Pre-Ordered"
 msgstr ""
 
-#: inc/modules/pre-orders/class-pre-orders-main-functionality.php:1147, inc/modules/pre-orders/class-pre-orders-main-functionality.php:1337, inc/modules/pre-orders/class-pre-orders-main-functionality.php:1638, inc/modules/pre-orders/admin/options.php:398
+#: inc/modules/pre-orders/class-pre-orders-main-functionality.php:1151, inc/modules/pre-orders/class-pre-orders-main-functionality.php:1341, inc/modules/pre-orders/class-pre-orders-main-functionality.php:1642, inc/modules/pre-orders/admin/options.php:398
 msgid "Ships on"
 msgstr ""
 
-#: inc/modules/pre-orders/class-pre-orders-main-functionality.php:1629, inc/modules/pre-orders/admin/options.php:52
+#: inc/modules/pre-orders/class-pre-orders-main-functionality.php:1633, inc/modules/pre-orders/admin/options.php:52
 msgid "Custom Pre-order"
 msgstr ""
 
@@ -2268,11 +2268,11 @@ msgstr ""
 msgid "Product Title"
 msgstr ""
 
-#: inc/modules/product-labels/class-product-labels.php:771
+#: inc/modules/product-labels/class-product-labels.php:770
 msgid "In stock"
 msgstr ""
 
-#: inc/modules/product-labels/class-product-labels.php:771
+#: inc/modules/product-labels/class-product-labels.php:770
 msgid "Sold out"
 msgstr ""
 
