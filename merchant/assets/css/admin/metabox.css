@@ -1082,13 +1082,13 @@ body:not(.block-editor-page) #merchant_metabox .inside {
     width: 100%;
   }
 }
-.rtl .merchant-metabox-tabs {
-  margin-left: unset;
-  margin-right: -20px;
-}
 .rtl .merchant-metabox-tabs a:before {
   right: 0;
   left: unset;
+}
+.rtl .merchant-metabox-tabs {
+  margin-left: unset;
+  margin-right: -20px;
 }
 .rtl .merchant-metabox-field-append {
   border-radius: 5px;

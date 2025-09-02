@@ -8,7 +8,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language-Team: aThemes <team@athemes.com>\n"
 "Last-Translator: aThemes <team@athemes.com>\n"
-"POT-Creation-Date: 2025-08-12 18:10+0000\n"
+"POT-Creation-Date: 2025-09-02 21:27+0000\n"
 "Report-Msgid-Bugs-To: https://athemes.com/contact/\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-KeywordsList: __;_e;_ex:1,2c;_n:1,2;_n_noop:1,2;_nx:1,2,4c;_nx_noop:1,2,3c;_x:1,2c;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c\n"
@@ -1791,15 +1791,15 @@ msgstr ""
 msgid "Obtain consent before customers start the checkout process"
 msgstr ""
 
-#: inc/modules/agree-to-terms-checkbox/class-agree-to-terms-checkbox.php:125
+#: inc/modules/agree-to-terms-checkbox/class-agree-to-terms-checkbox.php:119
 msgid "Text in agree to terms module"
 msgstr ""
 
-#: inc/modules/agree-to-terms-checkbox/class-agree-to-terms-checkbox.php:128
+#: inc/modules/agree-to-terms-checkbox/class-agree-to-terms-checkbox.php:122
 msgid "Link label in agree to terms module"
 msgstr ""
 
-#: inc/modules/agree-to-terms-checkbox/class-agree-to-terms-checkbox.php:131
+#: inc/modules/agree-to-terms-checkbox/class-agree-to-terms-checkbox.php:125
 msgid "Link in agree to terms module (you can use different link for each language)"
 msgstr ""
 

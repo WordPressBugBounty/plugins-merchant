@@ -564,9 +564,6 @@
   border-collapse: collapse;
   border-radius: 8px; /* Apply border radius to the table */
   overflow: hidden; /* Ensures the border radius is applied correctly */
-  /* Make the first column wider */
-  /* Alternating row colors */
-  /* Optional: Add border radius to the first and last rows */
 }
 .merchant-analytics-section.campaigns-table .campaigns-table-wrapper table th, .merchant-analytics-section.campaigns-table .campaigns-table-wrapper table td {
   padding: 14px 20px;
@@ -578,6 +575,9 @@
     padding: 10px; /* Reduce padding on smaller screens */
     font-size: 14px; /* Reduce font size for better readability */
   }
+}
+.merchant-analytics-section.campaigns-table .campaigns-table-wrapper table {
+  /* Make the first column wider */
 }
 .merchant-analytics-section.campaigns-table .campaigns-table-wrapper table th:first-child,
 .merchant-analytics-section.campaigns-table .campaigns-table-wrapper table td:first-child {
@@ -611,6 +611,9 @@
   font-size: 12px;
   color: #000;
 }
+.merchant-analytics-section.campaigns-table .campaigns-table-wrapper table {
+  /* Alternating row colors */
+}
 .merchant-analytics-section.campaigns-table .campaigns-table-wrapper table tr:nth-child(odd) {
   background-color: #F8F8FA; /* Light gray for even rows */
 }
@@ -619,6 +622,9 @@
 }
 .merchant-analytics-section.campaigns-table .campaigns-table-wrapper table tr:hover {
   background-color: #f5f5f5; /* Hover effect for rows */
+}
+.merchant-analytics-section.campaigns-table .campaigns-table-wrapper table {
+  /* Optional: Add border radius to the first and last rows */
 }
 .merchant-analytics-section.campaigns-table .campaigns-table-wrapper table tr:first-child th:first-child {
   border-top-left-radius: 8px;

@@ -35,9 +35,6 @@
       -ms-flex-align: center;
           align-items: center;
   gap: 30px;
-  /**
-   * Star rating
-   */
 }
 .mrc-preview-single-product-elements .mrc-preview-left-column {
   width: 38%;
@@ -119,6 +116,11 @@
 }
 .mrc-preview-single-product-elements .merchant-countdown-timer {
   margin-block: 30px 40px;
+}
+.mrc-preview-single-product-elements {
+  /**
+   * Star rating
+   */
 }
 .mrc-preview-single-product-elements .mrc-preview-rating {
   display: -webkit-box;

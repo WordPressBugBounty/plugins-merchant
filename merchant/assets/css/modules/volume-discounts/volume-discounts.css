@@ -69,19 +69,23 @@
   height: 45px;
   border: 2px solid #f0f0f1;
   background-color: #fff;
-  /* Chrome, Safari, Edge, Opera */
-  /* Firefox */
 }
 .merchant-volume-discounts .merchant-volume-discounts-item .offer-form .form-footer .offer-quantity-input .quantity .botiga-quantity-plus,
 .merchant-volume-discounts .merchant-volume-discounts-item .offer-form .form-footer .offer-quantity-input .quantity .botiga-quantity-minus {
   font-size: 14px;
   color: #757575;
 }
+.merchant-volume-discounts .merchant-volume-discounts-item .offer-form .form-footer .offer-quantity-input .quantity {
+  /* Chrome, Safari, Edge, Opera */
+}
 .merchant-volume-discounts .merchant-volume-discounts-item .offer-form .form-footer .offer-quantity-input .quantity input[type=number]::-webkit-outer-spin-button,
 .merchant-volume-discounts .merchant-volume-discounts-item .offer-form .form-footer .offer-quantity-input .quantity input[type=number]::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
   color: #757575;
+}
+.merchant-volume-discounts .merchant-volume-discounts-item .offer-form .form-footer .offer-quantity-input .quantity {
+  /* Firefox */
 }
 .merchant-volume-discounts .merchant-volume-discounts-item .offer-form .form-footer .offer-quantity-input .quantity input[type=number] {
   -moz-appearance: textfield;

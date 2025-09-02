@@ -28,12 +28,14 @@
 }
 .mrc-preview-single-product-elements .mrc-preview-content {
   width: 50%;
-  text-align: center;
 }
 @media (max-width: 991px) {
   .mrc-preview-single-product-elements .mrc-preview-content {
     width: 70%;
   }
+}
+.mrc-preview-single-product-elements .mrc-preview-content {
+  text-align: center;
 }
 .mrc-preview-single-product-elements .mrc-preview-content .merchant-stock-scarcity-content {
   height: 25px;
