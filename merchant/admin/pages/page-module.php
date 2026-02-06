@@ -59,33 +59,55 @@ Merchant_Admin_Preview::set_preview( $merchant_module );
                             <div class="merchant-module-page-actions-inner">
 
 								<?php
-								$merchant_module_enabled   = ( Merchant_Modules::is_module_active( $merchant_module ) ) ? ' merchant-enabled' : '';
-								$merchant_module_is_upsell = ! defined( 'MERCHANT_PRO_VERSION' ) && isset( $merchant_module_info['pro'] ) && true === $merchant_module_info['pro'];
+                                $merchant_module_is_upsell = ! defined( 'MERCHANT_PRO_VERSION' ) && isset( $merchant_module_info['pro'] ) && true === $merchant_module_info['pro'];
+                                $merchant_module_enabled   = ( Merchant_Modules::is_module_active( $merchant_module ) && ! $merchant_module_is_upsell ) ? ' merchant-enabled' : '';
 								?>
 
                                 <div class="merchant-module-action<?php echo esc_attr( $merchant_module_enabled ); ?>">
 
 
 									<?php if ( $merchant_module_is_upsell ) :
-										$url = merchant_admin_upgrade_link(
-											'https://athemes.com/merchant-upgrade',
-											array(
-												'utm_source'   => 'module_inner_settings',
-												'utm_content'  => $merchant_module,
-												'utm_medium'   => 'merchant_dashboard',
-												'utm_campaign' => 'Merchant',
-											),
-											'module-inner-settings-upgrade-link'
-										);
-										?>
-                                        <div class="merchant-module-buy">
+	                                    $installed_plugins = Merchant_Admin_Menu::get_installed_plugins();
+	                                    $is_pro_installed  = isset( $installed_plugins['merchant-pro/merchant-pro.php'] );
 
-                                            <a href="<?php echo esc_url( $url ); ?>" target="_blank"
-                                                class="merchant-module-page-button ">
-												<?php esc_html_e( 'Buy Pro', 'merchant' ); ?>
-                                            </a>
+	                                    if ( $is_pro_installed && ! is_plugin_active( 'merchant-pro/merchant-pro.php' ) ) :
+		                                    $url = add_query_arg( array(
+			                                    'page'   => 'merchant',
+			                                    'module' => $merchant_module,
+			                                    'action' => 'merchant_activate_pro',
+			                                    'nonce'  => wp_create_nonce( 'merchant_activate_pro' ),
+		                                    ), admin_url( 'admin.php' ) );
+		                                    ?>
+                                            <div class="merchant-module-buy">
 
-                                        </div>
+                                                <a href="<?php echo esc_url( $url ); ?>"
+                                                    class="merchant-module-page-button merchant-module-activate">
+				                                    <?php esc_html_e( 'Activate Merchant Pro', 'merchant' ); ?>
+                                                </a>
+
+                                            </div>
+	                                    <?php
+	                                    else :
+		                                    $url = merchant_admin_upgrade_link(
+			                                    'https://athemes.com/merchant-upgrade',
+			                                    array(
+				                                    'utm_source'   => 'module_inner_settings',
+				                                    'utm_content'  => $merchant_module,
+				                                    'utm_medium'   => 'merchant_dashboard',
+				                                    'utm_campaign' => 'Merchant',
+			                                    ),
+			                                    'module-inner-settings-upgrade-link'
+		                                    );
+		                                    ?>
+                                            <div class="merchant-module-buy">
+
+                                                <a href="<?php echo esc_url( $url ); ?>" target="_blank"
+                                                    class="merchant-module-page-button ">
+				                                    <?php esc_html_e( 'Buy Pro', 'merchant' ); ?>
+                                                </a>
+
+                                            </div>
+	                                    <?php endif; ?>
 									<?php else : 
                                         /**
                                          * Hook 'merchant_admin_module_{module_id}_activate_button_class'

@@ -53,6 +53,7 @@ Merchant_Admin_Options::create( array(
 								'products'   => esc_html__( 'Specific Products', 'merchant' ),
 								'categories' => esc_html__( 'Specific Categories', 'merchant' ),
 								'tags'       => esc_html__( 'Specific Tags', 'merchant' ),
+								'brands'     => esc_html__( 'Specific Brands', 'merchant' ),
 							),
 							'default' => 'products',
 						),
@@ -87,12 +88,148 @@ Merchant_Admin_Options::create( array(
 							'desc'        => esc_html__( 'Select the product tags that will show the complementary items.', 'merchant' ),
 							'condition'   => array( 'rules_to_display', '==', 'tags' ),
 						),
+						array(
+							'id'          => 'brand_slugs',
+							'type'        => 'select_ajax',
+							'title'       => esc_html__( 'Brands', 'merchant' ),
+							'source'      => 'options',
+							'multiple'    => true,
+							'options'     => Merchant_Admin_Options::get_brand_select2_choices(),
+							'placeholder' => esc_html__( 'Select brands', 'merchant' ),
+							'desc'        => esc_html__( 'Select the product brands that will show the complementary items.', 'merchant' ),
+							'condition'   => array( 'rules_to_display', '==', 'brands' ),
+						),
 
 						array(
-							'id'         => 'exclusion_enabled',
+							'id'         => 'exclude_products_toggle',
 							'type'       => 'switcher',
-							'title'      => esc_html__( 'Exclusion List', 'merchant' ),
-							'desc'       => esc_html__( 'Select the products that will not show the offer.', 'merchant' ),
+							'title'      => esc_html__( 'Exclude products', 'merchant' ),
+							'default'    => 0,
+							'conditions' => array(
+								'relation' => 'AND',
+								'terms'    => array(
+									array(
+										'field'    => 'rules_to_display',
+										'operator' => 'in',
+										'value'    => array( 'all', 'categories', 'tags', 'brands' ),
+									),
+								),
+							),
+						),
+
+						array(
+							'id'         => 'excluded_products',
+							'type'       => 'products_selector',
+							'title'      => esc_html__( 'Excluded Products List', 'merchant' ),
+							'multiple'   => true,
+							'desc'       => esc_html__( 'Exclude products from this campaign.', 'merchant' ),
+							'conditions' => array(
+								'relation' => 'AND',
+								'terms'    => array(
+									array(
+										'field'    => 'rules_to_display',
+										'operator' => 'in',
+										'value'    => array( 'all', 'categories', 'tags', 'brands' ),
+									),
+									array(
+										'field'    => 'exclude_products_toggle',
+										'operator' => '===',
+										'value'    => true,
+									),
+								),
+							),
+						),
+
+						array(
+							'id'         => 'exclude_categories_toggle',
+							'type'       => 'switcher',
+							'title'      => esc_html__( 'Exclude categories', 'merchant' ),
+							'default'    => 0,
+							'conditions' => array(
+								'relation' => 'AND',
+								'terms'    => array(
+									array(
+										'field'    => 'rules_to_display',
+										'operator' => 'in',
+										'value'    => array( 'all', 'tags', 'brands' ),
+									),
+								),
+							),
+						),
+
+						array(
+							'id'          => 'excluded_categories',
+							'type'        => 'select_ajax',
+							'title'       => esc_html__( 'Excluded Categories List', 'merchant' ),
+							'source'      => 'options',
+							'multiple'    => true,
+							'options'     => Merchant_Admin_Options::get_category_select2_choices(),
+							'placeholder' => esc_html__( 'Select categories', 'merchant' ),
+							'desc'        => esc_html__( 'Exclude categories from this campaign.', 'merchant' ),
+							'conditions'  => array(
+								'relation' => 'AND',
+								'terms'    => array(
+									array(
+										'field'    => 'rules_to_display',
+										'operator' => 'in',
+										'value'    => array( 'all', 'tags', 'brands' ),
+									),
+									array(
+										'field'    => 'exclude_categories_toggle',
+										'operator' => '===',
+										'value'    => true,
+									),
+								),
+							),
+						),
+
+						array(
+							'id'         => 'exclude_tags_toggle',
+							'type'       => 'switcher',
+							'title'      => esc_html__( 'Exclude product tags', 'merchant' ),
+							'default'    => 0,
+							'conditions' => array(
+								'relation' => 'AND',
+								'terms'    => array(
+									array(
+										'field'    => 'rules_to_display',
+										'operator' => 'in',
+										'value'    => array( 'all', 'categories', 'brands' ),
+									),
+								),
+							),
+						),
+
+						array(
+							'id'          => 'excluded_tags',
+							'type'        => 'select_ajax',
+							'title'       => esc_html__( 'Excluded Tags List', 'merchant' ),
+							'source'      => 'options',
+							'multiple'    => true,
+							'options'     => Merchant_Admin_Options::get_tag_select2_choices(),
+							'placeholder' => esc_html__( 'Select tags', 'merchant' ),
+							'desc'        => esc_html__( 'Exclude tags from this campaign.', 'merchant' ),
+							'conditions'  => array(
+								'relation' => 'AND',
+								'terms'    => array(
+									array(
+										'field'    => 'rules_to_display',
+										'operator' => 'in',
+										'value'    => array( 'all', 'categories', 'brands' ),
+									),
+									array(
+										'field'    => 'exclude_tags_toggle',
+										'operator' => '===',
+										'value'    => true,
+									),
+								),
+							),
+						),
+
+						array(
+							'id'         => 'exclude_brands_toggle',
+							'type'       => 'switcher',
+							'title'      => esc_html__( 'Exclude Brands', 'merchant' ),
 							'default'    => 0,
 							'conditions' => array(
 								'relation' => 'AND',
@@ -107,12 +244,15 @@ Merchant_Admin_Options::create( array(
 						),
 
 						array(
-							'id'         => 'excluded_products',
-							'type'       => 'products_selector',
-							'title'      => esc_html__( 'Exclude Products', 'merchant' ),
-							'multiple'   => true,
-							'desc'       => esc_html__( 'Exclude products from this campaign.', 'merchant' ),
-							'conditions' => array(
+							'id'          => 'excluded_brands',
+							'type'        => 'select_ajax',
+							'title'       => esc_html__( 'Excluded Brands List', 'merchant' ),
+							'source'      => 'options',
+							'multiple'    => true,
+							'options'     => Merchant_Admin_Options::get_brand_select2_choices(),
+							'placeholder' => esc_html__( 'Select brands', 'merchant' ),
+							'desc'        => esc_html__( 'Exclude brands from this campaign.', 'merchant' ),
+							'conditions'  => array(
 								'relation' => 'AND',
 								'terms'    => array(
 									array(
@@ -121,59 +261,7 @@ Merchant_Admin_Options::create( array(
 										'value'    => array( 'all', 'categories', 'tags' ),
 									),
 									array(
-										'field'    => 'exclusion_enabled',
-										'operator' => '===',
-										'value'    => true,
-									),
-								),
-							),
-						),
-
-						array(
-							'id'          => 'excluded_categories',
-							'type'        => 'select_ajax',
-							'title'       => esc_html__( 'Exclude Categories', 'merchant' ),
-							'source'      => 'options',
-							'multiple'    => true,
-							'options'     => Merchant_Admin_Options::get_category_select2_choices(),
-							'placeholder' => esc_html__( 'Select categories', 'merchant' ),
-							'desc'        => esc_html__( 'Exclude categories from this campaign.', 'merchant' ),
-							'conditions'  => array(
-								'relation' => 'AND',
-								'terms'    => array(
-									array(
-										'field'    => 'rules_to_display',
-										'operator' => 'in',
-										'value'    => array( 'all' ),
-									),
-									array(
-										'field'    => 'exclusion_enabled',
-										'operator' => '===',
-										'value'    => true,
-									),
-								),
-							),
-						),
-
-						array(
-							'id'          => 'excluded_tags',
-							'type'        => 'select_ajax',
-							'title'       => esc_html__( 'Exclude Tags', 'merchant' ),
-							'source'      => 'options',
-							'multiple'    => true,
-							'options'     => Merchant_Admin_Options::get_tag_select2_choices(),
-							'placeholder' => esc_html__( 'Select tags', 'merchant' ),
-							'desc'        => esc_html__( 'Exclude tags from this campaign.', 'merchant' ),
-							'conditions'  => array(
-								'relation' => 'AND',
-								'terms'    => array(
-									array(
-										'field'    => 'rules_to_display',
-										'operator' => 'in',
-										'value'    => array( 'all' ),
-									),
-									array(
-										'field'    => 'exclusion_enabled',
+										'field'    => 'exclude_brands_toggle',
 										'operator' => '===',
 										'value'    => true,
 									),

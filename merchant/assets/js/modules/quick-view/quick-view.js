@@ -12,13 +12,12 @@ merchant.modules = merchant.modules || {};
       }
       $modals.each(function () {
         var $modal = $(this);
-        var $openButton = $('.merchant-quick-view-button');
         var $closeButton = $modal.find('.merchant-quick-view-close-button');
         var $inner = $modal.find('.merchant-quick-view-inner');
         var $content = $modal.find('.merchant-quick-view-content');
         var $overlay = $modal.find('.merchant-quick-view-overlay');
         var isOpen = false;
-        $openButton.on('click', function (e) {
+        $(document).on('click', '.merchant-quick-view-button', function (e) {
           e.preventDefault();
           $content.empty();
           $modal.addClass('merchant-show');

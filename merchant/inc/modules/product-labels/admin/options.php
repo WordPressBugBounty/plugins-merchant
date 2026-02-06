@@ -7,10 +7,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
 }
 
-$position       = Merchant_Admin_Options::get( Merchant_Product_Labels::MODULE_ID, 'label_position',  'top-left' );
-$margin_y_label = ( $position === 'top-left' || $position === 'top-right' ) ? esc_html__( 'Margin Top', 'merchant' ) : esc_html__( 'Margin Bottom', 'merchant' );
-$margin_x_label = ( $position === 'top-left' || $position === 'bottom-left' ) ? esc_html__( 'Margin Left', 'merchant' ) : esc_html__( 'Margin Right', 'merchant' );
-
 $text_shapes  = array();
 $image_shapes = array();
 
@@ -31,6 +27,7 @@ $display_rules = array(
 	'specific_products' => esc_html__( 'Specific Products', 'merchant' ),
 	'by_category'       => esc_html__( 'Specific Categories', 'merchant' ),
 	'by_tags'           => esc_html__( 'Specific Tags', 'merchant' ),
+	'by_brands'         => esc_html__( 'Specific Brands', 'merchant' ),
 );
 
 /**
@@ -146,39 +143,42 @@ Merchant_Admin_Options::create( array(
 						),
 
 						array(
-							'id'      => 'label_position',
+							'id'      => 'position_anchor',
 							'type'    => 'select',
-							'title'   => esc_html__( 'Position', 'merchant' ),
+							'title'   => esc_html__( 'Anchor Point', 'merchant' ),
+							'desc'    => esc_html__( 'Which point of the label to use as the anchor for positioning.', 'merchant' ),
 							'options' => array(
-								'top-left'  => esc_html__( 'Top left', 'merchant' ),
-								'top-right' => esc_html__( 'Top right', 'merchant' ),
+								'top-left'  => esc_html__( 'Top Left', 'merchant' ),
+								'top-right' => esc_html__( 'Top Right', 'merchant' ),
 							),
 							'default' => 'top-left',
 						),
 
 						array(
-							'id'      => 'margin_y',
+							'id'      => 'position_x',
 							'type'    => 'range',
-							'title'   => $margin_y_label,
-							'min'     => 0,
-							'max'     => 250,
+							'title'   => esc_html__( 'Horizontal Position (X)', 'merchant' ),
+							'desc'    => esc_html__( 'Horizontal position from left edge.', 'merchant' ),
+							'min'     => -300,
+							'max'     => 300,
 							'step'    => 1,
-							'default' => 10,
+							'default' => 0,
 							'unit'    => 'px',
 						),
 
-						array(
-							'id'      => 'margin_x',
-							'type'    => 'range',
-							'title'   => $margin_x_label,
-							'min'     => 0,
-							'max'     => 250,
-							'step'    => 1,
-							'default' => 10,
-							'unit'    => 'px',
-						),
+					array(
+						'id'      => 'position_y',
+						'type'    => 'range',
+						'title'   => esc_html__( 'Vertical Position (Y)', 'merchant' ),
+						'desc'    => esc_html__( 'Vertical position from top edge.', 'merchant' ),
+						'min'     => -300,
+						'max'     => 300,
+						'step'    => 1,
+						'default' => 0,
+						'unit'    => 'px',
+					),
 
-						array(
+					array(
 							'id'        => 'label_width',
 							'type'      => 'range',
 							'title'     => esc_html__( 'Label width', 'merchant' ),
@@ -297,6 +297,18 @@ Merchant_Admin_Options::create( array(
 						),
 
 						array(
+							'id'          => 'product_brands',
+							'type'        => 'select_ajax',
+							'title'       => esc_html__( 'Brands', 'merchant' ),
+							'source'      => 'options',
+							'multiple'    => true,
+							'options'     => Merchant_Admin_Options::get_brand_select2_choices(),
+							'placeholder' => esc_html__( 'Select brands', 'merchant' ),
+							'desc'        => esc_html__( 'Select the product brands that will show the label.', 'merchant' ),
+							'condition'   => array( 'display_rules', '==', 'by_brands' ),
+						),
+
+						array(
 							'id'            => 'product_ids',
 							'type'          => 'products_selector',
 							'multiple'      => true,
@@ -306,10 +318,140 @@ Merchant_Admin_Options::create( array(
 						),
 
 						array(
-							'id'         => 'exclusion_enabled',
+							'id'         => 'exclude_products_toggle',
 							'type'       => 'switcher',
-							'title'      => esc_html__( 'Exclusion List', 'merchant' ),
-							'desc'       => esc_html__( 'Select the products that will not show the label.', 'merchant' ),
+							'title'      => esc_html__( 'Exclude Products', 'merchant' ),
+							'desc'       => esc_html__( 'Exclude specific products from this label.', 'merchant' ),
+							'default'    => 0,
+							'conditions' => array(
+								'relation' => 'AND',
+								'terms'    => array(
+									array(
+										'field'    => 'display_rules',
+										'operator' => 'in',
+										'value'    => array( 'all_products', 'by_category', 'by_tags', 'by_brands', 'featured_products', 'new_products', 'products_on_sale', 'out_of_stock', 'pre-order' ),
+									),
+								),
+							),
+						),
+
+						array(
+							'id'            => 'excluded_products',
+							'type'          => 'products_selector',
+							'title'         => esc_html__( 'Excluded Products List', 'merchant' ),
+							'desc'          => esc_html__( 'Exclude products from this label.', 'merchant' ),
+							'multiple'      => true,
+							'allowed_types' => array( 'simple', 'variable' ),
+							'conditions'    => array(
+								'relation' => 'AND',
+								'terms'    => array(
+									array(
+										'field'    => 'display_rules',
+										'operator' => 'in',
+										'value'    => array( 'all_products', 'by_category', 'by_tags', 'by_brands', 'featured_products', 'new_products', 'products_on_sale', 'out_of_stock', 'pre-order' ),
+									),
+									array(
+										'field'    => 'exclude_products_toggle',
+										'operator' => '===',
+										'value'    => true,
+									),
+								),
+							),
+						),
+
+						array(
+							'id'         => 'exclude_categories_toggle',
+							'type'       => 'switcher',
+							'title'      => esc_html__( 'Exclude Categories', 'merchant' ),
+							'desc'       => esc_html__( 'Exclude specific categories from this label.', 'merchant' ),
+							'default'    => 0,
+							'conditions' => array(
+								'relation' => 'AND',
+								'terms'    => array(
+									array(
+										'field'    => 'display_rules',
+										'operator' => 'in',
+										'value'    => array( 'all_products', 'by_tags', 'by_brands', 'featured_products', 'new_products', 'products_on_sale', 'out_of_stock', 'pre-order' ),
+									),
+								),
+							),
+						),
+
+						array(
+							'id'          => 'excluded_categories',
+							'type'        => 'select_ajax',
+							'title'       => esc_html__( 'Excluded Categories List', 'merchant' ),
+							'source'      => 'options',
+							'multiple'    => true,
+							'options'     => Merchant_Admin_Options::get_category_select2_choices(),
+							'placeholder' => esc_html__( 'Select categories', 'merchant' ),
+							'desc'        => esc_html__( 'Exclude categories from this label.', 'merchant' ),
+							'conditions'  => array(
+								'relation' => 'AND',
+								'terms'    => array(
+									array(
+										'field'    => 'display_rules',
+										'operator' => 'in',
+										'value'    => array( 'all_products', 'by_tags', 'by_brands', 'featured_products', 'new_products', 'products_on_sale', 'out_of_stock', 'pre-order' ),
+									),
+									array(
+										'field'    => 'exclude_categories_toggle',
+										'operator' => '===',
+										'value'    => true,
+									),
+								),
+							),
+						),
+
+						array(
+							'id'         => 'exclude_tags_toggle',
+							'type'       => 'switcher',
+							'title'      => esc_html__( 'Exclude Tags', 'merchant' ),
+							'desc'       => esc_html__( 'Exclude specific tags from this label.', 'merchant' ),
+							'default'    => 0,
+							'conditions' => array(
+								'relation' => 'AND',
+								'terms'    => array(
+									array(
+										'field'    => 'display_rules',
+										'operator' => 'in',
+										'value'    => array( 'all_products', 'by_category', 'by_brands', 'featured_products', 'new_products', 'products_on_sale', 'out_of_stock', 'pre-order' ),
+									),
+								),
+							),
+						),
+
+						array(
+							'id'          => 'excluded_tags',
+							'type'        => 'select_ajax',
+							'title'       => esc_html__( 'Excluded Tags List', 'merchant' ),
+							'source'      => 'options',
+							'multiple'    => true,
+							'options'     => Merchant_Admin_Options::get_tag_select2_choices(),
+							'placeholder' => esc_html__( 'Select tags', 'merchant' ),
+							'desc'        => esc_html__( 'Exclude tags from this label.', 'merchant' ),
+							'conditions'  => array(
+								'relation' => 'AND',
+								'terms'    => array(
+									array(
+										'field'    => 'display_rules',
+										'operator' => 'in',
+										'value'    => array( 'all_products', 'by_category', 'by_brands', 'featured_products', 'new_products', 'products_on_sale', 'out_of_stock', 'pre-order' ),
+									),
+									array(
+										'field'    => 'exclude_tags_toggle',
+										'operator' => '===',
+										'value'    => true,
+									),
+								),
+							),
+						),
+
+						array(
+							'id'         => 'exclude_brands_toggle',
+							'type'       => 'switcher',
+							'title'      => esc_html__( 'Exclude Brands', 'merchant' ),
+							'desc'       => esc_html__( 'Exclude specific brands from this label.', 'merchant' ),
 							'default'    => 0,
 							'conditions' => array(
 								'relation' => 'AND',
@@ -324,13 +466,15 @@ Merchant_Admin_Options::create( array(
 						),
 
 						array(
-							'id'            => 'excluded_products',
-							'type'          => 'products_selector',
-							'title'         => esc_html__( 'Exclude Products', 'merchant' ),
-							'desc'          => esc_html__( 'Exclude products from this label.', 'merchant' ),
-							'multiple'      => true,
-							'allowed_types' => array( 'simple', 'variable' ),
-							'conditions'    => array(
+							'id'          => 'excluded_brands',
+							'type'        => 'select_ajax',
+							'title'       => esc_html__( 'Excluded Brands List', 'merchant' ),
+							'source'      => 'options',
+							'multiple'    => true,
+							'options'     => Merchant_Admin_Options::get_brand_select2_choices(),
+							'placeholder' => esc_html__( 'Select brands', 'merchant' ),
+							'desc'        => esc_html__( 'Exclude brands from this label.', 'merchant' ),
+							'conditions'  => array(
 								'relation' => 'AND',
 								'terms'    => array(
 									array(
@@ -339,59 +483,7 @@ Merchant_Admin_Options::create( array(
 										'value'    => array( 'all_products', 'by_category', 'by_tags', 'featured_products', 'new_products', 'products_on_sale', 'out_of_stock', 'pre-order' ),
 									),
 									array(
-										'field'    => 'exclusion_enabled',
-										'operator' => '===',
-										'value'    => true,
-									),
-								),
-							),
-						),
-
-						array(
-							'id'          => 'excluded_categories',
-							'type'        => 'select_ajax',
-							'title'       => esc_html__( 'Exclude Categories', 'merchant' ),
-							'source'      => 'options',
-							'multiple'    => true,
-							'options'     => Merchant_Admin_Options::get_category_select2_choices(),
-							'placeholder' => esc_html__( 'Select categories', 'merchant' ),
-							'desc'        => esc_html__( 'Exclude categories from this campaign.', 'merchant' ),
-							'conditions'  => array(
-								'relation' => 'AND',
-								'terms'    => array(
-									array(
-										'field'    => 'display_rules',
-										'operator' => 'in',
-										'value'    => array( 'all_products' ),
-									),
-									array(
-										'field'    => 'exclusion_enabled',
-										'operator' => '===',
-										'value'    => true,
-									),
-								),
-							),
-						),
-
-						array(
-							'id'          => 'excluded_tags',
-							'type'        => 'select_ajax',
-							'title'       => esc_html__( 'Exclude Tags', 'merchant' ),
-							'source'      => 'options',
-							'multiple'    => true,
-							'options'     => Merchant_Admin_Options::get_tag_select2_choices(),
-							'placeholder' => esc_html__( 'Select tags', 'merchant' ),
-							'desc'        => esc_html__( 'Exclude tags from this campaign.', 'merchant' ),
-							'conditions'  => array(
-								'relation' => 'AND',
-								'terms'    => array(
-									array(
-										'field'    => 'display_rules',
-										'operator' => 'in',
-										'value'    => array( 'all_products' ),
-									),
-									array(
-										'field'    => 'exclusion_enabled',
+										'field'    => 'exclude_brands_toggle',
 										'operator' => '===',
 										'value'    => true,
 									),
@@ -431,6 +523,13 @@ Merchant_Admin_Options::create( array(
 					'display_rules'    => 'featured_products',
 				),
 			),
+		),
+		array(
+			'id'      => 'multiple_labels',
+			'type'    => 'switcher',
+			'title'   => __( 'Use multiple labels', 'merchant' ),
+			'desc'   => __( 'Enable this to display multiple labels assigned to the product when multiple labels are available.', 'merchant' ),
+			'default' => 0,
 		),
 	),
 ) );

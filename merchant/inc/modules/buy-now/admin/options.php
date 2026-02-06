@@ -79,6 +79,20 @@ Merchant_Admin_Options::create( array(
 		),
 
 		array(
+			'id'        => 'button-size',
+			'type'      => 'select',
+			'title'     => esc_html__( 'Button size', 'merchant' ),
+			'options'   => array(
+				'small'  => esc_html__( 'Small', 'merchant' ),
+				'medium' => esc_html__( 'Medium', 'merchant' ),
+				'large'  => esc_html__( 'Large', 'merchant' ),
+				'custom' => esc_html__( 'Custom', 'merchant' ),
+			),
+			'default'   => 'medium',
+			'condition' => array( 'customize-button', '==', '1' ),
+		),
+
+		array(
 			'id'      => 'font-size',
 			'type'    => 'range',
 			'title'   => esc_html__( 'Font size', 'merchant' ),
@@ -91,6 +105,46 @@ Merchant_Admin_Options::create( array(
 		),
 
 		array(
+			'id'      => 'margin-top',
+			'type'    => 'range',
+			'title'   => esc_html__( 'Margin top', 'merchant' ),
+			'min'     => 0,
+			'max'     => 100,
+			'step'    => 1,
+			'default' => 10,
+			'unit'    => 'px',
+			'conditions' => array(
+				'terms'    => array(
+					array(
+						'field'    => 'customize-button',
+						'operator' => '===',
+						'value'    => true,
+					),
+				),
+			),
+		),
+
+		array(
+			'id'      => 'margin-bottom',
+			'type'    => 'range',
+			'title'   => esc_html__( 'Margin bottom', 'merchant' ),
+			'min'     => 0,
+			'max'     => 100,
+			'step'    => 1,
+			'default' => 10,
+			'unit'    => 'px',
+			'conditions' => array(
+				'terms'    => array(
+					array(
+						'field'    => 'customize-button',
+						'operator' => '===',
+						'value'    => true,
+					),
+				),
+			),
+		),
+
+		array(
 			'id'      => 'padding_top_bottom',
 			'type'    => 'range',
 			'title'   => esc_html__( 'Padding Top/Bottom', 'merchant' ),
@@ -99,7 +153,15 @@ Merchant_Admin_Options::create( array(
 			'step'    => 1,
 			'default' => 12,
 			'unit'    => 'px',
-			'condition' => array( 'customize-button', '==', '1' ),
+			'conditions' => array(
+				'terms'    => array(
+					array(
+						'field'    => 'customize-button',
+						'operator' => '===',
+						'value'    => true,
+					),
+				),
+			),
 		),
 
 		array(
@@ -111,7 +173,15 @@ Merchant_Admin_Options::create( array(
 			'step'    => 1,
 			'default' => 24,
 			'unit'    => 'px',
-			'condition' => array( 'customize-button', '==', '1' ),
+			'conditions' => array(
+				'terms'    => array(
+					array(
+						'field'    => 'customize-button',
+						'operator' => '===',
+						'value'    => true,
+					),
+				),
+			),
 		),
 
 		array(

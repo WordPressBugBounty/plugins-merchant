@@ -134,34 +134,45 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
         }
       });
     });
-    $('.merchant-range').each(function () {
-      var $range = $(this);
-      var $rangeInput = $range.find('.merchant-range-input');
-      var $numberInput = $range.find('.merchant-range-number-input');
-      $rangeInput.on('change input merchant.range merchant-init.range', function (e) {
+
+    // Create a function that initializes a single range or all ranges in a context for range field
+    function initMerchantRange() {
+      var rangeFields = $(document).find('.merchant-range');
+      if (rangeFields.length === 0) {
+        return;
+      }
+      rangeFields.each(function () {
         var $range = $(this);
-        var value = (e.type === 'merchant' ? $numberInput.val() : $range.val()) || 0;
-        var min = $range.attr('min') || 0;
-        var max = $range.attr('max') || 1;
-        var percentage = (value - min) / (max - min) * 100;
-        if ($('body').hasClass('rtl')) {
-          $range.css({
-            'background': 'linear-gradient(to left, #3858E9 0%, #3858E9 ' + percentage + '%, #ddd ' + percentage + '%, #ddd 100%)'
-          });
-        } else {
-          $range.css({
-            'background': 'linear-gradient(to right, #3858E9 0%, #3858E9 ' + percentage + '%, #ddd ' + percentage + '%, #ddd 100%)'
-          });
-        }
-        $rangeInput.val(value);
-        $numberInput.val(value);
-      }).trigger('merchant-init.range');
-      $numberInput.on('change input blur', function () {
-        if ($rangeInput.hasClass('merchant-range-input')) {
-          $rangeInput.val($(this).val()).trigger('merchant.range');
-        }
+        var $rangeInput = $range.find('.merchant-range-input');
+        var $numberInput = $range.find('.merchant-range-number-input');
+        $rangeInput.on('change input merchant.range merchant-init.range', function (e) {
+          var $range = $(this);
+          var value = (e.type === 'merchant' ? $numberInput.val() : $range.val()) || 0;
+          var min = $range.attr('min') || 0;
+          var max = $range.attr('max') || 1;
+          var percentage = (value - min) / (max - min) * 100;
+          if ($('body').hasClass('rtl')) {
+            $range.css({
+              'background': 'linear-gradient(to left, #3858E9 0%, #3858E9 ' + percentage + '%, #ddd ' + percentage + '%, #ddd 100%)'
+            });
+          } else {
+            $range.css({
+              'background': 'linear-gradient(to right, #3858E9 0%, #3858E9 ' + percentage + '%, #ddd ' + percentage + '%, #ddd 100%)'
+            });
+          }
+          $rangeInput.val(value);
+          $numberInput.val(value);
+        }).trigger('merchant-init.range');
+        $numberInput.on('change input blur', function () {
+          if ($rangeInput.hasClass('merchant-range-input')) {
+            $rangeInput.val($(this).val()).trigger('merchant.range');
+          }
+        });
       });
-    });
+    }
+
+    // 1. Initialize on DOM ready (existing fields)
+    initMerchantRange();
     $(document).on('click', '.merchant-module-page-setting-field-hidden-desc-trigger', function () {
       var $trigger = $(this);
       $trigger.toggleClass('expanded');
@@ -1068,6 +1079,7 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
           }
           GroubField.init();
           $(document).trigger('merchant-flexible-content-added', [$layout]);
+          initMerchantRange();
           self.updateLayoutTitle();
           self.updateDiscountPercentMaxVal();
         });
@@ -1737,6 +1749,24 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
               }, 2000);
             }
           });
+        }
+      });
+
+      // Hide fixed changelog items
+      var merchantNotificationsContent = $('.merchant-notification-content');
+      merchantNotificationsContent.each(function () {
+        var notificationContentItem = $(this);
+        // search for all spans that contains class "changelog-fixed" and then go to the parent li of that span and add class hidden
+        var fixedItems = notificationContentItem.find('span.changelog-fixed');
+        fixedItems.each(function () {
+          var fixedItem = $(this);
+          fixedItem.closest('li').remove();
+        });
+        // now check if all li inside this notificationContentItem are hidden, so we need to look for the parent .merchant-notification and remove it
+        var allItems = notificationContentItem.find('li');
+        var hiddenItems = notificationContentItem.find('li.hidden');
+        if (allItems.length === hiddenItems.length) {
+          notificationContentItem.closest('.merchant-notification').remove();
         }
       });
       $(window).on('scroll', function () {

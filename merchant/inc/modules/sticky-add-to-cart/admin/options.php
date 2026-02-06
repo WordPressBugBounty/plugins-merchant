@@ -65,6 +65,16 @@ Merchant_Admin_Options::create( array(
 			'default' => 0,
 		),
 
+		// Hide quantity field.
+		array(
+			'id'      => 'hide_quantity',
+			'type'    => 'switcher',
+			'title'   => esc_html__( 'Hide quantity field', 'merchant' ),
+			'desc'    => esc_html__( 'Hide the quantity selector in the sticky add to cart.', 'merchant' ),
+			'default' => 0,
+		),
+
+
 		// Elements spacing.
 		array(
 			'id'      => 'elements_spacing',
@@ -105,6 +115,37 @@ Merchant_Admin_Options::create( array(
 			'title'   => esc_html__( 'Allow third-party plugin content', 'merchant' ),
 			'desc'    => esc_html__( 'Control whether third-party plugin content should be rendered in the sticky add to cart content area.', 'merchant' ),
 			'default' => 0,
+		),
+
+		// Smart variation handling.
+		array(
+			'id'      => 'smart_variation_handling',
+			'type'    => 'switcher',
+			'title'   => esc_html__( 'Smart variation handling', 'merchant' ),
+			'desc'    => esc_html__( 'Hide sticky cart for products with many variations until a selection is made.', 'merchant' ),
+			'default' => 1,
+		),
+
+		// Variation threshold.
+		array(
+			'id'        => 'variation_threshold',
+			'type'      => 'number',
+			'title'     => esc_html__( 'Variation threshold', 'merchant' ),
+			'desc'      => esc_html__( 'Number of variations above which smart handling is applied.', 'merchant' ),
+			'default'   => 3,
+			'min'       => 1,
+			'max'       => 50,
+			'step'      => 1,
+			'conditions' => array(
+				'relation' => 'AND',
+				'terms'    => array(
+					array(
+						'field'    => 'smart_variation_handling',
+						'operator' => '===',
+						'value'    => true,
+					),
+				),
+			),
 		),
 
 	),

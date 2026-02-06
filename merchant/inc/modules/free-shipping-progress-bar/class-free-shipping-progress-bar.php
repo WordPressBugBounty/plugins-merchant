@@ -38,13 +38,16 @@ class Merchant_Free_Shipping_Progress_Bar extends Merchant_Add_Module {
 	 *
 	 */
 	public function __construct() {
+        // WooCommerce only.
+        $this->wc_only = true;
+
+        // Module id.
+        $this->module_id = self::MODULE_ID;
+
 		parent::__construct();
 
 		// Module section.
 		$this->module_section = 'boost-revenue';
-
-		// Module id.
-		$this->module_id = self::MODULE_ID;
 
 		// Module default settings.
 		$this->module_default_settings = array();
@@ -90,7 +93,7 @@ class Merchant_Free_Shipping_Progress_Bar extends Merchant_Add_Module {
 				'merchant-admin-' . self::MODULE_ID,
 				'merchantFreeShippingProgressBar',
 				array(
-					'amount'  => wc_price( 15 ),
+                        'amount' => function_exists( 'wc_price' ) ? wc_price( 15 ) : '$15',
 					'presets' => array(
 						'custom'        => array(
 							'card_background_color' => '#FFFFFF',
@@ -300,7 +303,7 @@ class Merchant_Free_Shipping_Progress_Bar extends Merchant_Add_Module {
 					sprintf(
 					/* translators: %s: Amount. */
 						__( 'You are %s away from free shipping.', 'merchant' ),
-						wc_price( 15 )
+                            function_exists( 'wc_price' ) ? wc_price( 15 ) : '$15'
 					),
 					merchant_kses_allowed_tags( array( 'bdi' ) )
 				);

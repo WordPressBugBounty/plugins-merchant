@@ -45,7 +45,7 @@ function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length)
         for (var _key in manipulators.text) {
           if (manipulators.text.hasOwnProperty(_key)) {
             var inputText = $('[name="merchant[' + manipulators.text[_key].setting + ']"]').val();
-            if (manipulators.text[_key].hasOwnProperty('replacements')) {
+            if (manipulators.text[_key].hasOwnProperty('replacements') && inputText) {
               inputText = setReplacements(inputText, manipulators.text[_key]);
             }
             $(manipulators.text[_key].selector).html(inputText);
@@ -407,5 +407,8 @@ function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length)
       }
       return inputText.replace(search, replacementValue);
     };
+    $(document).on('change', function () {
+      return updateElements();
+    });
   });
 })(jQuery, window, document);

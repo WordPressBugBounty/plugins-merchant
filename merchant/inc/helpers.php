@@ -796,7 +796,7 @@ if ( ! function_exists( 'merchant_is_product_excluded' ) ) {
 		}
 
 		// Exclude categories
-		if ( in_array( $display_rule, array( 'all', 'all_products' ), true ) ) {
+		if ( in_array( $display_rule, array( 'all', 'all_products', 'categories', 'category', 'by_category' ), true ) ) {
 			$excluded_categories_slugs = $args['excluded_categories'] ?? array();
 
 			if ( ! empty( $excluded_categories_slugs ) && has_term( $excluded_categories_slugs, 'product_cat', $_product_id ) ) {
@@ -805,10 +805,46 @@ if ( ! function_exists( 'merchant_is_product_excluded' ) ) {
 		}
 
 		// Exclude tags
-		if ( in_array( $display_rule, array( 'all', 'all_products' ), true ) ) {
+		if ( in_array( $display_rule, array( 'all', 'all_products', 'tags', 'by_tags' ), true ) ) {
 			$excluded_tags_slugs = $args['excluded_tags'] ?? array();
 
 			if ( ! empty( $excluded_tags_slugs ) && has_term( $excluded_tags_slugs, 'product_tag', $_product_id ) ) {
+				return true;
+			}
+		}
+
+		// Exclude brands
+		if ( in_array( $display_rule, array( 'all', 'all_products', 'brands', 'by_brands' ), true ) ) {
+			$excluded_brands_slugs = $args['excluded_brands'] ?? array();
+
+			if ( ! empty( $excluded_brands_slugs ) && has_term( $excluded_brands_slugs, 'product_brand', $_product_id ) ) {
+				return true;
+			}
+		}
+
+		// Exclude categories with toggle
+		if ( ! empty( $args['exclude_categories_toggle'] ) && in_array( $display_rule, array( 'all', 'all_products', 'categories', 'category', 'by_category' ), true ) ) {
+			$excluded_categories_slugs = $args['excluded_categories'] ?? array();
+
+			if ( ! empty( $excluded_categories_slugs ) && has_term( $excluded_categories_slugs, 'product_cat', $_product_id ) ) {
+				return true;
+			}
+		}
+
+		// Exclude tags with toggle
+		if ( ! empty( $args['exclude_tags_toggle'] ) && in_array( $display_rule, array( 'all', 'all_products', 'tags', 'by_tags' ), true ) ) {
+			$excluded_tags_slugs = $args['excluded_tags'] ?? array();
+
+			if ( ! empty( $excluded_tags_slugs ) && has_term( $excluded_tags_slugs, 'product_tag', $_product_id ) ) {
+				return true;
+			}
+		}
+
+		// Exclude brands with toggle
+		if ( ! empty( $args['exclude_brands_toggle'] ) && in_array( $display_rule, array( 'all', 'all_products', 'brands', 'by_brands' ), true ) ) {
+			$excluded_brands_slugs = $args['excluded_brands'] ?? array();
+
+			if ( ! empty( $excluded_brands_slugs ) && has_term( $excluded_brands_slugs, 'product_brand', $_product_id ) ) {
 				return true;
 			}
 		}

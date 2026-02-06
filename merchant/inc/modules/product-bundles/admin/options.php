@@ -151,6 +151,18 @@ Merchant_Admin_Options::create( array(
 	),
 ) );
 
+Merchant_Admin_Options::create( array(
+	'module' => Merchant_Product_Bundles::MODULE_ID,
+	'title'  => esc_html__( 'Order email settings', 'merchant' ),
+	'fields' => array(
+		array(
+			'id'      => 'hide_bundled_order_email',
+			'type'    => 'switcher',
+			'title'   => __( 'Hide bundled products in order email', 'merchant' ),
+			'default' => 0,
+		),
+	),
+) );
 
 // Shortcode
 Merchant_Admin_Options::create( array(

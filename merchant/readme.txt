@@ -3,7 +3,7 @@ Tags: pre-orders, buy now button, product labels, quick view, clear cart
 Requires at least: 5.5
 Tested up to: 6.8
 Requires PHP: 7.3
-Stable tag: 2.1.7
+Stable tag: 2.2.2
 Contributors: aThemes
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
@@ -218,6 +218,27 @@ Absolutely not. You can enable and customize modules without any coding knowledg
 15. Cookie Banner Module
 
 == Changelog ==
+= 2.2.2 =
+* Fixed - Product Labels: Fixed an issue where the 5th label shape was rendering incorrectly on the frontend
+
+= 2.2.1 =
+* Added - Compatibility layer for complementary products module in Ohio theme
+* Added - Usage tracking integration
+* Fixed - Console error that occurred when the module trigger was set to specific products
+
+= 2.2.0 =
+* Added - Product Labels: Added support to display multiple labels on product images
+* Added - Buy Now: Added button size and margin controls for the “Buy Now” button
+
+= 2.1.9 =
+* Added - Pre-Orders and Buy Now: Added logic to hide the “Buy Now” button for products marked as pre-order
+* Fixed - Quick View: Fixed an issue where the button only opened the modal on the first shop page; it now works correctly across all pages
+
+= 2.1.8 =
+* Added - Woo Brands Support: You can now use Brands as a trigger option across all Merchant modules
+* Added - Sticky add to cart: Smarter variation handling - automatically adapts based on the number of variations available
+* Added - Advanced Reviews: Reviews are now aggregated across translated products, giving customers a unified view no matter their language
+
 = 2.1.7 =
 * Fixed - Agree to Terms: Fixed memory exhaustion issue in the module
 * Fixed - Agree to Terms: Assets are now only loaded where needed instead of sitewide

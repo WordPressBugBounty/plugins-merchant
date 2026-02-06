@@ -142,6 +142,7 @@ class Merchant_Buy_Now extends Merchant_Add_Module {
 		if ( 'merchant' === $page && self::MODULE_ID === $module ) {
 			wp_enqueue_style( 'merchant-' . self::MODULE_ID, MERCHANT_URI . 'assets/css/modules/' . self::MODULE_ID . '/buy-now.min.css', array(), MERCHANT_VERSION );
 			wp_enqueue_style( 'merchant-admin-' . self::MODULE_ID, MERCHANT_URI . 'assets/css/modules/' . self::MODULE_ID . '/admin/preview.min.css', array(), MERCHANT_VERSION );
+            wp_enqueue_script('merchant-admin-' . self::MODULE_ID, MERCHANT_URI . 'assets/js/modules/' . self::MODULE_ID . '/admin/preview.min.js', array( 'jquery' ), MERCHANT_VERSION, true );
 		}
 	}
 
@@ -181,6 +182,16 @@ class Merchant_Buy_Now extends Merchant_Add_Module {
 
 			// Display Customizer.
 			$preview->set_class( 'customize-button', '.merchant-buy-now-button', array(), 'merchant-custom-buy-now-button' );
+
+			// Margin Top.
+			$preview->set_css( 'margin-top', '.merchant-buy-now-button', '--mrc-buy-now-margin-top', 'px' );
+
+			// Margin Bottom.
+			$preview->set_css( 'margin-bottom', '.merchant-buy-now-button', '--mrc-buy-now-margin-bottom', 'px' );
+
+			// Padding CSS variables.
+			$preview->set_css( 'padding_top_bottom', '.merchant-buy-now-button', '--mrc-buy-now-padding-top-bottom', 'px' );
+			$preview->set_css( 'padding_left_right', '.merchant-buy-now-button', '--mrc-buy-now-padding-left-right', 'px' );
 		}
 
 		return $preview;
@@ -333,6 +344,18 @@ class Merchant_Buy_Now extends Merchant_Add_Module {
 
 		global $post, $product;
 
+		/**
+		 * Hook 'merchant_is_pre_order_product' Checks if the product is a pre-order.
+		 *
+		 * @param int $product_id The product ID.
+		 * 
+		 * @since 2.1.9
+		 */
+        $is_pre_order = apply_filters( 'merchant_is_pre_order_product', $product->get_id() );
+        if ( true === $is_pre_order ) {
+            return;
+        }
+
 		$settings = $this->get_module_settings();
 
 		if( isset( $settings['display-product'] ) && ! $settings['display-product'] ) {
@@ -395,6 +418,18 @@ class Merchant_Buy_Now extends Merchant_Add_Module {
 	 */
 	public function shop_archive_product_buy_now_button() {
 		global $post, $product;
+
+		/**
+		 * Hook 'merchant_is_pre_order_product' Checks if the product is a pre-order.
+		 *
+		 * @param int $product_id The product ID.
+		 * 
+		 * @since 2.1.9
+		 */
+        $is_pre_order = apply_filters( 'merchant_is_pre_order_product', $product->get_id() );
+        if ( true === $is_pre_order ) {
+            return;
+        }
 
         if ( ! $product->is_in_stock() ) {
             return;
@@ -468,11 +503,17 @@ class Merchant_Buy_Now extends Merchant_Add_Module {
 		// Font Size.
 		$css .= Merchant_Custom_CSS::get_variable_css( self::MODULE_ID, 'font-size', 16, '.merchant-buy-now-button', '--mrc-buy-now-font-size', 'px' );
 
-		// Padding Top/Bottom.
+		// Padding CSS variables (always use custom padding values)
 		$css .= Merchant_Custom_CSS::get_variable_css( self::MODULE_ID, 'padding_top_bottom', 13, '.merchant-buy-now-button', '--mrc-buy-now-padding-top-bottom', 'px' );
 
 		// Padding Left/Right.
 		$css .= Merchant_Custom_CSS::get_variable_css( self::MODULE_ID, 'padding_left_right', 24, '.merchant-buy-now-button', '--mrc-buy-now-padding-left-right', 'px' );
+
+		// Margin Top.
+		$css .= Merchant_Custom_CSS::get_variable_css( self::MODULE_ID, 'margin-top', 10, '.merchant-buy-now-button', '--mrc-buy-now-margin-top', 'px' );
+
+		// Margin Bottom.
+		$css .= Merchant_Custom_CSS::get_variable_css( self::MODULE_ID, 'margin-bottom', 10, '.merchant-buy-now-button', '--mrc-buy-now-margin-bottom', 'px' );
 
 		// Border radius.
 		$css .= Merchant_Custom_CSS::get_variable_css( self::MODULE_ID, 'border-radius', 0, '.merchant-buy-now-button', '--mrc-buy-now-border-radius', 'px' );

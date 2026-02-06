@@ -159,4 +159,5 @@ class Merchant_Notice_Campaign extends Merchant_Notice {
     }
 }
 
-new Merchant_Notice_Campaign();
+// new Merchant_Notice_Campaign();
+// This class is disabled. Will be enabled when we have new campaigns.

@@ -49,6 +49,22 @@ Merchant_Admin_Options::create( array(
 			'title'   => __( 'Variation name on product title', 'merchant' ),
 			'default' => Merchant_Product_Swatches::MODULE_DEFAULT_SETTINGS['display_variation_name_on_product_title'],
 		),
+
+		// Hide attribute label on archive
+		array(
+			'id'      => 'hide_attribute_label_archive',
+			'type'    => 'switcher',
+			'title'   => __( 'Hide attribute label (archive/shop)', 'merchant' ),
+			'default' => Merchant_Product_Swatches::MODULE_DEFAULT_SETTINGS['hide_attribute_label_archive'],
+		),
+
+		// Hide attribute label on single product
+		array(
+			'id'      => 'hide_attribute_label_single',
+			'type'    => 'switcher',
+			'title'   => __( 'Hide attribute label (single product)', 'merchant' ),
+			'default' => Merchant_Product_Swatches::MODULE_DEFAULT_SETTINGS['hide_attribute_label_single'],
+		),
 	),
 ) );
 

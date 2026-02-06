@@ -48,6 +48,9 @@ if ( ! class_exists( 'Merchant_Admin_Options' ) ) {
 
             // Delete module data
             add_action( 'admin_init', array( $this, 'delete_module_data' ) );
+
+            // Activate Pro plugin
+            add_action( 'admin_init', array( $this, 'activate_pro_plugin' ) );
 		}
 
 		/**
@@ -3135,7 +3138,7 @@ if ( ! class_exists( 'Merchant_Admin_Options' ) ) {
 			return $choices;
 		}
 
-        /**
+		/**
          * Get Tag choices for select2
          *
 		 * @return array
@@ -3153,6 +3156,36 @@ if ( ! class_exists( 'Merchant_Admin_Options' ) ) {
 				}
 			}
 
+			return $choices;
+		}
+
+		/**
+         * Get Brand choices for select2
+         *
+		 * @return array
+		 */
+		public static function get_brand_select2_choices() {
+			$choices = array();
+			
+			// Check if WooCommerce Brands is active
+			if ( ! taxonomy_exists( 'product_brand' ) ) {
+				return $choices;
+			}
+			
+			$brands = get_terms( array(
+				'taxonomy'   => 'product_brand',
+				'hide_empty' => false,
+			) );
+			
+			if ( ! is_wp_error( $brands ) && ! empty( $brands ) ) {
+				foreach ( $brands as $brand ) {
+					$choices[] = array(
+						'id'   => esc_attr( $brand->slug ),
+						'text' => esc_html( $brand->name ),
+					);
+				}
+			}
+			
 			return $choices;
 		}
 
@@ -3243,6 +3276,52 @@ if ( ! class_exists( 'Merchant_Admin_Options' ) ) {
 				update_option( 'merchant', $options );
 			}
         }
+
+		/**
+		 * Activate Merchant Pro plugin.
+		 *
+		 * @return void
+		 */
+		public function activate_pro_plugin() {
+			if ( isset( $_GET['action'] ) && 'merchant_activate_pro' === $_GET['action'] ) {
+                if (
+                        ! isset( $_GET['nonce'] )
+                        || ! wp_verify_nonce(
+                                sanitize_text_field( wp_unslash( $_GET['nonce'] ) ),
+                                'merchant_activate_pro'
+                        ) ) {
+                    return;
+                }
+
+				if ( ! current_user_can( 'activate_plugins' ) ) {
+					return;
+				}
+
+				$result = activate_plugin( 'merchant-pro/merchant-pro.php' );
+
+				if ( is_wp_error( $result ) ) {
+					wp_die( esc_html( $result->get_error_message() ) );
+				}
+
+				$fallback_url = admin_url( 'admin.php?page=merchant' );
+				$referer      = wp_get_referer();
+
+				// Ensure the referer is safe and is a Merchant page.
+				$redirect_to = wp_validate_redirect( $referer, $fallback_url );
+				if ( $redirect_to !== $fallback_url ) {
+					$parsed_url   = wp_parse_url( $redirect_to );
+					$query_params = array();
+					parse_str( $parsed_url['query'] ?? '', $query_params );
+
+					if ( empty( $query_params['page'] ) || strpos( $query_params['page'], 'merchant' ) !== 0 ) {
+						$redirect_to = $fallback_url;
+					}
+				}
+
+				wp_safe_redirect( $redirect_to );
+				exit;
+			}
+		}
 	}
 
 	Merchant_Admin_Options::instance();

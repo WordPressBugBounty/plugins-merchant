@@ -52,6 +52,7 @@ Merchant_Admin_Options::create( array(
 								'products'   => esc_html__( 'Specific Products', 'merchant' ),
 								'categories' => esc_html__( 'Specific Categories', 'merchant' ),
 								'tags'       => esc_html__( 'Specific Tags', 'merchant' ),
+								'brands'     => esc_html__( 'Specific Brands', 'merchant' ),
 							),
 							'default' => 'products',
 						),
@@ -86,6 +87,17 @@ Merchant_Admin_Options::create( array(
 							'desc'        => esc_html__( 'Select the product tags that will show the offer.', 'merchant' ),
 							'condition'   => array( 'rules_to_display', '==', 'tags' ),
 						),
+						array(
+							'id'          => 'brand_slugs',
+							'type'        => 'select_ajax',
+							'title'       => esc_html__( 'Brands', 'merchant' ),
+							'source'      => 'options',
+							'multiple'    => true,
+							'options'     => Merchant_Admin_Options::get_brand_select2_choices(),
+							'placeholder' => esc_html__( 'Select brands', 'merchant' ),
+							'desc'        => esc_html__( 'Select the product brands that will show the offer.', 'merchant' ),
+							'condition'   => array( 'rules_to_display', '==', 'brands' ),
+						),
 
 
 
@@ -101,7 +113,7 @@ Merchant_Admin_Options::create( array(
 									array(
 										'field'    => 'rules_to_display',
 										'operator' => 'in',
-										'value'    => array( 'all', 'categories', 'tags' ),
+										'value'    => array( 'all', 'categories', 'tags', 'brands' ),
 									),
 								),
 							),
@@ -119,7 +131,7 @@ Merchant_Admin_Options::create( array(
 									array(
 										'field'    => 'rules_to_display',
 										'operator' => 'in',
-										'value'    => array( 'all', 'categories', 'tags' ),
+										'value'    => array( 'all', 'categories', 'tags', 'brands' ),
 									),
 									array(
 										'field'    => 'exclude_products_toggle',
@@ -141,7 +153,7 @@ Merchant_Admin_Options::create( array(
 									array(
 										'field'    => 'rules_to_display',
 										'operator' => 'in',
-										'value'    => array( 'all', 'categories', 'tags' ),
+										'value'    => array( 'all', 'tags', 'brands' ),
 									),
 								),
 							),
@@ -162,7 +174,7 @@ Merchant_Admin_Options::create( array(
 									array(
 										'field'    => 'rules_to_display',
 										'operator' => 'in',
-										'value'    => array( 'all', 'categories', 'tags' ),
+										'value'    => array( 'all', 'tags', 'brands' ),
 									),
 									array(
 										'field'    => 'exclude_categories_toggle',
@@ -184,7 +196,7 @@ Merchant_Admin_Options::create( array(
 									array(
 										'field'    => 'rules_to_display',
 										'operator' => 'in',
-										'value'    => array( 'all', 'categories', 'tags' ),
+										'value'    => array( 'all', 'categories', 'brands' ),
 									),
 								),
 							),
@@ -205,10 +217,53 @@ Merchant_Admin_Options::create( array(
 									array(
 										'field'    => 'rules_to_display',
 										'operator' => 'in',
-										'value'    => array( 'all', 'categories', 'tags' ),
+										'value'    => array( 'all', 'categories', 'brands' ),
 									),
 									array(
 										'field'    => 'exclude_tags_toggle',
+										'operator' => '===',
+										'value'    => true,
+									),
+								),
+							),
+						),
+
+						array(
+							'id'         => 'exclude_brands_toggle',
+							'type'       => 'switcher',
+							'title'      => esc_html__( 'Exclude Brands', 'merchant' ),
+							'default'    => 0,
+							'conditions' => array(
+								'relation' => 'AND',
+								'terms'    => array(
+									array(
+										'field'    => 'rules_to_display',
+										'operator' => 'in',
+										'value'    => array( 'all', 'categories', 'tags' ),
+									),
+								),
+							),
+						),
+
+						array(
+							'id'          => 'excluded_brands',
+							'type'        => 'select_ajax',
+							'title'       => esc_html__( 'Excluded Brands List', 'merchant' ),
+							'source'      => 'options',
+							'multiple'    => true,
+							'options'     => Merchant_Admin_Options::get_brand_select2_choices(),
+							'placeholder' => esc_html__( 'Select brands', 'merchant' ),
+							'desc'        => esc_html__( 'Exclude brands from this campaign.', 'merchant' ),
+							'conditions'  => array(
+								'relation' => 'AND',
+								'terms'    => array(
+									array(
+										'field'    => 'rules_to_display',
+										'operator' => 'in',
+										'value'    => array( 'all', 'categories', 'tags' ),
+									),
+									array(
+										'field'    => 'exclude_brands_toggle',
 										'operator' => '===',
 										'value'    => true,
 									),
@@ -227,20 +282,15 @@ Merchant_Admin_Options::create( array(
 									array(
 										'field'    => 'rules_to_display',
 										'operator' => 'in',
-										'value'    => array( 'all', 'categories', 'tags' ),
+										'value'    => array( 'all', 'categories', 'tags', 'brands' ),
 									),
 								),
 							),
 						),
-
-
-
-
-
 						array(
 							'id'      => 'min_quantity',
 							'type'    => 'number',
-							'min'     => 0,
+							'min'     => 1,
 							'step'    => 1,
 							'title'   => esc_html__( 'Quantity', 'merchant' ),
 							'desc'    => esc_html__( 'The minimum quantity that customers should purchase to get the offer', 'merchant' ),
@@ -262,12 +312,34 @@ Merchant_Admin_Options::create( array(
 							'condition' => array( 'rules_to_display', '==', 'products' ),
 						),
 						array(
+							'id'      => 'quantity_mode',
+							'type'    => 'select',
+							'title'   => esc_html__( 'Gift quantity', 'merchant' ),
+							'desc'    => esc_html__( 'Choose the quantity of the gift product.', 'merchant' ),
+							'options' => array(
+								'one_product' => esc_html__( 'The gift is always a single product', 'merchant' ),
+								'matches_x'   => esc_html__( 'Gift quantity matches the purchased product quantity', 'merchant' ),
+								'custom'      => esc_html__( 'Custom quantity', 'merchant' ),
+							),
+							'default' => 'custom',
+						),
+						array(
 							'id'      => 'quantity',
 							'type'    => 'number',
-							'min'     => 0,
+							'min'     => 1,
 							'step'    => 1,
 							'title'   => esc_html__( 'Quantity', 'merchant' ),
 							'default' => 3,
+							'conditions' => array(
+								'relation' => 'AND',
+								'terms'    => array(
+									array(
+										'field'    => 'quantity_mode',
+										'operator' => '===',
+										'value'    => 'custom',
+									),
+								),
+							),
 						),
 						array(
 							'id'      => 'discount_type',

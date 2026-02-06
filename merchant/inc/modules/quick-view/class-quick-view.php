@@ -283,8 +283,13 @@ class Merchant_Quick_View extends Merchant_Add_Module {
 	 * @return void
 	 */
 	public function enqueue_scripts() {
-		wp_enqueue_script( 'zoom' );
-		wp_enqueue_script( 'flexslider' );
+        if ( defined( 'WC_VERSION' ) && version_compare( WC_VERSION, '10.3', '>=' ) ) {
+            wp_enqueue_script( 'wc-zoom' );
+            wp_enqueue_script( 'wc-flexslider' );
+        } else {
+            wp_enqueue_script( 'zoom' );
+            wp_enqueue_script( 'flexslider' );
+        }
 		wp_enqueue_script( 'wc-single-product' );
 		wp_enqueue_script( 'wc-add-to-cart-variation' );
 

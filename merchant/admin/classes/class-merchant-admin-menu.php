@@ -15,6 +15,7 @@ if ( ! class_exists( 'Merchant_Admin_Menu' ) ) {
 		public $capability       = 'manage_options';
 		public $priority         = 58;
 		public $notifications    = array();
+		public static $installed_plugins = array();
 		private static $instance = null;
 
 		/**
@@ -500,11 +501,28 @@ if ( ! class_exists( 'Merchant_Admin_Menu' ) ) {
 		}
 
 		/**
+		 * Get installed plugins
+		 * Provide the installed plugins array into the installed plugins static property for memoization purposes.
+		 * 
+		 * @return array
+		 */
+		public static function get_installed_plugins() {
+			if ( empty( self::$installed_plugins ) ) {
+				if ( ! function_exists( 'get_plugins' ) ) {
+					require_once ABSPATH . 'wp-admin/includes/plugin.php';
+				}
+				self::$installed_plugins = get_plugins();
+			}
+			return self::$installed_plugins;
+		}
+
+		/**
 		 * Include Page dashboard
 		 *
 		 * @return void
 		 */
 		public function page_dashboard() {
+			self::get_installed_plugins();
 			require_once MERCHANT_DIR . 'admin/pages/page-dashboard.php';
 		}
 

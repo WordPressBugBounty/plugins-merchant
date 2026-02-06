@@ -1,5 +1,6 @@
 .merchant-preview {
   padding: 30px;
+  min-height: 300px;
 }
 .merchant-preview .address label {
   display: block;
@@ -23,4 +24,10 @@
 }
 .merchant-preview .address input[disabled] {
   background-color: #f5f5f5;
+}
+
+gmp-place-autocomplete {
+  border-radius: 0;
+  color-scheme: light;
+  background-color: #fff;
 }

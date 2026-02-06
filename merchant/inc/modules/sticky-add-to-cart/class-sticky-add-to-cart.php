@@ -69,6 +69,9 @@ class Merchant_Sticky_Add_To_Cart extends Merchant_Add_Module {
 			'scroll_hide'               => 0,
 			'visibility'                => 'all',
 			'allow_third_party_plugins' => 0,
+			'hide_quantity'             => 0,
+			'smart_variation_handling'  => 1,
+			'variation_threshold'       => 3,
 		);
 
 		// Module data.

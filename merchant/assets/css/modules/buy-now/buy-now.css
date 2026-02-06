@@ -11,8 +11,8 @@
           align-items: center;
   line-height: 1.2 !important;
   max-width: none;
-  margin-top: 0.5rem !important;
-  margin-bottom: 1rem !important;
+  margin-top: var(--mrc-buy-now-margin-top, 0.5rem) !important;
+  margin-bottom: var(--mrc-buy-now-margin-bottom, 1rem) !important;
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
@@ -56,8 +56,8 @@
   width: -webkit-fit-content !important;
   width: -moz-fit-content !important;
   width: fit-content !important;
-  margin-top: 0 !important;
-  margin-bottom: 0 !important;
+  margin-top: var(--mrc-buy-now-margin-top, 0) !important;
+  margin-bottom: var(--mrc-buy-now-margin-bottom, 0) !important;
   margin-left: 5px;
   float: none !important;
 }

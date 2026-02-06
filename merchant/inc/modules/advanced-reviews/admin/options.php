@@ -17,6 +17,14 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 do_action( 'merchant_admin_before_include_modules_options', Merchant_Advanced_Reviews::MODULE_ID );
 
+$aggregate_polylang_reviews = function_exists( 'pll_get_post_translations' ) ? array(
+	'id'      => 'aggregate_reviews_translations',
+	'type'    => 'switcher',
+	'title'   => __( 'Aggregate Reviews Across Translations', 'merchant' ),
+	'desc'    => __( 'Enable to include reviews from all Polylang-translated versions of a product, instead of only the selected product language.', 'merchant' ),
+	'default' => 0,
+) : null;
+
 // Settings
 Merchant_Admin_Options::create(
 	array(
@@ -195,6 +203,8 @@ Merchant_Admin_Options::create(
 				'unit'    => '',
 				'default' => 10,
 			),
+
+			$aggregate_polylang_reviews,
 		),
 	)
 );

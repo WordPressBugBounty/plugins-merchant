@@ -86,14 +86,14 @@ class Merchant_Product_Labels extends Merchant_Add_Module {
 			add_filter( 'merchant_custom_css', array( $this, 'admin_custom_css' ) );
 		}
 
-		if ( Merchant_Modules::is_module_active( self::MODULE_ID ) && is_admin() ) {
-			// Init translations.
-			$this->init_translations();
-		}
-
 		if ( ! Merchant_Modules::is_module_active( self::MODULE_ID ) ) {
 			return;
 		}
+
+        if ( is_admin() ) {
+            // Init translations.
+            $this->init_translations();
+        }
 
         // Required for block editor
 		add_action( 'enqueue_block_editor_assets', array( $this, 'enqueue_css' ) );
@@ -155,6 +155,9 @@ class Merchant_Product_Labels extends Merchant_Add_Module {
 		add_filter( 'merchant_custom_css', array( $this, 'frontend_custom_css' ) );
 
         $this->migrate_exclusion_list();
+
+        // Migrate exclusion fields for backward compatibility
+        $this->migrate_exclusion_fields();
 	}
 
 	/**
@@ -344,7 +347,10 @@ class Merchant_Product_Labels extends Merchant_Add_Module {
 	 * @return string label
 	 */
 	public function get_product_sale_data( $product, $label ) {
-		$sale_data = array();
+        $sale_data = array(
+                'amount'     => 0,
+                'percentage' => 0,
+        );
 
         if ( $product->is_type( 'variable' ) ) {
 	        $regular_price = (float) wc_get_price_to_display( $product, array( 'price' => $product->get_variation_regular_price( 'min' ) ) );
@@ -399,7 +405,7 @@ class Merchant_Product_Labels extends Merchant_Add_Module {
 
             if ( 0 !== $sale_price || ! empty( $sale_price ) ) {
 	            $sale_data['amount']     = $regular_price - $sale_price;
-	            $sale_data['percentage'] = $regular_price ? round( 100 - ( ( $sale_price / $regular_price ) * 100 ) ) : 0;
+	            $sale_data['percentage'] = $regular_price ? round( 100 - ( ( $sale_price / $regular_price ) * 100 ),0 ) : 0;
             }
         }
 
@@ -664,161 +670,481 @@ class Merchant_Product_Labels extends Merchant_Add_Module {
 		) );
 	}
 
-	/**
-	 * Get labels group.
-	 *
-	 * @param $product WC_Product product object.
-	 * @param $context string context archive or single.
-	 *
-	 * @return string product labels html.
-	 */
-	public function get_labels( $product, $context = 'both' ) {
-		$settings            = $this->get_module_settings();
-		$product_labels_html = '';
+    /**
+     * Get module settings with defaults
+     *
+     * @return array Module settings
+     */
+    private function get_normalized_settings() {
+        $settings = $this->get_module_settings();
 
-		$is_shortcode = $settings['use_shortcode'] ?? false;
+        return array(
+                'use_shortcode'    => $settings['use_shortcode'] ?? false,
+                'multiple_labels'  => $settings['multiple_labels'] ?? false,
+                'labels'           => $settings['labels'] ?? array(),
+        );
+    }
 
-		if ( isset( $settings['labels'] ) ) {
-			$labels = $settings['labels'];
-			foreach ( $labels as $label ) {
-				if ( isset( $label['campaign_status'] ) && $label['campaign_status'] === 'inactive' ) {
-					continue;
-				}
+    /**
+     * Check if label should be displayed based on status
+     *
+     * @param array $label Label configuration.
+     *
+     * @return bool True if label is active
+     */
+    private function is_label_active( $label ) {
+        return ! isset( $label['campaign_status'] ) || $label['campaign_status'] !== 'inactive';
+    }
 
-                if ( ! isset( $label['show_pages'] ) ) {
-	                $label['show_pages'] = array( 'homepage', 'single', 'archive' );
+    /**
+     * Normalize label display settings with defaults
+     *
+     * @param array $label Label configuration.
+     *
+     * @return array Normalized label configuration
+     */
+    private function normalize_label_display_settings( $label ) {
+        if ( ! isset( $label['show_pages'] ) ) {
+            $label['show_pages'] = array( 'homepage', 'single', 'archive' );
+        }
+
+        if ( ! isset( $label['show_devices'] ) ) {
+            $label['show_devices'] = array( 'desktop', 'mobile' );
+        }
+
+        return $label;
+    }
+
+    /**
+     * Get taxonomy mapping for display rules
+     *
+     * @return array Taxonomy map with taxonomy and slug keys
+     */
+    private function get_taxonomy_map() {
+        return array(
+                'by_category' => array(
+                        'taxonomy' => 'product_cat',
+                        'key'      => 'product_cats',
+                ),
+                'by_tags'     => array(
+                        'taxonomy' => 'product_tag',
+                        'key'      => 'product_tags',
+                ),
+                'by_brands'   => array(
+                        'taxonomy' => 'product_brand',
+                        'key'      => 'product_brands',
+                ),
+        );
+    }
+
+    /**
+     * Check if product has taxonomy term
+     *
+     * @param WC_Product $product Product object.
+     * @param array      $label Label configuration.
+     * @param string     $display_rule Display rule type.
+     *
+     * @return bool True if product has matching term
+     */
+    private function product_has_taxonomy_term( $product, $label, $display_rule ) {
+        $taxonomy_map = $this->get_taxonomy_map();
+
+        if ( ! isset( $taxonomy_map[ $display_rule ] ) ) {
+            return false;
+        }
+
+        $taxonomy = $taxonomy_map[ $display_rule ]['taxonomy'];
+        $key      = $taxonomy_map[ $display_rule ]['key'];
+        $slugs    = $label[ $key ] ?? array();
+
+        foreach ( $slugs as $slug ) {
+            if ( has_term( $slug, $taxonomy, $product->get_id() ) ) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Check if product matches specific products rule
+     *
+     * @param WC_Product $product Product object.
+     * @param array      $label Label configuration.
+     *
+     * @return bool True if product ID matches
+     */
+    private function product_matches_specific_products( $product, $label ) {
+        $product_ids = $label['product_ids'] ?? array();
+        $product_ids = merchant_parse_product_ids( $product_ids );
+
+        return in_array( $product->get_id(), $product_ids, true );
+    }
+
+    /**
+     * Check if product should display label based on display rule
+     *
+     * @param WC_Product $product Product object.
+     * @param array      $label Label configuration.
+     *
+     * @return bool True if product matches display rule
+     */
+    private function product_matches_display_rule( $product, $label ) {
+        $display_rule = $label['display_rules'] ?? 'products_on_sale';
+
+        switch ( $display_rule ) {
+            case 'featured_products':
+                return $this->is_featured( $product );
+
+            case 'products_on_sale':
+                return $this->is_on_sale( $product );
+
+            case 'by_category':
+            case 'by_tags':
+            case 'by_brands':
+                return $this->product_has_taxonomy_term( $product, $label, $display_rule );
+
+            case 'out_of_stock':
+                return $this->is_out_of_stock( $product );
+
+            case 'pre-order':
+                return $this->is_pre_order( $product );
+
+            case 'new_products':
+                if ( isset( $label['new_products_days'] ) ) {
+                    return $this->is_new( $product, $label['new_products_days'] );
                 }
+                return false;
 
-                if ( ! isset( $label['show_devices'] ) ) {
-	                $label['show_devices'] = array( 'desktop', 'mobile' );
+            case 'specific_products':
+                return $this->product_matches_specific_products( $product, $label );
+
+            case 'all_products':
+                return true;
+
+            default:
+                return false;
+        }
+    }
+
+    /**
+     * Get product sale data for label replacements
+     *
+     * @param WC_Product $product Product object.
+     * @param array      $label Label configuration.
+     *
+     * @return array Sale data with amount and percentage
+     */
+    private function get_sale_replacement_data( $product, $label ) {
+        if ( ! $this->is_on_sale( $product ) ) {
+            return array(
+                    'amount'     => '',
+                    'percentage' => '',
+            );
+        }
+
+        $sale_data = $this->get_product_sale_data( $product, $label );
+        if ( ! is_array( $sale_data ) ) {
+            $sale_data = array( 'amount' => 0, 'percentage' => 0 );
+        }
+
+        $amount     = isset( $sale_data['amount'] ) && $sale_data['amount'] > 0
+                ? wc_price( $sale_data['amount'] )
+                : '';
+
+        $percentage = isset( $sale_data['percentage'] ) && $sale_data['percentage'] > 0
+                ? $sale_data['percentage'] . '%'
+                : '';
+
+        return array(
+                'amount'     => $amount,
+                'percentage' => $percentage,
+        );
+    }
+
+    /**
+     * Get product inventory data for label replacements
+     *
+     * @param WC_Product $product Product object.
+     *
+     * @return array Inventory data with status and quantity
+     */
+    private function get_inventory_replacement_data( $product ) {
+        $status   = $product->is_in_stock() ? esc_html__( 'In stock', 'merchant' ) : esc_html__( 'Sold out', 'merchant' );
+        $quantity = $product->get_stock_quantity();
+
+        return array(
+                'status'   => $status,
+                'quantity' => $quantity,
+        );
+    }
+
+    /**
+     * Replace shortcodes in label HTML with product data
+     *
+     * @param string     $label_html Label HTML with shortcodes.
+     * @param WC_Product $product Product object.
+     * @param array      $label Label configuration.
+     *
+     * @return string Label HTML with replaced values
+     */
+    private function replace_label_shortcodes( $label_html, $product, $label ) {
+        $sale_data      = $this->get_sale_replacement_data( $product, $label );
+        $inventory_data = $this->get_inventory_replacement_data( $product );
+
+        return str_replace(
+                array(
+                        '{sale}',
+                        '{sale_amount}',
+                        '{inventory}',
+                        '{inventory_quantity}',
+                ),
+                array(
+                        $sale_data['percentage'],
+                        $sale_data['amount'],
+                        $inventory_data['status'],
+                        $inventory_data['quantity'],
+                ),
+                $label_html
+        );
+    }
+
+    /**
+     * Process single label and return label data
+     *
+     * @param array      $label Label configuration.
+     * @param WC_Product $product Product object.
+     * @param string     $context Display context.
+     *
+     * @return array|null Label data array or null if not displayed
+     */
+    private function process_single_label( $label, $product, $context ) {
+        // Check if label is active
+        if ( ! $this->is_label_active( $label ) ) {
+            return null;
+        }
+
+        // Normalize display settings
+        $label = $this->normalize_label_display_settings( $label );
+
+        // Check if label should show in this context
+        if ( ! $this->show_label( $label, $context ) ) {
+            return null;
+        }
+
+        // Check if product is excluded
+        if ( $this->is_product_excluded( $product->get_id(), $label ) ) {
+            return null;
+        }
+
+        // Check if product matches display rule
+        if ( ! $this->product_matches_display_rule( $product, $label ) ) {
+            return null;
+        }
+
+        // Get and process label HTML
+        $label_html = $this->label( $label );
+        $label_html = $this->replace_label_shortcodes( $label_html, $product, $label );
+
+        return array(
+                'label' => $label,
+                'html'  => $label_html,
+        );
+    }
+
+    /**
+     * Collect all matching labels for product
+     *
+     * @param array      $labels All labels configuration.
+     * @param WC_Product $product Product object.
+     * @param string     $context Display context.
+     * @param bool       $multiple_labels Whether to collect multiple labels.
+     *
+     * @return array Array of matching label data
+     */
+    private function collect_matching_labels( $labels, $product, $context, $multiple_labels ) {
+        $matching_labels = array();
+
+        foreach ( $labels as $label ) {
+            $label_data = $this->process_single_label( $label, $product, $context );
+
+            if ( $label_data ) {
+                $matching_labels[] = $label_data;
+
+                // Stop after first match if multiple labels disabled
+                if ( ! $multiple_labels ) {
+                    break;
                 }
+            }
+        }
 
-				if ( ! $this->show_label( $label, $context ) ) {
-					continue;
-				}
+        return $matching_labels;
+    }
 
-				$is_excluded = merchant_is_product_excluded( $product->get_id(), $label );
-				if ( $is_excluded ) {
-					continue;
-				}
+    /**
+     * Get device visibility CSS classes
+     *
+     * @param array $label Label configuration.
+     *
+     * @return string CSS classes for device visibility
+     */
+    private function get_device_visibility_classes( $label ) {
+        if ( ! isset( $label['show_devices'] ) ) {
+            return '';
+        }
 
-				$display_rule = $label['display_rules'] ?? 'products_on_sale';
-				switch ( $display_rule ) {
-					case 'featured_products':
-						if ( $this->is_featured( $product ) ) {
-							$product_labels_html .= $this->label( $label );
-						}
-						break;
+        $classes = '';
+        foreach ( $label['show_devices'] as $device ) {
+            $classes .= ' show-on-' . $device;
+        }
 
-					case 'products_on_sale':
-						if ( $this->is_on_sale( $product ) ) {
-							$product_labels_html .= $this->label( $label );
-						}
-						break;
+        return $classes;
+    }
 
-					case 'by_category':
-                    case 'by_tags':
-	                    $taxonomy = $display_rule === 'by_category' ? 'product_cat' : 'product_tag';
-	                    $slugs    = $display_rule === 'by_category' ? ( $label['product_cats'] ?? array() ) : ( $label['product_tags'] ?? array() );
-	                    foreach ( $slugs as $slug ) {
-		                    if ( has_term( $slug, $taxonomy, $product->get_id() ) ) {
-			                    $product_labels_html .= $this->label( $label );
-			                    break;
-		                    }
-	                    }
-						break;
+    /**
+     * Get label shape CSS class
+     *
+     * @param array $label Label configuration.
+     *
+     * @return string CSS class for label shape
+     */
+    private function get_label_shape_class( $label ) {
+        $label_type = $label['label_type'] ?? 'text';
 
-					case 'out_of_stock':
-						if ( $this->is_out_of_stock( $product ) ) {
-							$product_labels_html .= $this->label( $label );
-						}
-						break;
+        if ( $label_type !== 'text' ) {
+            return '';
+        }
 
-					case 'pre-order':
-						if ( $this->is_pre_order( $product ) ) {
-							$product_labels_html .= $this->label( $label );
-						}
-						break;
+        $shape = $label['label_text_shape'] ?? 'text-shape-1';
+        return ' merchant-product-labels__' . $shape;
+    }
 
-					case 'new_products':
-						if ( isset( $label['new_products_days'] ) && $this->is_new( $product, $label['new_products_days'] ) ) {
-							$product_labels_html .= $this->label( $label );
-						}
-						break;
+    /**
+     * Get label wrapper CSS classes
+     *
+     * @param array $label Label configuration.
+     *
+     * @return string CSS classes for label wrapper
+     */
+    private function get_label_wrapper_classes( $label ) {
+        $label_type = $label['label_type'] ?? 'text';
+        $position = $label['position_anchor'] ?? 'top-left';
 
-					case 'specific_products':
-						$product_ids = $label['product_ids'] ?? array();
-						$product_ids = ! is_array( $product_ids ) ? explode( ',', $product_ids ) : $product_ids;
-						$product_ids = array_map( 'intval', $product_ids );
+        $classes = 'merchant-product-labels__label-wrapper';
+        $classes .= ' merchant-product-labels__' . $label_type;
+        $classes .= $this->get_label_shape_class( $label );
+        $classes .= $position === 'top-right' ? ' position-top-right' : ' position-top-left';
 
-						if ( in_array( $product->get_id(), $product_ids, true ) ) {
-							$product_labels_html .= $this->label( $label );
-						}
-						break;
+        return $classes;
+    }
 
-					case 'all_products':
-                        $product_labels_html .= $this->label( $label );
-						break;
-				}
+    /**
+     * Render single label HTML
+     *
+     * @param array $label_data Label data with configuration and HTML.
+     *
+     * @return string Rendered label HTML
+     */
+    private function render_single_label( $label_data ) {
+        $label = $label_data['label'];
+        $label_html = $label_data['html'];
+        $label_styles = $this->get_shape_based_styles( $label );
+        $label_classes = $this->get_label_wrapper_classes( $label );
 
-				if ( $product_labels_html ) {
-					$sale_data = $this->is_on_sale( $product ) ? $this->get_product_sale_data( $product, $label ) : array();
+        return sprintf(
+                '<div class="%s" style="%s">%s</div>',
+                esc_attr( $label_classes ),
+                merchant_array_to_css( $label_styles ),
+                $label_html
+        );
+    }
 
-                    $sale_amount     = ! empty( $sale_data['amount'] ) ? wc_price( $sale_data['amount'] ) : '';
-					$sale_percentage = ! empty( $sale_data['percentage'] ) ? $sale_data['percentage'] . '%' : '';
+    /**
+     * Get main container CSS classes
+     *
+     * @param bool   $is_shortcode Whether using shortcode.
+     * @param string $context Display context.
+     * @param string $device_classes Device visibility classes.
+     *
+     * @return string CSS classes for main container
+     */
+    private function get_main_container_classes( $is_shortcode, $context, $device_classes ) {
+        $classes = 'merchant-product-labels';
+        $classes .= ' merchant-product-labels__' . ( ( $is_shortcode && $context === 'single' ) ? 'shortcode' : 'regular' );
+        $classes .= ' merchant-product-labels--multiple';
+        $classes .= $device_classes;
 
-                    $inventory     = $product->is_in_stock() ? esc_html__( 'In stock', 'merchant' ) : esc_html__( 'Sold out', 'merchant' );
-					$inventory_qty = $product->get_stock_quantity();
+        return $classes;
+    }
 
-                    // Replace {shortcodes} by real values.
-					$product_labels_html = str_replace(
-                        array(
-                            '{sale}',
-                            '{sale_amount}',
-                            '{inventory}',
-                            '{inventory_quantity}',
-                        ),
-						array(
-							$sale_percentage,
-							$sale_amount,
-							$inventory,
-							$inventory_qty,
-                        ),
-                        $product_labels_html
-                    );
+    /**
+     * Render all matching labels
+     *
+     * @param array  $matching_labels Array of matching label data.
+     * @param bool   $is_shortcode Whether using shortcode.
+     * @param string $context Display context.
+     *
+     * @return string Rendered labels HTML
+     */
+    private function render_labels_output( $matching_labels, $is_shortcode, $context ) {
+        if ( empty( $matching_labels ) ) {
+            return '';
+        }
 
-					$label_type     = $label['label_type'] ?? 'text';
-					$label_position = $label['label_position'] ?? 'top-left';
+        $output = '';
+        $device_classes = '';
 
-					$styles = $this->get_shape_based_styles( $label );
+        foreach ( $matching_labels as $label_data ) {
+            // Get device visibility classes from first label
+            if ( empty( $device_classes ) ) {
+                $device_classes = $this->get_device_visibility_classes( $label_data['label'] );
+            }
 
-					$device_visibility_classes = '';
+            $output .= $this->render_single_label( $label_data );
+        }
 
-					if ( isset( $label['show_devices'] ) ) {
-						foreach ( $label['show_devices'] as $device ) {
-							$device_visibility_classes .= ' show-on-' . $device;
-						}
-					}
+        $main_classes = $this->get_main_container_classes( $is_shortcode, $context, $device_classes );
 
-					$classes  = 'merchant-product-labels';
-					$classes .= ' merchant-product-labels__' . ( ( $is_shortcode && $context === 'single' ) ? 'shortcode' : 'regular' );
-					$classes .= ' position-' . $label_position;
-					$classes .= ' merchant-product-labels__' . $label_type;
-					$classes .= $label_type === 'text' ? ' merchant-product-labels__' . $label['label_text_shape'] ?? 'text-shape-1' : '';
-					$classes .= $device_visibility_classes;
+        return sprintf(
+                '<div class="%s">%s</div>',
+                esc_attr( $main_classes ),
+                $output
+        );
+    }
 
-					return '<div class="' . esc_attr( $classes ) . '" style="' . merchant_array_to_css( $styles ) . '">' . $product_labels_html . '</div>';
-				}
-			}
-		} else {
-			// legacy mode support.
-			return $this->legacy_product_label( $product );
-		}
+    /**
+     * Get labels group.
+     *
+     * @param WC_Product $product Product object.
+     * @param string     $context Context archive or single.
+     *
+     * @return string Product labels HTML.
+     */
+    public function get_labels( $product, $context = 'both' ) {
+        $settings = $this->get_normalized_settings();
 
-		return '';
-	}
+        // Handle legacy mode
+        if ( empty( $settings['labels'] ) ) {
+            return $this->legacy_product_label( $product );
+        }
 
-	/**
+        // Collect matching labels
+        $matching_labels = $this->collect_matching_labels(
+                $settings['labels'],
+                $product,
+                $context,
+                $settings['multiple_labels']
+        );
+
+        // Render and return output
+        return $this->render_labels_output(
+                $matching_labels,
+                $settings['use_shortcode'],
+                $context
+        );
+    }
+
+    /**
      * Get all styles for the current label
      *
 	 * @param $label
@@ -826,15 +1152,14 @@ class Merchant_Product_Labels extends Merchant_Add_Module {
 	 * @return array
 	 */
 	public function get_shape_based_styles( $label ) {
-		$styles           = array();
+		$styles = array();
 
-        if ( ! is_array( $label ) || empty( $label ) ) {
-            return $styles;
-        }
+		if ( ! is_array( $label ) || empty( $label ) ) {
+			return $styles;
+		}
 
-		$label_position = $label['label_position'] ?? 'top-left';
-		$label_type     = $label['label_type'] ?? 'text';
-		$label_shape    = $label['label_text_shape'] ?? 'text-shape-1';
+		$label_type  = $label['label_type'] ?? 'text';
+		$label_shape = $label['label_text_shape'] ?? 'text-shape-1';
 
 		$styles['margin']  = 0;
 		$styles['padding'] = 0;
@@ -846,7 +1171,7 @@ class Merchant_Product_Labels extends Merchant_Add_Module {
 
 			$font_style = $label['font_style'] ?? 'normal';
 
-            if ( strpos( $font_style, 'bold' ) !== false ) {
+			if ( strpos( $font_style, 'bold' ) !== false ) {
 				$styles['font-weight'] = 'bold';
 			}
 
@@ -859,11 +1184,45 @@ class Merchant_Product_Labels extends Merchant_Add_Module {
 			$styles['border-radius']    = ( $label['shape_radius'] ?? 5 ) . 'px';
 		}
 
-		$styles['top']= ( $label['margin_y'] ?? 10 ) . 'px';
-		$styles[ ( $label_position === 'top-left' ) ? 'left' : 'right' ] = ( $label['margin_x'] ?? 10 ) . 'px';
+		// Always use absolute positioning
+		$x = $label['position_x'] ?? 10;
+		$y = $label['position_y'] ?? 10;
+		$x_unit = $label['position_x_unit'] ?? 'px';
+		$anchor = $label['position_anchor'] ?? 'top-left';
 
-        return $styles;
-    }
+		$styles['top'] = $y . 'px';
+
+		// Handle anchor point - use left or right based on anchor
+		if ( $anchor === 'top-right' ) {
+			$styles['right'] = $x . $x_unit;
+		} else {
+			// top-left (default)
+			$styles['left'] = $x . $x_unit;
+		}
+
+		// Apply rotation for shapes 5 and 6 based on anchor point
+		if ( $label_type === 'text' && in_array( $label_shape, array( 'text-shape-5', 'text-shape-6' ), true ) ) {
+			$is_top_right = ( $anchor === 'top-right' );
+
+			if ( $label_shape === 'text-shape-5' ) {
+				$rotation = $is_top_right ? '45deg' : '-45deg';
+				$translateX = $is_top_right ? '50%' : '-50%';
+				$translateY = '50%';
+				$origin = $is_top_right ? 'right' : 'left';
+			} else { // text-shape-6
+				$rotation = $is_top_right ? '45deg' : '-45deg';
+				$translateX = $is_top_right ? '50%' : '-50%';
+				$translateY = '25%';
+				$origin = $is_top_right ? 'right' : 'left';
+			}
+
+			$styles['transform'] = "rotate({$rotation}) translate({$translateX}, {$translateY})";
+			$styles['transform-origin'] = $origin;
+		}
+
+
+		return $styles;
+	}
 
 	/**
      * Should show the label for current page.
@@ -1150,8 +1509,9 @@ class Merchant_Product_Labels extends Merchant_Add_Module {
 				$excluded_products   = $offer['excluded_products'] ?? '';
 				$excluded_categories = $offer['excluded_categories'] ?? array();
 				$excluded_tags       = $offer['excluded_tags'] ?? array();
+				$excluded_brands     = $offer['excluded_brands'] ?? array();
 
-				if ( ! empty( $excluded_products ) || ! empty( $excluded_categories ) || ! empty( $excluded_tags ) ) {
+				if ( ! empty( $excluded_products ) || ! empty( $excluded_categories ) || ! empty( $excluded_tags ) || ! empty( $excluded_brands ) ) {
 					$labels[ $key ]['exclusion_enabled'] = true;
 					$update = true;
 				}
@@ -1165,6 +1525,117 @@ class Merchant_Product_Labels extends Merchant_Add_Module {
 			update_option( $option, true, false );
 		}
 	}
+
+	/**
+	 * Check if product is excluded based on label exclusion settings
+	 *
+	 * @param int   $product_id Product ID
+	 * @param array $label     Label settings
+	 * @return bool
+	 * @since 2.1.8
+	 */
+	private function is_product_excluded( $product_id, $label ) {
+        $display_rule = $label['display_rules'] ?? 'products_on_sale';
+		$product = wc_get_product( $product_id );
+		$_product_id = $product && $product->is_type( 'variation' ) ? $product->get_parent_id() : $product_id;
+
+		// Exclude products
+		$exclude_products = ! empty( $label['exclude_products_toggle'] );
+		if ( $exclude_products ) {
+			$excluded_product_ids = $label['excluded_products'] ?? array();
+			$excluded_product_ids = merchant_parse_product_ids( $excluded_product_ids );
+
+			if ( in_array( (int) $product_id, $excluded_product_ids, true ) || in_array( (int) $_product_id, $excluded_product_ids, true ) ) {
+				return true;
+			}
+		}
+
+		// Exclude categories (only when not targeting specific categories)
+		$exclude_categories = ! empty( $label['exclude_categories_toggle'] );
+		if ( $exclude_categories && $display_rule !== 'by_category' ) {
+			$excluded_categories_slugs = $label['excluded_categories'] ?? array();
+
+			if ( ! empty( $excluded_categories_slugs ) && has_term( $excluded_categories_slugs, 'product_cat', $_product_id ) ) {
+				return true;
+			}
+		}
+
+		// Exclude tags (only when not targeting specific tags)
+		$exclude_tags = ! empty( $label['exclude_tags_toggle'] );
+		if ( $exclude_tags && $display_rule !== 'by_tags' ) {
+			$excluded_tags_slugs = $label['excluded_tags'] ?? array();
+
+			if ( ! empty( $excluded_tags_slugs ) && has_term( $excluded_tags_slugs, 'product_tag', $_product_id ) ) {
+				return true;
+			}
+		}
+
+		// Exclude brands (only when not targeting specific brands)
+		$exclude_brands = ! empty( $label['exclude_brands_toggle'] );
+		if ( $exclude_brands && $display_rule !== 'by_brands' ) {
+			$excluded_brands_slugs = $label['excluded_brands'] ?? array();
+
+			if ( ! empty( $excluded_brands_slugs ) && has_term( $excluded_brands_slugs, 'product_brand', $_product_id ) ) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Migrate exclusion fields for backward compatibility
+	 *
+	 * @since 2.1.8
+	 */
+    private function migrate_exclusion_fields() {
+        $option_name = 'merchant_' . $this->module_id . '_ex_fields';
+        if ( ! get_option( $option_name, false ) ) {
+            $labels = Merchant_Admin_Options::get( self::MODULE_ID, 'labels', array() );
+            if ( empty( $labels ) ) {
+                // No labels to migrate, so we can skip this.
+                update_option( $option_name, true, false );
+
+                return;
+            }
+            $needs_migration = false;
+            $updated_labels = array();
+            foreach ( $labels as $label ) {
+                $n = 0;
+                // Check if individual toggles don't exist yet
+                if ( ! isset( $label['exclude_products_toggle'] ) ) {
+                    $label['exclude_products_toggle'] = ! empty( $label['excluded_products'] );
+                    ++ $n;
+                }
+
+                if ( ! isset( $label['exclude_categories_toggle'] ) ) {
+                    $label['exclude_categories_toggle'] = ! empty( $label['excluded_categories'] );
+                    ++ $n;
+                }
+
+                if ( ! isset( $label['exclude_tags_toggle'] ) ) {
+                    $label['exclude_tags_toggle'] = ! empty( $label['excluded_tags'] );
+                    ++ $n;
+                }
+
+                if ( ! isset( $label['exclude_brands_toggle'] ) ) {
+                    $label['exclude_brands_toggle'] = ! empty( $label['excluded_brands'] );
+                    ++ $n;
+                }
+                if ( $n > 0 ) {
+                    $needs_migration = true; // Set to true if any iteration needs migration
+                }
+
+                $updated_labels[] = $label;
+            }
+
+            if ( $needs_migration ) {
+                Merchant_Admin_Options::set( self::MODULE_ID, 'labels', $updated_labels );
+            }
+            // We set autoload to false because this is a flag option only and needed once.
+            update_option( $option_name, true, false );
+        }
+    }
 }
 
 // Initialize the module.

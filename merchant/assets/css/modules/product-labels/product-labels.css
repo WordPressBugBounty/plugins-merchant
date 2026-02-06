@@ -14,16 +14,12 @@
 }
 @media (min-width: 769px) {
   .merchant-product-labels.show-on-desktop {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
+    display: block;
   }
 }
 @media (max-width: 768px) {
   .merchant-product-labels.show-on-mobile {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
+    display: block;
   }
 }
 .merchant-product-labels ~ .merchant-product-labels {
@@ -31,7 +27,7 @@
 }
 .merchant-product-labels__regular {
   position: absolute;
-  top: 10px;
+  top: 0;
   z-index: 999;
 }
 .merchant-product-labels__regular.position-top-left {
@@ -42,6 +38,68 @@
 }
 .merchant-product-labels__regular.position-top-right {
   right: 10px;
+}
+.merchant-product-labels--multiple {
+  width: 100%;
+}
+.merchant-product-labels__position {
+  position: absolute;
+  z-index: 999;
+  gap: 10px;
+  width: 100%;
+}
+.merchant-product-labels__position--top-left {
+  top: 10px;
+  left: 10px;
+}
+.merchant-product-labels__position--top-right {
+  top: 10px;
+  right: 10px;
+}
+.merchant-product-labels__label-wrapper {
+  position: absolute;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+.merchant-product-labels__label-wrapper.merchant-product-labels__text-shape-5.position-top-left {
+  -webkit-transform: rotate(-45deg) translate(-50%, 50%);
+          transform: rotate(-45deg) translate(-50%, 50%);
+  -webkit-transform-origin: left;
+          transform-origin: left;
+}
+.merchant-product-labels__label-wrapper.merchant-product-labels__text-shape-5.position-top-right {
+  -webkit-transform: rotate(45deg) translate(50%, 50%);
+          transform: rotate(45deg) translate(50%, 50%);
+  -webkit-transform-origin: right;
+          transform-origin: right;
+}
+.merchant-product-labels__label-wrapper.merchant-product-labels__text-shape-5.position-absolute {
+  -webkit-transform: rotate(45deg) translate(-50%, 50%);
+          transform: rotate(45deg) translate(-50%, 50%);
+  -webkit-transform-origin: left;
+          transform-origin: left;
+}
+.merchant-product-labels__label-wrapper.merchant-product-labels__text-shape-6.position-top-left {
+  -webkit-transform: rotate(-45deg) translate(-50%, 25%);
+          transform: rotate(-45deg) translate(-50%, 25%);
+  -webkit-transform-origin: left;
+          transform-origin: left;
+}
+.merchant-product-labels__label-wrapper.merchant-product-labels__text-shape-6.position-top-right {
+  -webkit-transform: rotate(45deg) translate(50%, 25%);
+          transform: rotate(45deg) translate(50%, 25%);
+  -webkit-transform-origin: right;
+          transform-origin: right;
+}
+.merchant-product-labels__label-wrapper.merchant-product-labels__text-shape-6.position-absolute {
+  -webkit-transform: rotate(45deg) translate(-50%, 25%);
+          transform: rotate(45deg) translate(-50%, 25%);
+  -webkit-transform-origin: left;
+          transform-origin: left;
 }
 .merchant-product-labels__text .merchant-label {
   position: relative;
@@ -74,17 +132,17 @@
 .merchant-product-labels .merchant-label-shape-rounded {
   border-radius: 4px;
 }
-.merchant-product-labels.merchant-product-labels__text-shape-2 {
+.merchant-product-labels__text-shape-2 {
   border-top-right-radius: 0 !important;
   border-bottom-right-radius: 0 !important;
 }
-.merchant-product-labels.merchant-product-labels__text-shape-2 .merchant-label {
+.merchant-product-labels__text-shape-2 .merchant-label {
   background: inherit;
   border-top-left-radius: inherit;
   border-bottom-left-radius: inherit;
   padding-left: 10px;
 }
-.merchant-product-labels.merchant-product-labels__text-shape-2 .merchant-label:after {
+.merchant-product-labels__text-shape-2 .merchant-label:after {
   content: "";
   position: absolute;
   width: 15px;
@@ -95,38 +153,38 @@
   z-index: -1;
   clip-path: polygon(0 0, 100% 0%, 34% 100%, 0% 100%);
 }
-.merchant-product-labels.merchant-product-labels__text-shape-3 {
+.merchant-product-labels__text-shape-3 {
   clip-path: polygon(10px 0, 100% 0, 100% 100%, 10px 100%, 0 50%);
 }
-.merchant-product-labels.merchant-product-labels__text-shape-3 .merchant-label {
+.merchant-product-labels__text-shape-3 .merchant-label {
   padding-left: 12px;
 }
-.merchant-product-labels.merchant-product-labels__text-shape-4 {
+.merchant-product-labels__text-shape-4 {
   clip-path: polygon(100% 0px, 100% 100%, 0% 100%, 10px 50%, 0% 0%);
   border-top-left-radius: 0 !important;
   border-bottom-left-radius: 0 !important;
 }
-.merchant-product-labels.merchant-product-labels__text-shape-4 .merchant-label {
+.merchant-product-labels__text-shape-4 .merchant-label {
   padding-left: 12px;
 }
-.merchant-product-labels.merchant-product-labels__text-shape-5 {
+.merchant-product-labels__text-shape-5 {
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
 }
-.merchant-product-labels.merchant-product-labels__text-shape-5.position-top-left {
+.merchant-product-labels__text-shape-5.position-top-left {
   -webkit-transform: rotate(-45deg) translate(-50%, 50%);
           transform: rotate(-45deg) translate(-50%, 50%);
   -webkit-transform-origin: left;
           transform-origin: left;
 }
-.merchant-product-labels.merchant-product-labels__text-shape-5.position-top-right {
-  -webkit-transform: rotate(45deg) translate(50%, 50%);
-          transform: rotate(45deg) translate(50%, 50%);
+.merchant-product-labels__text-shape-5.position-top-right {
+  -webkit-transform: rotate(-45deg) translate(50%, 50%);
+          transform: rotate(-45deg) translate(50%, 50%);
   -webkit-transform-origin: right;
           transform-origin: right;
 }
-.merchant-product-labels.merchant-product-labels__text-shape-6 {
+.merchant-product-labels__text-shape-6 {
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
@@ -135,19 +193,19 @@
   -webkit-transform-origin: left;
           transform-origin: left;
 }
-.merchant-product-labels.merchant-product-labels__text-shape-6.position-top-left {
+.merchant-product-labels__text-shape-6.position-top-left {
   -webkit-transform: rotate(-45deg) translate(-50%, 25%);
           transform: rotate(-45deg) translate(-50%, 25%);
   -webkit-transform-origin: left;
           transform-origin: left;
 }
-.merchant-product-labels.merchant-product-labels__text-shape-6.position-top-right {
-  -webkit-transform: rotate(45deg) translate(50%, 25%);
-          transform: rotate(45deg) translate(50%, 25%);
+.merchant-product-labels__text-shape-6.position-top-right {
+  -webkit-transform: rotate(-45deg) translate(50%, 25%);
+          transform: rotate(-45deg) translate(50%, 25%);
   -webkit-transform-origin: right;
           transform-origin: right;
 }
-.merchant-product-labels.merchant-product-labels__text-shape-6:after {
+.merchant-product-labels__text-shape-6:after {
   content: "";
   background: inherit;
   position: absolute;
@@ -157,7 +215,7 @@
   left: 0;
   right: 0;
 }
-.merchant-product-labels.merchant-product-labels__text-shape-8 {
+.merchant-product-labels__text-shape-8 {
   border-radius: 50%;
 }
 

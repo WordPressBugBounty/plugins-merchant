@@ -53,6 +53,7 @@ if ( ! class_exists( 'Merchant_Loader' ) ) {
 		 * Include required classes.
 		 */
 		public function includes() {
+
 			// Essential functions.
 			require_once MERCHANT_DIR . 'inc/functions.php';
 
@@ -93,6 +94,29 @@ if ( ! class_exists( 'Merchant_Loader' ) ) {
 			require_once MERCHANT_DIR . 'inc/analytics/class-merchant-analytics-data-reports.php';
 			require_once MERCHANT_DIR . 'inc/analytics/class-merchant-analytics-data-ajax.php';
 			require_once MERCHANT_DIR . 'inc/analytics/class-merchant-analytics-data-hooks.php';
+
+			// Usage Tracking.
+			require_once MERCHANT_DIR . 'inc/usage-tracking/class-merchant-usage-tracking.php';
+			require_once MERCHANT_DIR . 'inc/usage-tracking/class-merchant-send-usage-task.php';
+
+			/*
+			 * Action Scheduler requires a special loading procedure.
+			 * Load on plugins_loaded to ensure it's available before init.
+			 *
+			 * @since {VERSION}
+			 */
+			add_action(
+				'plugins_loaded',
+				static function() {
+					
+					//Check if Action Scheduler is already loaded.
+					if ( function_exists( 'as_schedule_recurring_action' ) ) {
+						return;
+					}
+
+					require_once MERCHANT_DIR . 'vendor/woocommerce/action-scheduler/action-scheduler.php';
+				},
+			);
 
 			// Modules (free and pro).
 			foreach ( Merchant_Admin_Modules::$modules_data as $module_id => $module_data ) {

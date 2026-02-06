@@ -34,6 +34,8 @@ class Merchant_Product_Swatches extends Merchant_Add_Module {
 		'mouseover'                                  => 0,
 		'tooltip'                                    => 0,
 		'display_variation_name_on_product_title'    => 0,
+		'hide_attribute_label_single'                => 0,
+		'hide_attribute_label_archive'               => 0,
 
 		/**
 		 * Select swatch settings
@@ -191,6 +193,7 @@ class Merchant_Product_Swatches extends Merchant_Add_Module {
 
 			// Enqueue admin styles.
 			add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_css' ) );
+			add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 
 			// Admin preview box.
 			add_filter( 'merchant_module_preview', array( $this, 'render_admin_preview' ), 10, 2 );
@@ -206,16 +209,29 @@ class Merchant_Product_Swatches extends Merchant_Add_Module {
 	 *
 	 * @return void
 	 */
-	public function admin_enqueue_css() {
-		if ( parent::is_module_settings_page() ) {
-			wp_enqueue_style(
-				'merchant-' . $this->module_id,
-				MERCHANT_URI . "assets/css/modules/{$this->module_id}/admin/preview.min.css",
-				array(),
-				MERCHANT_VERSION
-			);
-		}
-	}
+    public function admin_enqueue_css() {
+        wp_enqueue_style(
+                'merchant-' . $this->module_id,
+                MERCHANT_URI . "assets/css/modules/{$this->module_id}/admin/preview.min.css",
+                array(),
+                MERCHANT_VERSION
+        );
+    }
+
+    /**
+     * Admin enqueue scripts.
+     *
+     * @return void
+     */
+    public function admin_enqueue_scripts() {
+        wp_enqueue_script(
+                'merchant-' . $this->module_id . '-admin-preview',
+                MERCHANT_URI . "assets/js/modules/{$this->module_id}/admin/preview.min.js",
+                array( 'jquery' ),
+                MERCHANT_VERSION,
+                true
+        );
+    }
 
 	/**
 	 * Render admin preview
@@ -531,6 +547,54 @@ class Merchant_Product_Swatches extends Merchant_Add_Module {
 			    text-decoration: none !important;
 			}
 		';
+
+		// Hide attribute label on single product
+		$hide_attribute_label_single = isset( $settings['hide_attribute_label_single'] ) ? $settings['hide_attribute_label_single'] : 0;
+
+		if ( $hide_attribute_label_single && ! self::$is_module_preview ) {
+			$css .= '
+				.single-product table.variations th.label,
+				.single-product .variations th.label,
+				.single-product table.variations .label,
+				.single-product .variations .label {
+					display: none;
+				}
+				.single-product table.variations td.value,
+				.single-product .variations td.value,
+				.single-product table.variations .value,
+				.single-product .variations .value {
+					width: 100%;
+				}
+			';
+		}
+
+		// Hide attribute label on archive/shop
+		$hide_attribute_label_archive = isset( $settings['hide_attribute_label_archive'] ) ? $settings['hide_attribute_label_archive'] : 0;
+
+		if ( $hide_attribute_label_archive && ! self::$is_module_preview ) {
+			$css .= '
+				ul.products li.product table.variations th.label,
+				ul.products li.product .variations th.label,
+				ul.products li.product table.variations .label,
+				ul.products li.product .variations .label,
+				ul.wc-block-grid__products li.wc-block-grid__product table.variations th.label,
+				ul.wc-block-grid__products li.wc-block-grid__product .variations th.label,
+				ul.wc-block-grid__products li.wc-block-grid__product table.variations .label,
+				ul.wc-block-grid__products li.wc-block-grid__product .variations .label {
+					display: none;
+				}
+				ul.products li.product table.variations td.value,
+				ul.products li.product .variations td.value,
+				ul.products li.product table.variations .value,
+				ul.products li.product .variations .value,
+				ul.wc-block-grid__products li.wc-block-grid__product table.variations td.value,
+				ul.wc-block-grid__products li.wc-block-grid__product .variations td.value,
+				ul.wc-block-grid__products li.wc-block-grid__product table.variations .value,
+				ul.wc-block-grid__products li.wc-block-grid__product .variations .value {
+					width: 100%;
+				}
+			';
+		}
 
 		// Variation name on title
 		$display_variation_name_on_product_title = $settings['display_variation_name_on_product_title'];

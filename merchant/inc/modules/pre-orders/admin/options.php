@@ -61,6 +61,7 @@ Merchant_Admin_Options::create(
 									'product'  => esc_html__( 'Specific Products', 'merchant' ),
 									'category' => esc_html__( 'Specific Categories', 'merchant' ),
 									'tags'     => esc_html__( 'Specific Tags', 'merchant' ),
+									'brands'   => esc_html__( 'Specific Brands', 'merchant' ),
 								),
 								'default' => 'product',
 							),
@@ -94,12 +95,154 @@ Merchant_Admin_Options::create(
 								'desc'        => esc_html__( 'Select the tag or tags for which the products will be available for pre-order.', 'merchant' ),
 								'condition'   => array( 'trigger_on', '==', 'tags' ),
 							),
+							array(
+								'id'          => 'brand_slugs',
+								'type'        => 'select_ajax',
+								'title'       => esc_html__( 'Brands', 'merchant' ),
+								'source'      => 'options',
+								'multiple'    => true,
+								'options'     => Merchant_Admin_Options::get_brand_select2_choices(),
+								'placeholder' => esc_html__( 'Select brands', 'merchant' ),
+								'desc'        => esc_html__( 'Select the brand or brands for which the products will be available for pre-order.', 'merchant' ),
+								'condition'   => array( 'trigger_on', '==', 'brands' ),
+							),
+
+							// Individual exclusion toggles
+							array(
+								'id'         => 'exclude_products_toggle',
+								'type'       => 'switcher',
+								'title'      => esc_html__( 'Exclude products', 'merchant' ),
+								'desc'       => esc_html__( 'Exclude specific products from this pre-order campaign.', 'merchant' ),
+								'default'    => 0,
+								'conditions' => array(
+									'relation' => 'AND',
+									'terms'    => array(
+										array(
+											'field'    => 'trigger_on',
+											'operator' => 'in',
+											'value'    => array( 'all', 'category', 'tags', 'brands' ),
+										),
+									),
+								),
+							),
 
 							array(
-								'id'         => 'exclusion_enabled',
+								'id'            => 'excluded_products',
+								'type'          => 'products_selector',
+								'title'         => esc_html__( 'Excluded Products List', 'merchant' ),
+								'desc'          => esc_html__( 'Exclude products from this pre-order campaign.', 'merchant' ),
+								'allowed_types' => array( 'simple', 'variable' ),
+								'multiple'      => true,
+								'conditions'    => array(
+									'relation' => 'AND',
+									'terms'    => array(
+										array(
+											'field'    => 'trigger_on',
+											'operator' => 'in',
+											'value'    => array( 'all', 'category', 'tags', 'brands' ),
+										),
+										array(
+											'field'    => 'exclude_products_toggle',
+											'operator' => '===',
+											'value'    => true,
+										),
+									),
+								),
+							),
+
+							array(
+								'id'         => 'exclude_categories_toggle',
 								'type'       => 'switcher',
-								'title'      => esc_html__( 'Exclusion List', 'merchant' ),
-								'desc'       => esc_html__( 'Select the products that will not show the offer.', 'merchant' ),
+								'title'      => esc_html__( 'Exclude categories', 'merchant' ),
+								'desc'       => esc_html__( 'Exclude specific categories from this pre-order campaign.', 'merchant' ),
+								'default'    => 0,
+								'conditions' => array(
+									'relation' => 'AND',
+									'terms'    => array(
+										array(
+											'field'    => 'trigger_on',
+											'operator' => 'in',
+											'value'    => array( 'all', 'tags', 'brands' ),
+										),
+									),
+								),
+							),
+
+							array(
+								'id'          => 'excluded_categories',
+								'type'        => 'select_ajax',
+								'title'       => esc_html__( 'Excluded Categories List', 'merchant' ),
+								'source'      => 'options',
+								'multiple'    => true,
+								'options'     => Merchant_Admin_Options::get_category_select2_choices(),
+								'placeholder' => esc_html__( 'Select categories', 'merchant' ),
+								'desc'        => esc_html__( 'Exclude categories from this pre-order campaign.', 'merchant' ),
+								'conditions'  => array(
+									'relation' => 'AND',
+									'terms'    => array(
+										array(
+											'field'    => 'trigger_on',
+											'operator' => 'in',
+											'value'    => array( 'all', 'tags', 'brands' ),
+										),
+										array(
+											'field'    => 'exclude_categories_toggle',
+											'operator' => '===',
+											'value'    => true,
+										),
+									),
+								),
+							),
+
+							array(
+								'id'         => 'exclude_tags_toggle',
+								'type'       => 'switcher',
+								'title'      => esc_html__( 'Exclude tags', 'merchant' ),
+								'desc'       => esc_html__( 'Exclude specific tags from this pre-order campaign.', 'merchant' ),
+								'default'    => 0,
+								'conditions' => array(
+									'relation' => 'AND',
+									'terms'    => array(
+										array(
+											'field'    => 'trigger_on',
+											'operator' => 'in',
+											'value'    => array( 'all', 'category', 'brands' ),
+										),
+									),
+								),
+							),
+
+							array(
+								'id'          => 'excluded_tags',
+								'type'        => 'select_ajax',
+								'title'       => esc_html__( 'Excluded Tags List', 'merchant' ),
+								'source'      => 'options',
+								'multiple'    => true,
+								'options'     => Merchant_Admin_Options::get_tag_select2_choices(),
+								'placeholder' => esc_html__( 'Select tags', 'merchant' ),
+								'desc'        => esc_html__( 'Exclude tags from this pre-order campaign.', 'merchant' ),
+								'conditions'  => array(
+									'relation' => 'AND',
+									'terms'    => array(
+										array(
+											'field'    => 'trigger_on',
+											'operator' => 'in',
+											'value'    => array( 'all', 'category', 'brands' ),
+										),
+										array(
+											'field'    => 'exclude_tags_toggle',
+											'operator' => '===',
+											'value'    => true,
+										),
+									),
+								),
+							),
+
+							array(
+								'id'         => 'exclude_brands_toggle',
+								'type'       => 'switcher',
+								'title'      => esc_html__( 'Exclude brands', 'merchant' ),
+								'desc'       => esc_html__( 'Exclude specific brands from this pre-order campaign.', 'merchant' ),
 								'default'    => 0,
 								'conditions' => array(
 									'relation' => 'AND',
@@ -114,13 +257,15 @@ Merchant_Admin_Options::create(
 							),
 
 							array(
-								'id'            => 'excluded_products',
-								'type'          => 'products_selector',
-								'title'         => esc_html__( 'Exclude products', 'merchant' ),
-								'desc'          => esc_html__( 'Exclude products from this discount campaign.', 'merchant' ),
-								'allowed_types' => array( 'simple', 'variable' ),
-								'multiple'      => true,
-								'conditions'    => array(
+								'id'          => 'excluded_brands',
+								'type'        => 'select_ajax',
+								'title'       => esc_html__( 'Excluded Brands List', 'merchant' ),
+								'source'      => 'options',
+								'multiple'    => true,
+								'options'     => Merchant_Admin_Options::get_brand_select2_choices(),
+								'placeholder' => esc_html__( 'Select brands', 'merchant' ),
+								'desc'        => esc_html__( 'Exclude brands from this pre-order campaign.', 'merchant' ),
+								'conditions'  => array(
 									'relation' => 'AND',
 									'terms'    => array(
 										array(
@@ -129,59 +274,7 @@ Merchant_Admin_Options::create(
 											'value'    => array( 'all', 'category', 'tags' ),
 										),
 										array(
-											'field'    => 'exclusion_enabled',
-											'operator' => '===',
-											'value'    => true,
-										),
-									),
-								),
-							),
-
-							array(
-								'id'          => 'excluded_categories',
-								'type'        => 'select_ajax',
-								'title'       => esc_html__( 'Exclude Categories', 'merchant' ),
-								'source'      => 'options',
-								'multiple'    => true,
-								'options'     => Merchant_Admin_Options::get_category_select2_choices(),
-								'placeholder' => esc_html__( 'Select categories', 'merchant' ),
-								'desc'        => esc_html__( 'Exclude categories from this campaign.', 'merchant' ),
-								'conditions'  => array(
-									'relation' => 'AND',
-									'terms'    => array(
-										array(
-											'field'    => 'trigger_on',
-											'operator' => 'in',
-											'value'    => array( 'all' ),
-										),
-										array(
-											'field'    => 'exclusion_enabled',
-											'operator' => '===',
-											'value'    => true,
-										),
-									),
-								),
-							),
-
-							array(
-								'id'          => 'excluded_tags',
-								'type'        => 'select_ajax',
-								'title'       => esc_html__( 'Exclude Tags', 'merchant' ),
-								'source'      => 'options',
-								'multiple'    => true,
-								'options'     => Merchant_Admin_Options::get_tag_select2_choices(),
-								'placeholder' => esc_html__( 'Select tags', 'merchant' ),
-								'desc'        => esc_html__( 'Exclude tags from this campaign.', 'merchant' ),
-								'conditions'  => array(
-									'relation' => 'AND',
-									'terms'    => array(
-										array(
-											'field'    => 'trigger_on',
-											'operator' => 'in',
-											'value'    => array( 'all' ),
-										),
-										array(
-											'field'    => 'exclusion_enabled',
+											'field'    => 'exclude_brands_toggle',
 											'operator' => '===',
 											'value'    => true,
 										),

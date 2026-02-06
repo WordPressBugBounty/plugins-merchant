@@ -190,7 +190,7 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
   $(document).on('merchant-product-labels-reload-product-preview', function (e) {
     initPreview();
   });
-  $(document).on('change.merchant keyup', function () {
+  $(document).on('change.merchant keyup change', function () {
     initPreview();
   });
   function initPreview() {
@@ -203,26 +203,35 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
       imageShape = imageShapeEl.val(),
       customImageEl = layout.find('.merchant-field-label_image_shape_custom input[type="hidden"]'),
       customImage = customImageEl.val(),
-      marginX = layout.find('.merchant-field-margin_x input').val(),
-      marginXEl = layout.find('.merchant-field-margin_x'),
-      marginY = layout.find('.merchant-field-margin_y input').val(),
+      positionX = layout.find('.merchant-field-position_x input').val() || 10,
+      positionY = layout.find('.merchant-field-position_y input').val() || 10,
+      positionAnchor = layout.find('.merchant-field-position_anchor select').val() || 'top-left',
       labelWidth = layout.find('.merchant-field-label_width input').val(),
       labelHeight = layout.find('.merchant-field-label_height input').val(),
       backgroundColor = layout.find('.merchant-field-background_color input').val(),
       textColor = layout.find('.merchant-field-text_color input').val(),
       borderRadius = layout.find('.merchant-field-shape_radius input').val(),
       fontSize = layout.find('.merchant-field-font_size input').val(),
-      fontStyle = layout.find('.merchant-field-font_style select').val(),
-      position = layout.find('.merchant-field-label_position select').val();
+      fontStyle = layout.find('.merchant-field-font_style select').val();
     var labelPreview = $('.merchant-product-labels-preview').find('.merchant-product-labels');
-    var classes = "merchant-product-labels__regular position-".concat(position, " merchant-product-labels__").concat(labelType);
+    var classes = "merchant-product-labels__regular position-absolute merchant-product-labels__".concat(labelType);
     classes += labelType === 'text' ? " merchant-product-labels__".concat(textShape) : '';
     var labelClassPattern = /\bmerchant-product-labels__\S+/g;
+
+    // Build CSS based on anchor point and position values
     var css = {
-      'top': marginY + 'px',
-      'left': position === 'top-left' ? marginX + 'px' : '',
-      'right': position === 'top-right' ? marginX + 'px' : ''
+      'top': positionY + 'px'
     };
+
+    // Handle horizontal positioning based on anchor point
+    if (positionAnchor === 'top-right') {
+      css['right'] = positionX + 'px';
+      css['left'] = '';
+    } else {
+      // top-left (default)
+      css['left'] = positionX + 'px';
+      css['right'] = '';
+    }
     if (labelType === 'text') {
       css['width'] = labelWidth + 'px';
       css['height'] = labelHeight + 'px';
@@ -249,6 +258,32 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
         }
       };
       css = _objectSpread(_objectSpread({}, css), fontStyles[fontStyle]);
+
+      // Apply rotation for shapes 5 and 6 based on anchor point
+      if (textShape === 'text-shape-5' || textShape === 'text-shape-6') {
+        if (positionAnchor === 'top-right') {
+          // Invert rotation for top-right anchor (use -45deg instead of 45deg)
+          if (textShape === 'text-shape-5') {
+            css['transform'] = 'rotate(45deg) translate(50%, 50%)';
+            css['transform-origin'] = 'right';
+          } else if (textShape === 'text-shape-6') {
+            css['transform'] = 'rotate(45deg) translate(50%, 25%)';
+            css['transform-origin'] = 'right';
+          }
+        } else {
+          // top-left (default)
+          if (textShape === 'text-shape-5') {
+            css['transform'] = 'rotate(-45deg) translate(-50%, 50%)';
+            css['transform-origin'] = 'left';
+          } else if (textShape === 'text-shape-6') {
+            css['transform'] = 'rotate(-45deg) translate(-50%, 25%)';
+            css['transform-origin'] = 'left';
+          }
+        }
+      } else {
+        css['transform'] = 'none';
+        css['transform-origin'] = 'none';
+      }
       var currency = labelPreview.attr('data-currency');
 
       // Update shortcode to content
@@ -257,7 +292,7 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
       // Update label content & styles
       labelPreview.css(css).removeClass(function (index, className) {
         return (className.match(labelClassPattern) || []).join(' ');
-      }).removeClass('position-top-right position-top-left').addClass(classes).find('span').css({
+      }).removeClass('position-top-right position-top-left position-absolute').addClass(classes).find('span').css({
         width: '',
         height: ''
       }).text(labelContent.trim());
@@ -268,12 +303,14 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
       css['color'] = '';
       css['font-size'] = '';
       css['border-radius'] = '';
+      css['transform'] = 'none';
+      css['transform-origin'] = 'none';
       var img = customImage ? customImageEl.closest('.merchant-field-label_image_shape_custom').find('.merchant-upload-image img').clone() : imageShapeEl.closest('label').find('img').clone();
 
       // Update label content & styles
       labelPreview.css(css).removeClass(function (index, className) {
         return (className.match(labelClassPattern) || []).join(' ');
-      }).removeClass('position-top-right position-top-left').addClass(classes).find('span').css({
+      }).removeClass('position-top-right position-top-left position-absolute').addClass(classes).find('span').css({
         width: labelWidth + 'px',
         height: labelHeight + 'px'
       }).html(img);
@@ -281,9 +318,6 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
       // Toggle custom image upload element
       layout.find('.merchant-upload-button-drag-drop').toggle(!customImage);
     }
-
-    // Change Margin X label
-    marginXEl.closest('.layout-field').find('.merchant-module-page-setting-field-title').text(position === 'top-left' ? 'Margin left' : 'Margin right');
   }
   $(document).on('change input change.merchant', '.merchant-module-page-setting-box', function (e) {
     $(document).trigger('merchant-product-labels-reload-product-preview');

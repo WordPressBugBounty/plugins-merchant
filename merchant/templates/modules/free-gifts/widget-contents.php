@@ -124,6 +124,38 @@ foreach ( $args['offers'] as $offer ) :
 				}
 				break;
 
+			case 'brands':
+				if ( ! empty( $offer['brand_slugs'] ) ) {
+					$brands = array();
+					foreach ( $offer['brand_slugs'] as $brand_slug ) {
+						$brand_data = get_term_by( 'slug', $brand_slug, 'product_brand' );
+						if ( $brand_data ) {
+							$brands[] = $brand_data->name;
+						}
+					}
+
+					if ( empty( $brands ) ) {
+						break;
+					}
+
+					$cart_total      = $offer['cart_total_brands'] ?? 0;
+					$_title          = sprintf(
+						/* Translators: 1. Term Name */
+						_n( '%s brand', '%s brands', count( $brands ), 'merchant' ),
+						implode( ', ', $brands )
+					);
+					$title_shortcode = '{brands}';
+
+					if ( $cart_total >= $goal_amount ) {
+						$spending_text = $spending_text_100;
+					} elseif ( $cart_total > 0 ) {
+						$spending_text = $spending_text_1_to_99;
+					} else {
+						$spending_text = $spending_text_0;
+					}
+				}
+				break;
+
 			case 'all':
 				$cart_total = $offer['cart_total_all'] ?? 0;
 				if ( $cart_total >= $goal_amount ) {

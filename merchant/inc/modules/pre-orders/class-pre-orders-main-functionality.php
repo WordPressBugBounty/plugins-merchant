@@ -68,6 +68,15 @@ class Merchant_Pre_Orders_Main_Functionality {
 		// Cart
 		add_filter( 'woocommerce_get_item_data', array( $this, 'cart_message_handler' ), 10, 2 );
 
+		/**
+		 * Hook 'merchant_is_pre_order_product' Checks if the product is a pre-order.
+		 *
+		 * @param int $product_id The product ID.
+		 * 
+		 * @since 2.1.9
+		 */
+		add_filter('merchant_is_pre_order_product', array( $this, 'is_pre_order' ), 10, 1 );
+
 		add_action( 'woocommerce_order_item_meta_end', array( $this, 'order_item_meta_end' ), 10, 4 );
 		add_action( 'woocommerce_shop_loop_item_title', array( $this, 'shop_loop_item_title' ) );
 
@@ -590,7 +599,7 @@ class Merchant_Pre_Orders_Main_Functionality {
 
 			if ( empty( $offer ) && $product->is_type( 'variation' ) ) {
 				$offer = self::available_product_rule( $product->get_parent_id() );
-				$is_excluded = merchant_is_product_excluded( $product->get_id(), $offer );
+				$is_excluded = self::is_product_excluded( $product->get_id(), $offer );
 				if ( $is_excluded ) {
 					$offer = array();
 				}
@@ -635,7 +644,7 @@ class Merchant_Pre_Orders_Main_Functionality {
 			if ( empty( $variation_offer ) ) {
 				$variation_offer = self::available_product_rule( $product->get_id() );
 
-				$is_excluded = merchant_is_product_excluded( $variation_id, $variation_offer );
+				$is_excluded = self::is_product_excluded( $variation_id, $variation_offer );
 				if ( $is_excluded ) {
 					$prices[]      = $regular_price;
 					$sale_prices[] = $regular_price;
@@ -791,7 +800,7 @@ class Merchant_Pre_Orders_Main_Functionality {
 				if ( empty( $offer ) && $product->is_type( 'variation' ) ) {
 					$offer = self::available_product_rule( $product->get_parent_id() );
 
-					$is_excluded = merchant_is_product_excluded( $product_id, $offer );
+					$is_excluded = self::is_product_excluded( $product_id, $offer );
 					if ( $is_excluded ) {
 						continue;
 					}
@@ -1444,6 +1453,10 @@ class Merchant_Pre_Orders_Main_Functionality {
 			return false;
 		}
 
+		if ( 'brands' === $rule['trigger_on'] && empty( $rule['brand_slugs'] ) ) {
+			return false;
+		}
+
 		if ( isset( $rule['discount_toggle'] ) && $rule['discount_toggle'] === true ) {
 			if ( ! isset( $rule['discount_type'] ) ) {
 				return false;
@@ -1508,6 +1521,59 @@ class Merchant_Pre_Orders_Main_Functionality {
 	}
 
 	/**
+	 * Check if a product is excluded from a pre-order rule.
+	 *
+	 * @param int   $product_id The product ID.
+	 * @param array $rule       The pre-order rule.
+	 *
+	 * @return bool True if the product is excluded, false otherwise.
+	 */
+	private static function is_product_excluded( $product_id, $rule ) {
+		$trigger_on = $rule['trigger_on'] ?? 'product';
+		$product = wc_get_product( $product_id );
+		$_product_id = $product && $product->is_type( 'variation' ) ? $product->get_parent_id() : $product_id;
+
+		// Exclude products
+		if ( ! empty( $rule['exclude_products_toggle'] ) ) {
+			$excluded_product_ids = $rule['excluded_products'] ?? array();
+			$excluded_product_ids = merchant_parse_product_ids( $excluded_product_ids );
+
+			if ( in_array( (int) $product_id, $excluded_product_ids, true ) || in_array( (int) $_product_id, $excluded_product_ids, true ) ) {
+				return true;
+			}
+		}
+
+		// Exclude categories (only when not targeting specific categories)
+		if ( ! empty( $rule['exclude_categories_toggle'] ) && $trigger_on !== 'category' ) {
+			$excluded_categories_slugs = $rule['excluded_categories'] ?? array();
+
+			if ( ! empty( $excluded_categories_slugs ) && has_term( $excluded_categories_slugs, 'product_cat', $_product_id ) ) {
+				return true;
+			}
+		}
+
+		// Exclude tags (only when not targeting specific tags)
+		if ( ! empty( $rule['exclude_tags_toggle'] ) && $trigger_on !== 'tags' ) {
+			$excluded_tags_slugs = $rule['excluded_tags'] ?? array();
+
+			if ( ! empty( $excluded_tags_slugs ) && has_term( $excluded_tags_slugs, 'product_tag', $_product_id ) ) {
+				return true;
+			}
+		}
+
+		// Exclude brands (only when not targeting specific brands)
+		if ( ! empty( $rule['exclude_brands_toggle'] ) && $trigger_on !== 'brands' ) {
+			$excluded_brands_slugs = $rule['excluded_brands'] ?? array();
+
+			if ( ! empty( $excluded_brands_slugs ) && has_term( $excluded_brands_slugs, 'product_brand', $_product_id ) ) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
 	 * Get the available product rule.
 	 *
 	 * @param string $product_id The product ID.
@@ -1544,7 +1610,7 @@ class Merchant_Pre_Orders_Main_Functionality {
 
 				$trigger = $rule['trigger_on'] ?? 'product';
 
-				$is_excluded = merchant_is_product_excluded( $product_id, $rule );
+				$is_excluded = self::is_product_excluded( $product_id, $rule );
 				if ( $is_excluded ) {
 					continue;
 				}
@@ -1552,9 +1618,9 @@ class Merchant_Pre_Orders_Main_Functionality {
 				if ( 'product' === $trigger && in_array( $product_id, $rule['product_ids'], true ) ) {
 					$available_rule = $rule;
 					break;
-				} elseif ( 'category' === $trigger || 'tags' === $trigger ) {
-					$taxonomy = $trigger === 'category' ? 'product_cat' : 'product_tag';
-					$slugs    = $trigger === 'category' ? ( $rule['category_slugs'] ?? array() ) : ( $rule['tag_slugs'] ?? array() );
+				} elseif ( 'category' === $trigger || 'tags' === $trigger || 'brands' === $trigger ) {
+					$taxonomy = $trigger === 'category' ? 'product_cat' : ( $trigger === 'tags' ? 'product_tag' : 'product_brand' );
+					$slugs    = $trigger === 'category' ? ( $rule['category_slugs'] ?? array() ) : ( $trigger === 'tags' ? ( $rule['tag_slugs'] ?? array() ) : ( $rule['brand_slugs'] ?? array() ) );
 
 					$terms = get_the_terms( $product_id, $taxonomy );
 					if ( ! empty( $terms ) ) {
@@ -1582,6 +1648,65 @@ class Merchant_Pre_Orders_Main_Functionality {
 		 * @since 1.9.9
 		 */
 		return apply_filters( 'merchant_pre_order_available_rule', $available_rule, $product_id );
+	}
+
+	/**
+	 * Migrate exclusion fields from old format to new individual toggles.
+	 *
+	 * @return void
+	 */
+	public static function migrate_exclusion_fields() {
+		$option_name = 'merchant_' . self::MODULE_ID . '_ex_fields';
+		$migrated    = get_option( $option_name, false );
+
+		if ( $migrated ) {
+			return;
+		}
+
+		$rules = self::pre_order_rules();
+		if ( empty( $rules ) ) {
+			update_option( $option_name, true );
+
+			return;
+		}
+
+		$needs_migration = false;
+
+		foreach ( $rules as $rule_key => $rule ) {
+			$n = 0;
+
+			// Check if individual toggles don't exist yet
+			if ( ! isset( $rule['exclude_products_toggle'] ) ) {
+				$rules[ $rule_key ]['exclude_products_toggle'] = ! empty( $rule['excluded_products'] );
+				++ $n;
+			}
+
+			if ( ! isset( $rule['exclude_categories_toggle'] ) ) {
+				$rules[ $rule_key ]['exclude_categories_toggle'] = ! empty( $rule['excluded_categories'] );
+				++ $n;
+			}
+
+			if ( ! isset( $rule['exclude_tags_toggle'] ) ) {
+				$rules[ $rule_key ]['exclude_tags_toggle'] = ! empty( $rule['excluded_tags'] );
+				++ $n;
+			}
+
+			if ( ! isset( $rule['exclude_brands_toggle'] ) ) {
+				$rules[ $rule_key ]['exclude_brands_toggle'] = ! empty( $rule['excluded_brands'] );
+				++ $n;
+			}
+
+			if ( $n > 0 ) {
+				$needs_migration = true; // Set to true if any iteration needs migration
+			}
+		}
+
+		if ( $needs_migration ) {
+			Merchant_Admin_Options::set( self::MODULE_ID, 'rules', $rules );
+		}
+
+		// Mark migration as completed
+		update_option( $option_name, true );
 	}
 
 	/**
@@ -1652,3 +1777,4 @@ class Merchant_Pre_Orders_Main_Functionality {
 }
 
 add_action( 'init', 'Merchant_Pre_Orders_Main_Functionality::data_migration' );
+add_action( 'init', 'Merchant_Pre_Orders_Main_Functionality::migrate_exclusion_fields' );

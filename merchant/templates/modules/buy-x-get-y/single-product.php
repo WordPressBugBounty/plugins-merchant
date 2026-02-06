@@ -130,6 +130,14 @@ if ( ! is_admin() && ! $is_main_product_in_stock ) {
                         } else {
 	                        $discount = $offer['discount_type'] === 'percentage' ? $offer['discount'] . '%' : wc_price( $offer['discount'] );
                         }
+                        $quantity_mode = $offer['quantity_mode'] ?? 'custom';
+                        if ( 'one_product' === $quantity_mode ) {
+                            $gift_quantity = 1;
+                        } elseif ( 'matches_x' === $quantity_mode ) {
+                            $gift_quantity = isset( $offer['min_quantity'] ) ? (int) $offer['min_quantity'] : 0;
+                        } else {
+                            $gift_quantity = isset( $offer['quantity'] ) ? (int) $offer['quantity'] : 3;
+                        }
 
                         echo isset( $offer['product_single_page']['get_label'] )
 	                        ? wp_kses( str_replace(
@@ -138,14 +146,18 @@ if ( ! is_admin() && ! $is_main_product_in_stock ) {
 			                        '{discount}',
 		                        ),
 		                        array(
-			                        $offer['quantity'],
+                                    $gift_quantity,
 			                        $discount,
 		                        ),
 		                        Merchant_Translator::translate( $offer['product_single_page']['get_label'] )
 	                        ), merchant_kses_allowed_tags( array( 'bdi' ) ) )
 	                        : wp_kses(
-	                        /* Translators: 1. quantity 2. discount value*/
-		                        sprintf( __( 'Get %1$s with %2$s off', 'merchant' ), $offer['quantity'], $discount ),
+		                        sprintf(
+	                                /* Translators: 1. quantity 2. discount value*/
+                                    __( 'Get %1$s with %2$s off', 'merchant' ),
+                                    $gift_quantity,
+                                    $discount
+                                ),
 		                        merchant_kses_allowed_tags( array( 'bdi' ) )
 	                        );
                         ?>

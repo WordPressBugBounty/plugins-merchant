@@ -23,6 +23,14 @@ $attributes = array();
 // Wrapper class.
 $classes    = array( 'merchant-sticky-add-to-cart-wrapper' );
 
+// Add data attributes for module settings.
+if ( isset( $args['data_attributes'] ) && ! empty( $args['data_attributes'] ) ) {
+	foreach ( $args['data_attributes'] as $key => $value ) {
+		$attributes[] = $key . '="' . esc_attr( $value ) . '"';
+	}
+}
+
+
 // Position.
 $classes[] = 'position-bottom' === $settings[ 'position' ] ? 'position-bottom' : 'position-top';
 
@@ -48,6 +56,11 @@ if( $settings[ 'hide_product_title' ] ) {
 // Hide Product Price.
 if( $settings[ 'hide_product_price' ] ) {
 	$classes[] = 'hide-product-price';
+}
+
+// Hide Quantity.
+if( $settings[ 'hide_quantity' ] ) {
+	$classes[] = 'hide-quantity';
 }
 
 // Visibility.
