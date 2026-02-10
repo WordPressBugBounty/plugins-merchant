@@ -179,6 +179,18 @@ class Merchant_Quick_View extends Merchant_Add_Module {
 		// Modal content ajax callback.
 		add_action( 'wp_ajax_merchant_quick_view_content', array( $this, 'modal_content_ajax_callback' ) );
 		add_action( 'wp_ajax_nopriv_merchant_quick_view_content', array( $this, 'modal_content_ajax_callback' ) );
+
+		// Initialize AJAX add to cart handler (separate class).
+		$this->init_ajax_add_to_cart();
+	}
+
+	/**
+	 * Initialize AJAX add to cart functionality.
+	 * 
+	 * @return void
+	 */
+	private function init_ajax_add_to_cart() {
+		Merchant_Quick_View_Ajax_Add_To_Cart::get_instance()->init();
 	}
 
 	/**
@@ -306,8 +318,9 @@ class Merchant_Quick_View extends Merchant_Add_Module {
 	public function localize_script( $setting ) {
 		$module_settings = $this->get_module_settings();
 
-		$setting[ 'quick_view' ]      = true;
-		$setting[ 'quick_view_zoom' ] = $module_settings[ 'zoom_effect' ];
+		$setting[ 'quick_view' ]       = true;
+		$setting[ 'quick_view_zoom' ]  = $module_settings[ 'zoom_effect' ];
+		$setting[ 'ajax_add_to_cart' ] = ! empty( $module_settings[ 'ajax_add_to_cart' ] );
 
 		return $setting;
 	}
@@ -589,6 +602,7 @@ class Merchant_Quick_View extends Merchant_Add_Module {
 		wp_send_json_success( $content );
 	}
 
+
 	/**
 	 * Modal output.
 	 * TODO: Render the output through templates files.
@@ -675,6 +689,21 @@ class Merchant_Quick_View extends Merchant_Add_Module {
         }
 
 		global $product;
+
+		/**
+		 * Filters whether the Buy Now button should be excluded for a specific product in Quick View.
+		 *
+		 * This filter allows modules (like Buy Now) to control the visibility of the Buy Now button
+		 * in the Quick View modal based on their own exclusion rules.
+		 *
+		 * @param bool       $is_excluded Whether the product is excluded. Default false.
+		 * @param WC_Product $product     The product object.
+		 *
+		 * @since 2.2.4
+		 */
+		if ( apply_filters( 'merchant_buy_now_is_excluded', false, $product ) ) {
+			return;
+		}
 
 		$text = Merchant_Admin_Options::get( Merchant_Buy_Now::MODULE_ID, 'button-text', esc_html__( 'Buy Now', 'merchant' ) );
 
@@ -926,5 +955,9 @@ class Merchant_Quick_View extends Merchant_Add_Module {
 
 // Initialize the module.
 add_action( 'init', function() {
+	// Load AJAX add to cart class file.
+	require_once MERCHANT_DIR . 'inc/modules/quick-view/class-quick-view-ajax-add-to-cart.php';
+	
+	// Create and initialize the module.
 	Merchant_Modules::create_module( Merchant_Quick_View::get_instance() );
 } );

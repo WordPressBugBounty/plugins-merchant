@@ -62,6 +62,11 @@
   float: none !important;
 }
 
+.merchant-quick-view-content .merchant-quick-view-summary .merchant-buy-now-button {
+  -ms-flex-preferred-size: 100%;
+      flex-basis: 100%;
+}
+
 .rtl.single-product .merchant-buy-now-button {
   margin-left: 0;
   margin-right: 5px;

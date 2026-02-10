@@ -303,7 +303,12 @@ Merchant_Admin_Options::create( array(
 			'button_link' => esc_url( admin_url( 'admin.php?page=merchant&module=buy-now' ) ),
 			'condition'   => array( 'show_buy_now_button', '==', '1' ),
 		),
-
+		array(
+			'id'      => 'ajax_add_to_cart',
+			'type'    => 'switcher',
+			'title'   => esc_html__( 'Ajax add to cart', 'merchant' ),
+			'default' => 0,
+		),
 		array(
 			'id'      => 'show_suggested_products',
 			'pro'     => true, // Merchant Pro dependent

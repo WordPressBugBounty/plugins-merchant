@@ -151,6 +151,107 @@ Merchant_Admin_Options::create( array(
 	),
 ) );
 
+// Conditional Display
+Merchant_Admin_Options::create( 
+	array(
+		'module'    => 'sticky-add-to-cart',
+		'title'     => esc_html__( 'Conditional Display', 'merchant' ),
+		'fields'    => array(
+			// Exclusion.
+			array(
+				'id'      => 'exclusion',
+				'type'    => 'switcher',
+				'title'   => esc_html__( 'Enable conditional display', 'merchant' ),
+				'desc'    => esc_html__( 'Sticky Add to Cart will appear on all products except ones selected below.', 'merchant' ),
+				'default' => 0,
+			),
+
+			// Excluded Products.
+			array(
+				'id'            => 'excluded_products',
+				'type'          => 'products_selector',
+				'title'         => esc_html__( 'Excluded products', 'merchant' ),
+				'desc'          => esc_html__( 'Select specific products to exclude from sticky add to cart.', 'merchant' ),
+				'multiple'      => true,
+				'allowed_types' => array( 'simple', 'variable', 'grouped', 'external' ),
+				'conditions'    => array(
+					'relation' => 'AND',
+					'terms'    => array(
+						array(
+							'field'    => 'exclusion',
+							'operator' => '===',
+							'value'    => true,
+						),
+					),
+				),
+			),
+
+			// Excluded Categories.
+			array(
+				'id'         => 'excluded_categories',
+				'type'       => 'select_ajax',
+				'title'      => esc_html__( 'Excluded categories', 'merchant' ),
+				'desc'       => esc_html__( 'Select categories to exclude from sticky add to cart.', 'merchant' ),
+				'multiple'   => true,
+				'source'     => 'options',
+				'options'    => Merchant_Admin_Options::get_category_select2_choices(),
+				'conditions' => array(
+					'relation' => 'AND',
+					'terms'    => array(
+						array(
+							'field'    => 'exclusion',
+							'operator' => '===',
+							'value'    => true,
+						),
+					),
+				),
+			),
+
+			// Excluded Tags.
+			array(
+				'id'         => 'excluded_tags',
+				'type'       => 'select_ajax',
+				'title'      => esc_html__( 'Excluded tags', 'merchant' ),
+				'desc'       => esc_html__( 'Select tags to exclude from sticky add to cart.', 'merchant' ),
+				'multiple'   => true,
+				'source'     => 'options',
+				'options'    => Merchant_Admin_Options::get_tag_select2_choices(),
+				'conditions' => array(
+					'relation' => 'AND',
+					'terms'    => array(
+						array(
+							'field'    => 'exclusion',
+							'operator' => '===',
+							'value'    => true,
+						),
+					),
+				),
+			),
+
+			// Excluded Brands.
+			array(
+				'id'         => 'excluded_brands',
+				'type'       => 'select_ajax',
+				'title'      => esc_html__( 'Excluded brands', 'merchant' ),
+				'desc'       => esc_html__( 'Select brands to exclude from sticky add to cart.', 'merchant' ),
+				'multiple'   => true,
+				'source'     => 'options',
+				'options'    => Merchant_Admin_Options::get_brand_select2_choices(),
+				'conditions' => array(
+					'relation' => 'AND',
+					'terms'    => array(
+						array(
+							'field'    => 'exclusion',
+							'operator' => '===',
+							'value'    => true,
+						),
+					),
+				),
+			),
+		),
+	)
+);
+
 // Style Settings
 Merchant_Admin_Options::create( array(
 	'module'    => 'sticky-add-to-cart',

@@ -5,6 +5,51 @@
   'use strict';
 
   $.fn.merchantMetabox = function () {
+    function initSelectMultiple($container) {
+      var $selectMultiple = $container.find('.merchant-metabox-field-select select[multiple]');
+      if ($selectMultiple.length) {
+        $selectMultiple.select2({
+          width: '100%'
+        });
+        $selectMultiple.each(function () {
+          var $select = $(this);
+          if ($select.next('.select2-container').find('.select2-selection--multiple').length) {
+            $select.next('.select2-container').find('.select2-selection--multiple').append('<span class="merchant-select2-clear"></span>');
+          }
+        });
+      }
+    }
+    function initMerchantRange($container) {
+      var $rangeFields = $container.find('.merchant-range');
+      if ($rangeFields.length) {
+        $rangeFields.each(function () {
+          var $range = $(this);
+          var $rangeInput = $range.find('.merchant-range-input');
+          var $numberInput = $range.find('.merchant-range-number-input');
+          $rangeInput.on('change input merchant.range merchant-init.range', function (e) {
+            var $thisRange = $(this);
+            var value = (e.type === 'merchant' ? $numberInput.val() : $thisRange.val()) || 0;
+            var min = $thisRange.attr('min') || 0;
+            var max = $thisRange.attr('max') || 100;
+            var percentage = (value - min) / (max - min) * 100;
+            if ($('body').hasClass('rtl')) {
+              $thisRange.css({
+                'background': 'linear-gradient(to left, #3858E9 0%, #3858E9 ' + percentage + '%, #ddd ' + percentage + '%, #ddd 100%)'
+              });
+            } else {
+              $thisRange.css({
+                'background': 'linear-gradient(to right, #3858E9 0%, #3858E9 ' + percentage + '%, #ddd ' + percentage + '%, #ddd 100%)'
+              });
+            }
+            $rangeInput.val(value);
+            $numberInput.val(value);
+          }).trigger('merchant-init.range');
+          $numberInput.on('change input blur', function () {
+            $rangeInput.val($(this).val()).trigger('merchant.range');
+          });
+        });
+      }
+    }
     function initSelectAjax($selectAjax) {
       $selectAjax.each(function () {
         var $select = $(this).find('select');
@@ -117,6 +162,7 @@
             if ($selectAjax.length) {
               initSelectAjax($selectAjax);
             }
+            initSelectMultiple($item);
             $(this).parent().removeClass('active');
             $layouts.removeClass('empty');
           });
@@ -383,6 +429,8 @@
       if ($selectAjax.length) {
         initSelectAjax($selectAjax);
       }
+      initSelectMultiple($this);
+      initMerchantRange($this);
       var $attributes = $('.merchant-metabox-field-wc-attributes');
       if ($attributes.length) {
         $attributes.each(function () {
@@ -431,6 +479,238 @@
             $target.data('depend-on', true);
           }
         });
+      }
+
+      // Initialize Date Time Pickers
+      var $dateTimeFields = $contents.find('.merchant-metabox-datetime-field');
+      if ($dateTimeFields.length) {
+        $dateTimeFields.each(function (index) {
+          var $field = $(this);
+          var $input = $field.find('input');
+          var fieldOptions = $field.data('options') || {};
+
+          // Base options with event handling
+          var options = {
+            locale: typeof merchant_datepicker_locale !== 'undefined' ? typeof merchant_datepicker_locale === 'string' ? JSON.parse(merchant_datepicker_locale) : merchant_datepicker_locale : {},
+            selectedDates: [$input.val() ? new Date($input.val()) : ''],
+            onSelect: function onSelect(_ref) {
+              var date = _ref.date,
+                formattedDate = _ref.formattedDate,
+                datepicker = _ref.datepicker;
+              if (typeof formattedDate === "undefined") {
+                // Allow removing date
+                datepicker.$el.value = '';
+              }
+              $input.trigger('change');
+              $input.trigger('change.merchant-datepicker', [formattedDate, $input, options, index]);
+            }
+          };
+
+          // Add default buttons
+          fieldOptions.buttons = ['clear'];
+
+          // Convert 'today' string to actual Date object
+          if (fieldOptions.minDate !== undefined && fieldOptions.minDate === 'today') {
+            fieldOptions.minDate = new Date();
+            if (fieldOptions.timeZone !== undefined && fieldOptions.timeZone !== '') {
+              fieldOptions.minDate = new Date(fieldOptions.minDate.toLocaleString('en-US', {
+                timeZone: fieldOptions.timeZone
+              }));
+            }
+          }
+
+          // Merge field options with base options
+          options = Object.assign(options, fieldOptions);
+
+          // Initialize datepicker
+          new AirDatepicker($input[0], options);
+
+          // Make input readonly to prevent manual typing
+          $input.attr('readonly', true);
+        });
+      }
+      $(document).on('click', '.merchant-metabox-color-field .merchant-color-picker', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var $picker = $(this);
+        var $field = $picker.closest('.merchant-metabox-color-field');
+        var $input = $field.find('.merchant-color-input');
+        var pickr = $picker.data('pickr');
+        if (!pickr) {
+          try {
+            var $bodyHTML = $('body,html');
+            $bodyHTML.addClass('merchant-height-auto');
+            pickr = new Pickr({
+              el: $picker.get(0),
+              container: $picker.parent().get(0),
+              theme: 'merchant',
+              appClass: 'merchant-pcr-app',
+              default: $input.val() || $picker.data('default-color') || '#212121',
+              swatches: ['#000000', '#F44336', '#E91E63', '#673AB7', '#03A9F4', '#8BC34A', '#FFEB3B', '#FFC107', '#FFFFFF'],
+              sliders: 'h',
+              useAsButton: true,
+              position: 'bottom-start',
+              components: {
+                hue: true,
+                preview: true,
+                opacity: true,
+                interaction: {
+                  input: true,
+                  clear: true
+                }
+              },
+              i18n: {
+                'btn:clear': 'Default'
+              }
+            });
+            pickr.on('change', function (color) {
+              var colorCode;
+              if (color.a === 1) {
+                pickr.setColorRepresentation('HEX');
+                colorCode = color.toHEXA().toString(0);
+              } else {
+                pickr.setColorRepresentation('RGBA');
+                colorCode = color.toRGBA().toString(0);
+              }
+              $picker.css({
+                'background-color': colorCode
+              });
+              if ($input.val() !== colorCode) {
+                $input.val(colorCode).trigger('change');
+              }
+            });
+            pickr.on('clear', function () {
+              var defaultColor = $picker.data('default-color');
+              if (defaultColor) {
+                pickr.setColor(defaultColor);
+              } else {
+                $picker.css({
+                  'background-color': 'white'
+                });
+                $input.val('');
+              }
+            });
+            pickr.on('hide', function () {
+              $bodyHTML.removeClass('merchant-height-auto');
+            });
+            $picker.data('pickr', pickr);
+            setTimeout(function () {
+              pickr.show();
+            }, 200);
+          } catch (error) {
+            console.error('Error creating Pickr:', error);
+          }
+        } else {
+          pickr.setColor($input.val());
+          pickr.show();
+        }
+      });
+      $(document).on('change keyup', '.merchant-metabox-color-field .merchant-color-input', function () {
+        var $input = $(this);
+        var $picker = $input.siblings('.merchant-color-picker');
+        var colorCode = $input.val();
+        $picker.css({
+          'background-color': colorCode
+        });
+      });
+
+      // Enhanced Conditional Logic (conditions attribute)
+      function evaluateConditions(conditions, $field) {
+        var operator = conditions.relation || 'AND';
+        var results = [];
+        for (var i = 0; i < conditions.terms.length; i++) {
+          var term = conditions.terms[i];
+          var $target = $contents.find('[name="' + term[0] + '"]');
+          if (!$target.length) {
+            continue;
+          }
+          var passed = false;
+          var targetValue = null;
+
+          // Get target value based on input type
+          if ($target.attr('type') === 'checkbox') {
+            // For checkboxes/switchers: return '1' if checked, '0' if not
+            targetValue = $target.is(':checked') ? '1' : '0';
+          } else if ($target.attr('type') === 'radio') {
+            var $checked = $target.filter(':checked');
+            targetValue = $checked.length ? $checked.val() : '';
+          } else if ($target.is('select')) {
+            targetValue = $target.val();
+          } else {
+            targetValue = $target.val();
+          }
+
+          // Evaluate condition
+          switch (term[1]) {
+            case '==':
+              if (Array.isArray(targetValue)) {
+                passed = targetValue.indexOf(term[2]) !== -1;
+              } else {
+                passed = targetValue == term[2];
+              }
+              break;
+            case '!=':
+              if (Array.isArray(targetValue)) {
+                passed = targetValue.indexOf(term[2]) === -1;
+              } else {
+                passed = targetValue != term[2];
+              }
+              break;
+            case 'any':
+              var allowedValues = term[2].split('|');
+              if (Array.isArray(targetValue)) {
+                passed = targetValue.some(function (val) {
+                  return allowedValues.indexOf(val) !== -1;
+                });
+              } else {
+                passed = allowedValues.indexOf(targetValue) !== -1;
+              }
+              break;
+            case 'not_any':
+              var disallowedValues = term[2].split('|');
+              if (Array.isArray(targetValue)) {
+                passed = !targetValue.some(function (val) {
+                  return disallowedValues.indexOf(val) !== -1;
+                });
+              } else {
+                passed = disallowedValues.indexOf(targetValue) === -1;
+              }
+              break;
+          }
+          results.push(passed);
+        }
+
+        // Combine results based on operator
+        if (operator === 'OR') {
+          return results.indexOf(true) !== -1;
+        } else {
+          return results.indexOf(false) === -1;
+        }
+      }
+
+      // Check for fields with conditions attribute
+      var $conditionalFields = $contents.find('[data-conditions]');
+      if ($conditionalFields.length) {
+        var checkConditions = function checkConditions() {
+          $conditionalFields.each(function () {
+            var $field = $(this);
+            var conditions = $field.data('conditions');
+            if (conditions && conditions.terms) {
+              var passed = evaluateConditions(conditions, $field);
+              if (passed) {
+                $field.removeClass('merchant-metabox-field-hidden');
+              } else {
+                $field.addClass('merchant-metabox-field-hidden');
+              }
+            }
+          });
+        };
+
+        // Run on load
+        checkConditions();
+
+        // Bind events
+        $contents.find('input, select, textarea').on('change', checkConditions);
       }
     });
   };

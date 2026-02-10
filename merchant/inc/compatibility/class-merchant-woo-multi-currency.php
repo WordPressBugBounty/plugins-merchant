@@ -29,8 +29,16 @@ if ( ! class_exists( 'Merchant_Woo_Multi_Currency' ) ) {
 			add_filter( 'merchant_storewide_sale_cart_item_price', array( $this, 'multi_currency_free_support' ) );
 			add_filter( 'merchant_storewide_sale_cart_item_price', array( $this, 'multi_currency_pro_support' ) );
 
+			// Add multi-currency support for Buy X Get Y widget variation price (product single page)
+			add_filter( 'merchant_bogo_widget_variation_price', array( $this, 'multi_currency_free_support' ) );
+			add_filter( 'merchant_bogo_widget_variation_price', array( $this, 'multi_currency_pro_support' ) );
+
 			add_filter( 'merchant_free_gifts_min_amount', array( $this, 'multi_currency_support_free_gifts' )  );
 			add_filter( 'merchant_free_gifts_min_amount', array( $this, 'multi_currency_pro_support_free_gifts' )  );
+
+			// Add multi-currency support for Buy X Get Y (BOGO) cart item price
+			add_filter( 'merchant_bogo_cart_item_price', array( $this, 'multi_currency_free_support' ) );
+			add_filter( 'merchant_bogo_cart_item_price', array( $this, 'multi_currency_pro_support' ) );
 		}
 
 		/**

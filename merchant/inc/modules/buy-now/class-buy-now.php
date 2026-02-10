@@ -29,6 +29,13 @@ class Merchant_Buy_Now extends Merchant_Add_Module {
 	public static $is_module_preview = false;
 
 	/**
+	 * Exclusion manager instance.
+	 *
+	 * @var Merchant_Buy_Now_Exclusion
+	 */
+	public $exclusion;
+
+	/**
 	 * Constructor.
 	 *
 	 */
@@ -46,10 +53,15 @@ class Merchant_Buy_Now extends Merchant_Add_Module {
 		$this->module_section = 'reduce-abandonment';
 
 		// Module default settings.
-		$this->module_default_settings = array(
-			'button-text' => __( 'Buy Now', 'merchant' ),
-			'customize-button' => 1,
-		);
+        $this->module_default_settings = array(
+                'button-text'         => __( 'Buy Now', 'merchant' ),
+                'customize-button'    => 1,
+                'exclusion'           => 0,
+                'excluded_products'   => array(),
+                'excluded_categories' => array(),
+                'excluded_tags'       => array(),
+                'excluded_brands'     => array(),
+        );
 
 		// Module data.
 		$this->module_data = Merchant_Admin_Modules::$modules_data[ self::MODULE_ID ];
@@ -81,6 +93,12 @@ class Merchant_Buy_Now extends Merchant_Add_Module {
 		if ( ! Merchant_Modules::is_module_active( self::MODULE_ID ) ) {
 			return;
 		}
+
+		// Initialize exclusion manager.
+		$this->exclusion = new Merchant_Buy_Now_Exclusion( $this );
+
+		// Allow other modules (like Quick View) to check if a product is excluded.
+		add_filter( 'merchant_buy_now_is_excluded', array( $this, 'check_product_exclusion' ), 10, 2 );
 
 		// Return early if it's on admin but not in the respective module settings page.
 		if ( is_admin() && ! wp_doing_ajax() && ! parent::is_module_settings_page() ) {
@@ -362,6 +380,11 @@ class Merchant_Buy_Now extends Merchant_Add_Module {
 			return;
 		}
 
+		// Check if product should be excluded.
+		if ( $this->exclusion && $this->exclusion->should_exclude( $product ) ) {
+			return;
+		}
+
 		if ( ! empty( $product ) ) {
 			if ( 'yes' === get_post_meta( $post->ID, '_is_pre_order', true ) && strtotime( get_post_meta( $post->ID, '_pre_order_date', true ) ) > time() ) {
 				return;
@@ -436,6 +459,11 @@ class Merchant_Buy_Now extends Merchant_Add_Module {
         }
 
 		$settings = $this->get_module_settings();
+
+		// Check if product should be excluded.
+		if ( $this->exclusion && $this->exclusion->should_exclude( $product ) ) {
+			return;
+		}
 
 		if ( ! is_product() && isset( $settings['display-archive'] ) && ! $settings['display-archive'] ) {
 			return;
@@ -559,7 +587,36 @@ class Merchant_Buy_Now extends Merchant_Add_Module {
 
 		return $classes;
 	}
+
+	/**
+	 * Check if a product should be excluded from the Buy Now button.
+	 *
+	 * This method is called by the 'merchant_buy_now_is_excluded' filter,
+	 * allowing other modules (like Quick View) to check exclusion status
+	 * without directly accessing the exclusion manager.
+	 *
+	 * @param bool       $is_excluded Current exclusion status.
+	 * @param WC_Product $product     The product to check.
+	 *
+	 * @return bool True if the product should be excluded, false otherwise.
+	 * @since 2.2.4
+	 */
+	public function check_product_exclusion( $is_excluded, $product ) {
+		// If already excluded by another filter, respect that decision.
+		if ( $is_excluded ) {
+			return $is_excluded;
+		}
+
+		// Delegate to the exclusion manager if it exists.
+		if ( $this->exclusion && method_exists( $this->exclusion, 'should_exclude' ) ) {
+			return $this->exclusion->should_exclude( $product );
+		}
+
+		return false;
+	}
 }
+
+require_once MERCHANT_DIR.'inc/modules/buy-now/class-buy-now-exclusion.php';
 
 // Initialize the module.
 add_action( 'init', function() {

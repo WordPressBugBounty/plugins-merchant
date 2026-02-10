@@ -675,6 +675,38 @@ if ( ! function_exists( 'merchant_convert_date_to_timestamp' ) ) {
 	}
 }
 
+if ( ! function_exists( 'merchant_date_string_to_timestamp' ) ) {
+	/**
+	 * Convert a date string to a Unix timestamp based on the specified format and timezone.
+	 * 
+	 * This function signature matches Merchant Pro for compatibility.
+	 *
+	 * @param string      $date            The date string to convert.
+	 * @param string|null $timezone_offset The timezone offset or timezone string. Defaults to WordPress timezone.
+	 * @param string      $format          The format of the date string. Defaults to 'm-d-Y h:i A'.
+	 *
+	 * @return int The timestamp, or 0 on failure.
+	 */
+	function merchant_date_string_to_timestamp( $date, $timezone_offset = null, $format = 'm-d-Y h:i A' ) {
+		try {
+			// If it's already numeric, return it as-is
+			if ( is_numeric( $date ) ) {
+				return (int) $date;
+			}
+
+			// Use WordPress timezone if not specified
+			$timezone_offset = $timezone_offset ?? wp_timezone_string();
+
+			// Create DateTime object from the specified format and timezone
+			$date_object = DateTime::createFromFormat( $format, $date, new DateTimeZone( $timezone_offset ) );
+
+			return $date_object ? $date_object->getTimestamp() : 0;
+		} catch ( Exception $e ) {
+			return 0;
+		}
+	}
+}
+
 /**
  * Parses a list of product IDs
  * @return array
@@ -742,6 +774,7 @@ if ( ! function_exists( 'merchant_is_user_condition_passed' ) ) {
 				return in_array( $user_role, $allowed_roles, true );
 
 			case 'customers':
+			case 'users':
 				$allowed_customers = array_map( 'intval', $args['user_condition_users'] ?? array() );
 				return $is_logged_in && in_array( $customer_id, $allowed_customers, true );
 

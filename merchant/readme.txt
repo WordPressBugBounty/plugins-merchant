@@ -1,9 +1,9 @@
 === Pre-Orders, Product Labels, Buy Now, Quick View, Discount Rules and More for WooCommerce – Merchant ===
 Tags: pre-orders, buy now button, product labels, quick view, clear cart
-Requires at least: 5.5
-Tested up to: 6.8
+Requires at least: 6.4
+Tested up to: 6.9
 Requires PHP: 7.3
-Stable tag: 2.2.2
+Stable tag: 2.2.3
 Contributors: aThemes
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
@@ -218,6 +218,11 @@ Absolutely not. You can enable and customize modules without any coding knowledg
 15. Cookie Banner Module
 
 == Changelog ==
+= 2.2.3 =
+* Added - Pre-Orders: Added per-product overrides via metaboxes and improved metabox UI/UX for better consistency with global campaign settings
+* Added - Buy Now: Added exclusion rules to hide the Buy Now button for specific products, categories, tags, or brands
+* Added - Quick View: Added AJAX add-to-cart support, allowing products to be added to the cart without page reloads
+
 = 2.2.2 =
 * Fixed - Product Labels: Fixed an issue where the 5th label shape was rendering incorrectly on the frontend
 

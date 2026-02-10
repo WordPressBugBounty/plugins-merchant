@@ -68,13 +68,83 @@ if ( ! class_exists( 'Merchant_Metabox' ) ) {
 			wp_enqueue_script( 'merchant-select2', MERCHANT_URI . 'assets/vendor/select2/select2.full.min.js', array( 'jquery' ), '4.0.13', true );
 			wp_enqueue_style( 'merchant-select2', MERCHANT_URI . 'assets/vendor/select2/select2.min.css', array(), '4.0.13', 'all' );
 
+			// Enqueue Air Datepicker for date_time fields
+			wp_enqueue_script( 'air-datepicker', MERCHANT_URI . 'assets/vendor/air-datepicker/air-datepicker.js', array( 'jquery' ), '3.4.0', true );
+			wp_enqueue_style( 'air-datepicker', MERCHANT_URI . 'assets/vendor/air-datepicker/air-datepicker.css', array(), '3.4.0' );
+
+			// Enqueue Pickr for color fields (CSS is bundled in metabox.min.css)
+			wp_enqueue_script( 'pickr', MERCHANT_URI . 'assets/vendor/pickr/pickr.min.js', array(), '1.8.2', true );
+
 			wp_enqueue_style( 'merchant-metabox-styles', MERCHANT_URI . 'assets/css/admin/metabox.min.css', array(), MERCHANT_VERSION );
-			wp_enqueue_script( 'merchant-metabox-scripts', MERCHANT_URI . 'assets/js/admin/merchant-metabox.min.js', array( 'jquery', 'jquery-ui-sortable' ), MERCHANT_VERSION, true );
+			wp_enqueue_script( 'merchant-metabox-scripts', MERCHANT_URI . 'assets/js/admin/merchant-metabox.min.js', array( 'jquery', 'jquery-ui-sortable', 'air-datepicker', 'pickr' ), MERCHANT_VERSION, true );
+
+			// Localize datepicker
+			$datepicker_locale = array(
+				'days'        => array(
+					__( 'Sunday', 'merchant' ),
+					__( 'Monday', 'merchant' ),
+					__( 'Tuesday', 'merchant' ),
+					__( 'Wednesday', 'merchant' ),
+					__( 'Thursday', 'merchant' ),
+					__( 'Friday', 'merchant' ),
+					__( 'Saturday', 'merchant' ),
+				),
+				'daysShort'   => array(
+					__( 'Sun', 'merchant' ),
+					__( 'Mon', 'merchant' ),
+					__( 'Tue', 'merchant' ),
+					__( 'Wed', 'merchant' ),
+					__( 'Thu', 'merchant' ),
+					__( 'Fri', 'merchant' ),
+					__( 'Sat', 'merchant' ),
+				),
+				'daysMin'     => array(
+					__( 'Su', 'merchant' ),
+					__( 'Mo', 'merchant' ),
+					__( 'Tu', 'merchant' ),
+					__( 'We', 'merchant' ),
+					__( 'Th', 'merchant' ),
+					__( 'Fr', 'merchant' ),
+					__( 'Sa', 'merchant' ),
+				),
+				'months'      => array(
+					__( 'January', 'merchant' ),
+					__( 'February', 'merchant' ),
+					__( 'March', 'merchant' ),
+					__( 'April', 'merchant' ),
+					__( 'May', 'merchant' ),
+					__( 'June', 'merchant' ),
+					__( 'July', 'merchant' ),
+					__( 'August', 'merchant' ),
+					__( 'September', 'merchant' ),
+					__( 'October', 'merchant' ),
+					__( 'November', 'merchant' ),
+					__( 'December', 'merchant' ),
+				),
+				'monthsShort' => array(
+					__( 'Jan', 'merchant' ),
+					__( 'Feb', 'merchant' ),
+					__( 'Mar', 'merchant' ),
+					__( 'Apr', 'merchant' ),
+					__( 'May', 'merchant' ),
+					__( 'Jun', 'merchant' ),
+					__( 'Jul', 'merchant' ),
+					__( 'Aug', 'merchant' ),
+					__( 'Sep', 'merchant' ),
+					__( 'Oct', 'merchant' ),
+					__( 'Nov', 'merchant' ),
+					__( 'Dec', 'merchant' ),
+				),
+				'today'       => __( 'Today', 'merchant' ),
+				'clear'       => __( 'Clear', 'merchant' ),
+			);
 
 			wp_localize_script( 'merchant-metabox-scripts', 'merchant_metabox', array(
 				'ajaxurl'   => admin_url( 'admin-ajax.php' ),
 				'ajaxnonce' => wp_create_nonce( 'merchant_metabox' ),
 			) );
+
+			wp_localize_script( 'merchant-metabox-scripts', 'merchant_datepicker_locale', $datepicker_locale );
 		}
 
 		/**
@@ -114,6 +184,26 @@ if ( ! class_exists( 'Merchant_Metabox' ) ) {
 							}
 						}
 
+						break;
+
+					case 'user':
+						$query = new WP_User_Query( array(
+							'search'         => '*' . $term . '*',
+							'search_columns' => array( 'user_login', 'user_email', 'display_name' ),
+							'number'         => 25,
+							'orderby'        => 'display_name',
+							'order'          => 'ASC',
+							'fields'         => array( 'ID', 'display_name', 'user_email' ),
+						) );
+						$users = $query->get_results();
+						if ( ! empty( $users ) ) {
+							foreach ( $users as $user ) {
+								$options[] = array(
+									'id'   => $user->ID,
+									'text' => $user->display_name . ' (' . $user->user_email . ')',
+								);
+							}
+						}
 						break;
 				}
 
@@ -304,6 +394,10 @@ if ( ! class_exists( 'Merchant_Metabox' ) ) {
 							$classes[] = 'merchant-metabox-field-inline';
 						}
 
+						// Build data attributes array
+						$data_attrs = array();
+						
+						// Handle old simple dependency (data-depend-on)
 						if ( ! empty( $field['depend'] ) ) {
 							$depend_meta = get_post_meta( $post->ID, $field['depend'], true );
 
@@ -311,10 +405,25 @@ if ( ! class_exists( 'Merchant_Metabox' ) ) {
 								$classes[] = 'merchant-metabox-field-hidden';
 							}
 
-							echo '<div class="' . esc_attr( join( ' ', $classes ) ) . '" data-depend-on="' . esc_attr( $field['depend'] ) . '">';
-						} else {
-							echo '<div class="' . esc_attr( join( ' ', $classes ) ) . '">';
+							$data_attrs[] = 'data-depend-on="' . esc_attr( $field['depend'] ) . '"';
 						}
+						
+						// Handle new enhanced conditions (data-conditions)
+						if ( ! empty( $field['conditions'] ) ) {
+							$data_attrs[] = "data-conditions='" . esc_attr( wp_json_encode( $field['conditions'] ) ) . "'";
+							
+							// Check if field should be initially hidden based on conditions
+							if ( $this->should_hide_field( $field['conditions'], $post->ID ) ) {
+								$classes[] = 'merchant-metabox-field-hidden';
+							}
+						}
+						
+						// Output the field wrapper with all data attributes
+						echo '<div class="' . esc_attr( join( ' ', $classes ) ) . '"';
+						if ( ! empty( $data_attrs ) ) {
+							echo ' ' . wp_kses_post( implode( ' ', $data_attrs ) );
+						}
+						echo '>';
 
 						if ( isset( $field['title'] ) || isset( $field['subtitle'] ) ) {
 							echo '<div class="merchant-metabox-field-title">';
@@ -423,11 +532,18 @@ if ( ! class_exists( 'Merchant_Metabox' ) ) {
 					return ( '1' === $value ) ? 1 : 0;
 					break;
 
+				case 'range':
 				case 'number':
 					return absint( $value );
 					break;
 
 				case 'select':
+					if ( isset( $field['multiple'] ) && $field['multiple'] && is_array( $value ) ) {
+						return array_filter( array_map( 'sanitize_key', $value ) );
+					}
+					return ( in_array( $value, array_keys( $field['options'] ), true ) ) ? sanitize_key( $value ) : '';
+					break;
+
 				case 'choices':
 					return ( in_array( $value, array_keys( $field['options'] ), true ) ) ? sanitize_key( $value ) : '';
 					break;
@@ -437,22 +553,20 @@ if ( ! class_exists( 'Merchant_Metabox' ) ) {
 					return ( is_array( $value ) && ! empty( $value ) ) ? array_filter( array_map( 'sanitize_text_field', $value ) ) : array();
 					break;
 
-				case 'wc-attributes':
-					return ( is_array( $value ) && ! empty( $value ) ) ? array_filter( array_map( 'sanitize_text_field', $value ) ) : array();
-					break;
-
 				case 'repeater':
 				case 'uploads':
-					return ( is_array( $value ) && ! empty( $value ) ) ? array_filter( map_deep( $value, 'sanitize_text_field' ) ) : array();
-					break;
-
 				case 'size-chart':
-				case 'uploads':
 					return ( is_array( $value ) && ! empty( $value ) ) ? array_filter( map_deep( $value, 'sanitize_text_field' ) ) : array();
 					break;
 
 				case 'wp-editor':
 					return wp_kses_post( $value );
+					break;
+
+				case 'date_time':
+				case 'color':
+				case 'radio':
+					return sanitize_text_field( $value );
 					break;
 
 				case 'flexible-content':
@@ -481,13 +595,22 @@ if ( ! class_exists( 'Merchant_Metabox' ) ) {
 						if ( isset( $field['prepend'] ) ) {
 							echo '<div class="merchant-metabox-field-prepend">' . esc_attr( $field['prepend'] ) . '</div>';
 						}
-						echo '<input type="text" name="' . esc_attr( $field_id ) . '" value="' . esc_attr( $value ) . '" />';
+						echo '<input type="text" name="' . esc_attr( $field_id ) . '" value="' . esc_attr( $value ) . '"';
+						if ( isset( $field['placeholder'] ) ) {
+							echo ' placeholder="' . esc_attr( $field['placeholder'] ) . '"';
+						}
+						echo ' />';
+
 						if ( isset( $field['append'] ) ) {
 							echo '<div class="merchant-metabox-field-append">' . esc_attr( $field['append'] ) . '</div>';
 						}
 						echo '</div>';
 					} else {
-						echo '<input type="text" name="' . esc_attr( $field_id ) . '" value="' . esc_attr( $value ) . '" />';
+						echo '<input type="text" name="' . esc_attr( $field_id ) . '" value="' . esc_attr( $value ) . '"';
+						if ( isset( $field['placeholder'] ) ) {
+							echo ' placeholder="' . esc_attr( $field['placeholder'] ) . '"';
+						}
+						echo ' />';
 					}
 					break;
 
@@ -539,10 +662,14 @@ if ( ! class_exists( 'Merchant_Metabox' ) ) {
 					break;
 
 				case 'select':
-					echo '<select name="' . esc_attr( $field_id ) . '">';
+					$multiple = ( isset( $field['multiple'] ) && $field['multiple'] ) ? ' multiple' : '';
+					$name     = $field_id . ( $multiple ? '[]' : '' );
+
+					echo '<select name="' . esc_attr( $name ) . '"' . esc_attr( $multiple ) . '>';
 
 					foreach ( $field['options'] as $key => $option ) {
-						echo '<option value="' . esc_attr( $key ) . '"' . selected( $key, $value, false ) . '>' . esc_html( $option ) . '</option>';
+						$is_selected = is_array( $value ) ? in_array( $key, $value, true ) : ( (string) $key === (string) $value );
+						echo '<option value="' . esc_attr( $key ) . '"' . selected( $is_selected, true, false ) . '>' . esc_html( $option ) . '</option>';
 					}
 
 					echo '</select>';
@@ -570,6 +697,14 @@ if ( ! class_exists( 'Merchant_Metabox' ) ) {
 
 									if ( ! empty( $post ) ) {
 										echo '<option value="' . esc_attr( $post->ID ) . '" selected>' . esc_html( $post->post_title ) . '</option>';
+									}
+									break;
+
+								case 'user':
+									$user = get_user_by( 'id', $id );
+
+									if ( ! empty( $user ) ) {
+										echo '<option value="' . esc_attr( $user->ID ) . '" selected>' . esc_html( $user->display_name ) . ' (' . esc_html( $user->user_email ) . ')</option>';
 									}
 									break;
 							}
@@ -625,12 +760,55 @@ if ( ! class_exists( 'Merchant_Metabox' ) ) {
 								MERCHANT_URI ) ) . '" title="' . esc_attr( $option['label'] ) . '" alt="' . esc_attr( $option['label'] ) . '" /></figure>';
 						echo '</label>';
 					}
-
 					echo '</div>';
 					break;
 
-				case 'content':
-					echo wp_kses_post( $field['content'] );
+				case 'date_time':
+				$field = wp_parse_args( $field, array(
+					'options'     => array(),
+					'placeholder' => '',
+				) );
+
+				// Set default options to match admin settings framework
+				$default_options = array(
+					'dateFormat'  => 'MM-dd-yyyy',
+					'timepicker'  => true,
+					'timeFormat'  => 'hh:mm AA',
+					'minDate'     => 'today',
+					'timeZone'    => wp_timezone_string(),
+				);
+
+				$options = wp_parse_args( $field['options'], $default_options );
+
+				echo '<div class="merchant-metabox-datetime-field" data-options="' . esc_attr( wp_json_encode( $options ) ) . '">';
+				echo '<input type="text" name="' . esc_attr( $field_id ) . '" value="' . esc_attr( $value ) . '" placeholder="' . esc_attr( $field['placeholder'] ) . '" />';
+				echo '</div>';
+				    break;
+
+				case 'color':
+					$field = wp_parse_args( $field, array(
+						'default' => '#212121',
+					) );
+
+					echo '<div class="merchant-metabox-color-field">';
+					echo '<div class="merchant-color-picker" data-default-color="' . esc_attr( $field['default'] ) . '" style="background-color: ' . esc_attr( $value ? $value : $field['default'] ) . ';"></div>';
+					echo '<input type="text" class="merchant-color-input" name="' . esc_attr( $field_id ) . '" value="' . esc_attr( $value ) . '" />';
+					echo '</div>';
+					break;
+
+				case 'radio':
+					$field = wp_parse_args( $field, array(
+						'options' => array(),
+					) );
+
+					echo '<div class="merchant-metabox-radio-field">';
+					foreach ( $field['options'] as $option_key => $option_label ) {
+						echo '<label>';
+						echo '<input type="radio" name="' . esc_attr( $field_id ) . '" value="' . esc_attr( $option_key ) . '"' . checked( $value, $option_key, false ) . ' /> ';
+						echo esc_html( $option_label );
+						echo '</label><br/>';
+					}
+					echo '</div>';
 					break;
 
 				case 'repeater':
@@ -983,6 +1161,21 @@ if ( ! class_exists( 'Merchant_Metabox' ) ) {
 					}
 					break;
 
+					case 'range':
+						$min  = isset( $field['min'] ) ? $field['min'] : 0;
+						$max  = isset( $field['max'] ) ? $field['max'] : 100;
+						$step = isset( $field['step'] ) ? $field['step'] : 1;
+						$unit = isset( $field['unit'] ) ? $field['unit'] : '';
+						?>
+						<div class="merchant-range">
+							<input type="range" class="merchant-range-input" min="<?php echo esc_attr( $min ); ?>" max="<?php echo esc_attr( $max ); ?>" step="<?php echo esc_attr( $step ); ?>" value="<?php echo esc_attr( $value ); ?>" />
+							<input type="number" class="merchant-range-number-input" name="<?php echo esc_attr( $field_id ); ?>" min="<?php echo esc_attr( $min ); ?>" max="<?php echo esc_attr( $max ); ?>" step="<?php echo esc_attr( $step ); ?>" value="<?php echo esc_attr( $value ); ?>" />
+							<?php if ( ! empty( $unit ) ) : ?>
+								<span class="merchant-range-unit"><?php echo esc_html( $unit ); ?></span>
+							<?php endif; ?>
+						</div>
+						<?php
+						break;
 				case 'flexible-content':
 					$field  = wp_parse_args( $field, array(
 						'button' => '',
@@ -1082,6 +1275,87 @@ if ( ! class_exists( 'Merchant_Metabox' ) ) {
 					echo '</div>';
 
 					break;
+			}
+		}
+
+		/**
+		 * Evaluate if a field should be hidden based on conditions.
+		 *
+		 * @param array $conditions Conditions array with 'relation' and 'terms'.
+		 * @param int   $post_id   Post ID.
+		 * @return bool True if field should be hidden, false otherwise.
+		 */
+		private function should_hide_field( $conditions, $post_id ) {
+			if ( empty( $conditions['terms'] ) || ! is_array( $conditions['terms'] ) ) {
+				return false;
+			}
+
+			$operator = isset( $conditions['relation'] ) ? $conditions['relation'] : 'AND';
+			$results  = array();
+
+			foreach ( $conditions['terms'] as $term ) {
+				if ( ! is_array( $term ) || count( $term ) < 3 ) {
+					continue;
+				}
+
+				$field_name  = $term[0];
+				$comparison  = $term[1];
+				$target_value = $term[2];
+
+				// Get the actual field value from post meta
+				$meta_value = get_post_meta( $post_id, $field_name, true );
+
+				$passed = false;
+
+			// Cast to strings to ensure consistent comparison with JavaScript.
+			// Switcher values are saved as integers (1/0) but conditions check against strings ('1'/'0').
+			$meta_value_str   = is_array( $meta_value ) ? $meta_value : (string) $meta_value;
+			$target_value_str = (string) $target_value;
+
+			// Evaluate condition based on comparison operator
+			switch ( $comparison ) {
+				case '==':
+					if ( is_array( $meta_value_str ) ) {
+						$passed = in_array( $target_value_str, array_map( 'strval', $meta_value_str ), true );
+					} else {
+						$passed = $meta_value_str === $target_value_str;
+					}
+					break;
+				case '!=':
+					if ( is_array( $meta_value_str ) ) {
+						$passed = ! in_array( $target_value_str, array_map( 'strval', $meta_value_str ), true );
+					} else {
+						$passed = $meta_value_str !== $target_value_str;
+					}
+					break;
+				case 'any':
+					$allowed_values = explode( '|', $target_value_str );
+					if ( is_array( $meta_value_str ) ) {
+						$passed = count( array_intersect( array_map( 'strval', $meta_value_str ), $allowed_values ) ) > 0;
+					} else {
+						$passed = in_array( $meta_value_str, $allowed_values, true );
+					}
+					break;
+				case 'not_any':
+					$disallowed_values = explode( '|', $target_value_str );
+					if ( is_array( $meta_value_str ) ) {
+						$passed = count( array_intersect( array_map( 'strval', $meta_value_str ), $disallowed_values ) ) === 0;
+					} else {
+						$passed = ! in_array( $meta_value_str, $disallowed_values, true );
+					}
+					break;
+			}
+
+				$results[] = $passed;
+			}
+
+			// Combine results based on operator
+			if ( $operator === 'OR' ) {
+				// For OR, at least one must be true (if all false, hide)
+				return ! in_array( true, $results, true );
+			} else {
+				// For AND, all must be true (if any false, hide)
+				return in_array( false, $results, true );
 			}
 		}
 	}

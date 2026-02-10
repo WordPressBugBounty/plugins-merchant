@@ -1,7 +1,6 @@
 <?php
-
 /**
- * Pre Orders.
+ * Merchant - Pre Orders
  *
  * @package Merchant
  */
@@ -13,24 +12,36 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Pre Orders Class.
  *
+ * This class handles the initialization and setup of the Pre Orders module, including
+ * admin settings, asset enqueueing, and frontend styling.
+ *
+ * @property string $module_id The module ID.
+ * @property bool $wc_only The WooCommerce only flag.
+ * @property string $module_section The module section.
+ * @property array $module_default_settings The module default settings.
+ * @property array $module_data The module data.
+ * @property string $module_options_path The module options path.
  */
 class Merchant_Pre_Orders extends Merchant_Add_Module {
 
 	/**
 	 * Module ID.
 	 *
+	 * @var string The module ID.
 	 */
 	const MODULE_ID = 'pre-orders';
 
 	/**
 	 * Is module preview.
 	 *
+	 * @var bool The is module preview flag.
 	 */
 	public static $is_module_preview = false;
 
 	/**
 	 * Main functionality dependency.
 	 *
+	 * @var Merchant_Pre_Orders_Main_Functionality The main functionality instance.
 	 */
 	public $main_func;
 
@@ -44,6 +55,7 @@ class Merchant_Pre_Orders extends Merchant_Add_Module {
 	/**
 	 * Constructor.
 	 *
+	 * @param Merchant_Pre_Orders_Main_Functionality $main_func The main functionality instance.
 	 */
 	public function __construct( Merchant_Pre_Orders_Main_Functionality $main_func ) {
 		// Module id.
@@ -96,7 +108,11 @@ class Merchant_Pre_Orders extends Merchant_Add_Module {
 		if ( Merchant_Modules::is_module_active( self::MODULE_ID ) && is_admin() ) {
 			// Init translations.
 			$this->init_translations();
+
+			// Include product metabox for per-product settings.
+			require_once MERCHANT_DIR . 'inc/modules/' . self::MODULE_ID . '/admin/class-pre-orders-metabox.php';
 		}
+
 
 		if ( ! Merchant_Modules::is_module_active( self::MODULE_ID ) ) {
 			return;
@@ -126,7 +142,9 @@ class Merchant_Pre_Orders extends Merchant_Add_Module {
 	}
 
 	/**
-	 * Init translations.
+	 * Init translations for module settings.
+	 *
+	 * Registers strings for the Merchant translator tool.
 	 *
 	 * @return void
 	 */
@@ -148,23 +166,20 @@ class Merchant_Pre_Orders extends Merchant_Add_Module {
 	}
 
 	/**
-	 * Admin enqueue CSS.
+	 * Enqueue admin-specific CSS.
 	 *
 	 * @return void
 	 */
 	public function admin_enqueue_css() {
-		$page   = ( ! empty( $_GET['page'] ) ) ? sanitize_text_field( wp_unslash( $_GET['page'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-		$module = ( ! empty( $_GET['module'] ) ) ? sanitize_text_field( wp_unslash( $_GET['module'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-
-		if ( 'merchant' === $page && self::MODULE_ID === $module ) {
+		if ( parent::is_module_settings_page() ) {
 			wp_enqueue_style( 'merchant-' . self::MODULE_ID, MERCHANT_URI . 'assets/css/modules/' . self::MODULE_ID . '/pre-orders.min.css', array(), MERCHANT_VERSION );
 			wp_enqueue_style( 'merchant-admin-' . self::MODULE_ID, MERCHANT_URI . 'assets/css/modules/' . self::MODULE_ID . '/admin/preview.min.css', array(), MERCHANT_VERSION );
 		}
 	}
 
 	/**
-     * Admin JS
-     *
+	 * Enqueue admin-specific JavaScript.
+	 *
 	 * @return void
 	 */
 	public function admin_enqueue_js() {
@@ -180,7 +195,7 @@ class Merchant_Pre_Orders extends Merchant_Add_Module {
 	}
 
 	/**
-	 * Enqueue CSS.
+	 * Enqueue frontend-specific CSS.
 	 *
 	 * @return void
 	 */
@@ -194,24 +209,25 @@ class Merchant_Pre_Orders extends Merchant_Add_Module {
 		}
 	}
 
+	/**
+	 * Add inline CSS styles based on the active rule.
+	 *
+	 * @return string The generated inline CSS.
+	 */
 	public function add_inline_style() {
-        ob_start();
+		ob_start();
 		$rule = $this->current_rule();
 		if ( ! empty( $rule ) ) {
 			?>
             .woocommerce .merchant-pre-ordered-product{
-            --mrc-po-text-color: <?php
-			echo esc_attr( $rule['text-color'] ); ?>;
-            --mrc-po-text-hover-color: <?php
-			echo esc_attr( $rule['text-hover-color'] ); ?>;
-            --mrc-po-border-color: <?php
-			echo esc_attr( $rule['border-color'] ); ?>;
-            --mrc-po-border-hover-color: <?php
-			echo esc_attr( $rule['border-hover-color'] ); ?>;
-            --mrc-po-background-color: <?php
-			echo esc_attr( $rule['background-color'] ); ?>;
-            --mrc-po-background-hover-color: <?php
-			echo esc_attr( $rule['background-hover-color'] ); ?>;
+            --mrc-po-text-color: <?php echo esc_attr( $rule['text-color'] ?? '#FFF' ); ?>;
+            --mrc-po-text-hover-color: <?php echo esc_attr( $rule['text-hover-color'] ?? '#FFF' ); ?>;
+            --mrc-po-border-color: <?php echo esc_attr( $rule['border-color'] ?? '#212121' ); ?>;
+            --mrc-po-border-hover-color: <?php echo esc_attr( $rule['border-hover-color'] ?? '#414141' ); ?>;
+            --mrc-po-border-width: <?php echo esc_attr( ( $rule['border-width'] ?? 0 ) . 'px' ); ?>;
+            --mrc-po-border-radius: <?php echo esc_attr( ( $rule['border-radius'] ?? 0 ) . 'px' ); ?>;
+            --mrc-po-background-color: <?php echo esc_attr( $rule['background-color'] ?? '#212121' ); ?>;
+            --mrc-po-background-hover-color: <?php echo esc_attr( $rule['background-hover-color'] ?? '#414141' ); ?>;
             }
 			<?php
 		}
@@ -220,7 +236,7 @@ class Merchant_Pre_Orders extends Merchant_Add_Module {
 	}
 
 	/**
-	 * Enqueue scripts.
+	 * Enqueue frontend-specific scripts.
 	 *
 	 * @return void
 	 */
@@ -230,18 +246,16 @@ class Merchant_Pre_Orders extends Merchant_Add_Module {
 	}
 
 	/**
-	 * Localize script with module settings.
+	 * Localize the main module script with settings and translations.
 	 *
-	 * @param array $setting The merchant global object setting parameter.
+	 * @param array $setting The localized settings array.
 	 *
-	 * @return array $setting The merchant global object setting parameter.
+	 * @return array The updated settings array.
 	 */
 	public function localize_script( $setting ) {
-		//$module_settings = $this->get_module_settings();
-
 		$setting['pre_orders'] = true;
 		$rule                  = $this->current_rule();
-		if ( ! empty( $rule ) && $rule['button_text'] ) {
+		if ( ! empty( $rule ) && ! empty( $rule['button_text'] ) ) {
 			$setting['pre_orders_add_button_title'] = Merchant_Translator::translate( $rule['button_text'] );
 		} else {
 			$setting['pre_orders_add_button_title'] = esc_html__( 'Pre Order Now!', 'merchant' );
@@ -253,12 +267,12 @@ class Merchant_Pre_Orders extends Merchant_Add_Module {
 	}
 
 	/**
-	 * Render admin preview
+	 * Render the admin preview for the module.
 	 *
-	 * @param Merchant_Admin_Preview $preview
-	 * @param string                 $module
+	 * @param Merchant_Admin_Preview $preview The preview object.
+	 * @param string                 $module  The module ID.
 	 *
-	 * @return Merchant_Admin_Preview
+	 * @return Merchant_Admin_Preview The updated preview object.
 	 */
 	public function render_admin_preview( $preview, $module ) {
 		if ( self::MODULE_ID === $module ) {
@@ -294,7 +308,10 @@ class Merchant_Pre_Orders extends Merchant_Add_Module {
 	}
 
 	/**
-	 * Admin preview content.
+	 * Admin preview HTML content.
+	 *
+	 * @param array  $settings The module settings.
+	 * @param string $text     The formatted additional text.
 	 *
 	 * @return void
 	 */
@@ -317,10 +334,8 @@ class Merchant_Pre_Orders extends Merchant_Add_Module {
                 <div class="mrc-preview-text-placeholder mrc-mw-40 mrc-hide-on-smaller-screens"></div>
                 <div class="mrc-preview-text-placeholder mrc-mw-30 mrc-hide-on-smaller-screens"></div>
                 <div class="merchant-pre-ordered-product">
-                    <div class="merchant-pre-orders-date"><?php
-						printf( '<div class="merchant-pre-orders-date">%s</div>', esc_html( $text ) ); ?></div>
-                    <a href="#" class="add_to_cart_button"><?php
-						echo esc_html( $settings['button_text'] ); ?></a>
+                    <div class="merchant-pre-orders-date"><?php echo esc_html( $text ); ?></div>
+                    <a href="#" class="add_to_cart_button"><?php echo esc_html( $settings['button_text'] ); ?></a>
                 </div>
             </div>
         </div>
@@ -328,9 +343,9 @@ class Merchant_Pre_Orders extends Merchant_Add_Module {
 	}
 
 	/**
-	 * Custom CSS.
+	 * Get Custom CSS for the module.
 	 *
-	 * @return string
+	 * @return string The generated CSS.
 	 */
 	public function get_module_custom_css() {
 		$css = '';
@@ -348,6 +363,12 @@ class Merchant_Pre_Orders extends Merchant_Add_Module {
 			// Border Color (hover).
 			$css .= Merchant_Custom_CSS::get_variable_css( 'pre-orders', 'border-hover-color', '#414141', '.merchant-pre-ordered-product', '--mrc-po-border-hover-color' );
 
+			// Border Width.
+			$css .= Merchant_Custom_CSS::get_variable_css( 'pre-orders', 'border-width', 0, '.merchant-pre-ordered-product', '--mrc-po-border-width', 'px' );
+
+			// Border Radius.
+			$css .= Merchant_Custom_CSS::get_variable_css( 'pre-orders', 'border-radius', 0, '.merchant-pre-ordered-product', '--mrc-po-border-radius', 'px' );
+
 			// Background Color.
 			$css .= Merchant_Custom_CSS::get_variable_css( 'pre-orders', 'background-color', '#212121', '.merchant-pre-ordered-product', '--mrc-po-background-color' );
 
@@ -359,11 +380,11 @@ class Merchant_Pre_Orders extends Merchant_Add_Module {
 	}
 
 	/**
-	 * Admin custom CSS.
+	 * Filter for admin custom CSS.
 	 *
 	 * @param string $css The custom CSS.
 	 *
-	 * @return string $css The custom CSS.
+	 * @return string The updated custom CSS.
 	 */
 	public function admin_custom_css( $css ) {
 		$css .= $this->get_module_custom_css();
@@ -372,11 +393,11 @@ class Merchant_Pre_Orders extends Merchant_Add_Module {
 	}
 
 	/**
-	 * Frontend custom CSS.
+	 * Filter for frontend custom CSS.
 	 *
 	 * @param string $css The custom CSS.
 	 *
-	 * @return string $css The custom CSS.
+	 * @return string The updated custom CSS.
 	 */
 	public function frontend_custom_css( $css ) {
 		$css .= $this->get_module_custom_css();
@@ -385,15 +406,21 @@ class Merchant_Pre_Orders extends Merchant_Add_Module {
 	}
 
 	/**
-     * Get current product rule.
-     *
-	 * @return array
+	 * Get the currently applicable product rule.
+	 *
+	 * @return array The rule array if found, empty array otherwise.
 	 */
 	private function current_rule() {
 		if ( is_singular( 'product' ) ) {
-			$product = wc_get_product( get_queried_object_id() );
-			$rule    = Merchant_Pre_Orders_Main_Functionality::available_product_rule( $product->get_id() );
-			if ( empty( $rule ) && $product->is_type( 'variable' ) ) {
+			$product_id = get_queried_object_id();
+			$product    = wc_get_product( $product_id );
+
+			if ( ! $product ) {
+				return array();
+			}
+
+			$rule = Merchant_Pre_Orders_Main_Functionality::available_product_rule( $product->get_id() );
+			if ( empty( $rule ) && $product instanceof \WC_Product_Variable ) {
 				$available_variations = $product->get_available_variations();
 				foreach ( $available_variations as $variation ) {
 					$rule = Merchant_Pre_Orders_Main_Functionality::available_product_rule( $variation['variation_id'] );
@@ -410,12 +437,14 @@ class Merchant_Pre_Orders extends Merchant_Add_Module {
 	}
 
 	/**
-	 * Help banner.
+	 * Display a help banner in the module settings page.
+	 *
+	 * @param string $module_id The module ID.
 	 *
 	 * @return void
 	 */
 	public function help_banner( $module_id ) {
-		if ( $module_id === 'pre-orders' ) {
+		if ( $module_id === self::MODULE_ID ) {
 			?>
             <div class="merchant-module-page-setting-fields">
                 <div class="merchant-module-page-setting-field merchant-module-page-setting-field-content">
@@ -425,7 +454,7 @@ class Merchant_Pre_Orders extends Merchant_Add_Module {
                             <p>
 								<?php
 								echo esc_html__(
-									'Pre-orders captured by Merchant are tagged with "MerchantPreOrder" and can be found in your WooCommerce Order Section.',
+									'Pre-orders captured by Merchant are tagged with "Merchant PreOrder" and can be found in your WooCommerce Order Section. You can control pre-order settings on a per-product basis from the individual product page.',
 									'merchant'
 								);
 								printf(
@@ -443,9 +472,9 @@ class Merchant_Pre_Orders extends Merchant_Add_Module {
 	}
 
 	/**
-	 * Supply missing ID for flexible items.
+	 * Supply missing flexible_id for the rules setting.
 	 *
-	 * @param string $setting_key
+	 * @param string $setting_key The setting key for the flexible items.
 	 *
 	 * @return void
 	 */
@@ -475,8 +504,11 @@ class Merchant_Pre_Orders extends Merchant_Add_Module {
 	}
 }
 
+// Rules Repository.
+require_once MERCHANT_DIR . 'inc/modules/pre-orders/classes/class-pre-orders-rules.php';
+
 // Main functionality.
-require MERCHANT_DIR . 'inc/modules/pre-orders/class-pre-orders-main-functionality.php';
+require_once MERCHANT_DIR . 'inc/modules/pre-orders/class-pre-orders-main-functionality.php';
 
 // Initialize the module.
 add_action( 'init', function () {

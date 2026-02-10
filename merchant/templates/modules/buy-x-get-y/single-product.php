@@ -204,13 +204,39 @@ if ( ! is_admin() && ! $is_main_product_in_stock ) {
 	                                    if ( $offer['discount_type'] === 'shipping' ) {
 		                                    echo wp_kses( $buy_product->get_price_html(), merchant_kses_allowed_tags( array( 'bdi' ) ) );
 	                                    } else {
-		                                    if ( $offer['discount_type'] === 'percentage' ) {
-			                                    $buy_product_reduced_price = $product_price - ( $product_price * $offer['discount'] / 100 );
-		                                    } else {
-			                                    $buy_product_reduced_price = $product_price - ( $offer['discount'] / $offer['quantity'] );
-		                                    }
-		                                    echo wp_kses( wc_format_sale_price( $product_price, $buy_product_reduced_price ), merchant_kses_allowed_tags( array( 'bdi' ) ) );
-	                                    }
+                                            // Calculate reduced price
+                                            $product_price_float = (float) $product_price;
+                                            
+                                            if ( $offer['discount_type'] === 'percentage' ) {
+                                                $reduced_price = $product_price_float * ( 1 - (float) $offer['discount'] / 100 );
+                                            } else {
+                                                $reduced_price = $product_price_float - ( (float) $offer['discount'] / (float) $offer['quantity'] );
+                                            }
+
+                                            // Round and ensure valid price (positive and less than regular)
+                                            $reduced_price = round( max( 0, $reduced_price ), wc_get_price_decimals() );
+                                            if ( $reduced_price >= $product_price_float ) {
+                                                $reduced_price = max( 0, $product_price_float - 0.01 );
+                                            }
+
+                                            // Store original prices
+                                            $original_regular = $buy_product->get_regular_price( 'edit' );
+                                            $original_sale    = $buy_product->get_sale_price( 'edit' );
+
+                                            // Set temporary prices for dual-currency compatibility
+                                            $buy_product->set_regular_price( wc_format_decimal( $product_price_float, false, true ) );
+                                            $buy_product->set_sale_price( wc_format_decimal( $reduced_price, false, true ) );
+                                            $buy_product->set_price( wc_format_decimal( $reduced_price, false, true ) );
+                                            
+                                            $price_html = $buy_product->get_price_html();
+
+                                            // Restore original prices
+                                            $buy_product->set_regular_price( $original_regular );
+                                            $buy_product->set_sale_price( $original_sale !== '' ? $original_sale : '' );
+                                            $buy_product->set_price( '' );
+
+                                            echo wp_kses( $price_html, merchant_kses_allowed_tags( array( 'bdi' ) ) );
+                                        }
                                     } else {
 	                                    echo '<span class="error">' . esc_html__( 'Out of stock', 'merchant' ) . '</span>';
                                     }

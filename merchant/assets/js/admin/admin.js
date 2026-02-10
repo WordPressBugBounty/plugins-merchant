@@ -1028,7 +1028,7 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
             $(this).attr('selected', isSelected);
           });
         });
-        $('.customize-control-flexible-content-add-button').click(function (event) {
+        $('.customize-control-flexible-content-add-button').on('click', function (event) {
           event.preventDefault();
           event.stopImmediatePropagation();
           if ($(this).parent().find('.customize-control-flexible-content-add-list a').length === 1) {
@@ -1104,6 +1104,9 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
           var $clonedLayout = $sourceLayout.clone();
           var $items = $flexibleContent.find('.layout');
           var index = $sourceLayout.find('.layout-count').text();
+          var uuid = self.generateUUID();
+          $clonedLayout.attr('data-layout-id', uuid);
+          $clonedLayout.find('.flexible-id').val(uuid);
           $clonedLayout.find('input, select, textarea').each(function () {
             var $input = $(this);
             var inputName = $input.attr('name');

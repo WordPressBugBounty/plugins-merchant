@@ -155,8 +155,8 @@ class Merchant_Pre_Orders_Main_Functionality {
 	 */
 	private function convert_timestamp_to_human_readable( $timestamp ) {
 		$timezone = new DateTimeZone( merchant_timezone() );
-		$date     = new \DateTime( 'now', $timezone );
-		$date->setTimestamp( $timestamp );
+		$date     = new \DateTime( '@' . $timestamp ); // Create from UTC timestamp
+		$date->setTimezone( $timezone );                // Convert to site timezone
 
 		return $date->format( self::DATE_TIME_FORMAT );
 	}
@@ -599,7 +599,7 @@ class Merchant_Pre_Orders_Main_Functionality {
 
 			if ( empty( $offer ) && $product->is_type( 'variation' ) ) {
 				$offer = self::available_product_rule( $product->get_parent_id() );
-				$is_excluded = self::is_product_excluded( $product->get_id(), $offer );
+				$is_excluded = Merchant_Pre_Orders_Rules_Repository::is_product_excluded( $product->get_id(), $offer );
 				if ( $is_excluded ) {
 					$offer = array();
 				}
@@ -623,7 +623,7 @@ class Merchant_Pre_Orders_Main_Functionality {
 	 * @return string The price html.
 	 */
 	private function variable_product_price_html( $product, $offer, $html_price ) {
-		$sale = self::get_rule_sale( $offer );
+		$sale = Merchant_Pre_Orders_Rules_Repository::get_rule_sale( $offer );
 		if ( ! $sale ) {
 			return $html_price;
 		}
@@ -644,7 +644,7 @@ class Merchant_Pre_Orders_Main_Functionality {
 			if ( empty( $variation_offer ) ) {
 				$variation_offer = self::available_product_rule( $product->get_id() );
 
-				$is_excluded = self::is_product_excluded( $variation_id, $variation_offer );
+				$is_excluded = Merchant_Pre_Orders_Rules_Repository::is_product_excluded( $variation_id, $variation_offer );
 				if ( $is_excluded ) {
 					$prices[]      = $regular_price;
 					$sale_prices[] = $regular_price;
@@ -710,7 +710,7 @@ class Merchant_Pre_Orders_Main_Functionality {
 	 * @return string The price html.
 	 */
 	private function simple_product_price_html( $product, $offer, $html_price ) {
-		$sale = self::get_rule_sale( $offer );
+		$sale = Merchant_Pre_Orders_Rules_Repository::get_rule_sale( $offer );
 		if ( ! $sale ) {
 			return $html_price;
 		}
@@ -730,7 +730,7 @@ class Merchant_Pre_Orders_Main_Functionality {
 	 * @return float The discounted price.
 	 */
 	public function calculate_discounted_price( $price, $offer, $product = null ) {
-		$sale          = self::get_rule_sale( $offer );
+		$sale          = Merchant_Pre_Orders_Rules_Repository::get_rule_sale( $offer );
 		$discount_type = $discount_value = '';
 		if ( $sale ) {
 			$discount_type  = $offer['discount_type'];
@@ -800,7 +800,7 @@ class Merchant_Pre_Orders_Main_Functionality {
 				if ( empty( $offer ) && $product->is_type( 'variation' ) ) {
 					$offer = self::available_product_rule( $product->get_parent_id() );
 
-					$is_excluded = self::is_product_excluded( $product_id, $offer );
+					$is_excluded = Merchant_Pre_Orders_Rules_Repository::is_product_excluded( $product_id, $offer );
 					if ( $is_excluded ) {
 						continue;
 					}
@@ -1397,257 +1397,15 @@ class Merchant_Pre_Orders_Main_Functionality {
 	 *
 	 * @return array|false The pre-order rules or false if there are no rule sale.
 	 */
-	private static function get_rule_sale( $rule ) {
-		$sale = false;
-		if ( isset( $rule['discount_toggle'] ) && $rule['discount_toggle'] ) {
-			$discount_type   = $rule['discount_type'];
-			$discount_amount = $rule['discount_amount'];
-
-			$sale = array(
-				'discount_type'   => $discount_type,
-				'discount_amount' => $discount_amount,
-			);
-		}
-
-		/**
-		 * Filter the pre order sale.
-		 *
-		 * @param array $sale The pre order sale.
-		 * @param array $rule The pre order rule.
-		 *
-		 * @since 1.9.9
-		 */
-		return apply_filters( 'merchant_pre_order_rule_sale', $sale, $rule );
-	}
-
-	/**
-	 * Get the pre order rules.
-	 *
-	 * @return array The pre order rules.
-	 */
-	private static function pre_order_rules() {
-		return Merchant_Admin_Options::get( self::MODULE_ID, 'rules', array() );
-	}
-
-	/**
-	 * Check if the rule is valid.
-	 *
-	 * @param array $rule The rule to check.
-	 *
-	 * @return boolean True if the rule is valid, false otherwise.
-	 */
-	private static function is_valid_rule( $rule ) {
-		if ( ! isset( $rule['trigger_on'] ) ) {
-			return false;
-		}
-
-		if ( 'product' === $rule['trigger_on'] && empty( $rule['product_ids'] ) ) {
-			return false;
-		}
-
-		if ( 'category' === $rule['trigger_on'] && empty( $rule['category_slugs'] ) ) {
-			return false;
-		}
-
-		if ( 'tags' === $rule['trigger_on'] && empty( $rule['tag_slugs'] ) ) {
-			return false;
-		}
-
-		if ( 'brands' === $rule['trigger_on'] && empty( $rule['brand_slugs'] ) ) {
-			return false;
-		}
-
-		if ( isset( $rule['discount_toggle'] ) && $rule['discount_toggle'] === true ) {
-			if ( ! isset( $rule['discount_type'] ) ) {
-				return false;
-			}
-			if ( ! isset( $rule['discount_amount'] ) ) {
-				return false;
-			}
-		}
-
-		if ( isset( $rule['partial_payment_toggle'] ) && $rule['partial_payment_toggle'] === true ) {
-			if ( ! isset( $rule['partial_payment_type'] ) ) {
-				return false;
-			}
-			if ( ! isset( $rule['partial_payment_amount'] ) ) {
-				return false;
-			}
-		}
-
-		$user_condition_passed = merchant_is_user_condition_passed( $rule );
-		if ( ! $user_condition_passed ) {
-			return false;
-		}
-
-		if ( empty( $rule['shipping_date'] ) ) {
-			return false;
-		}
-
-		if ( empty( $rule['button_text'] ) ) {
-			return false;
-		}
-
-		if ( empty( $rule['placement'] ) ) {
-			return false;
-		}
-
-		return true;
-	}
-
-	/**
-	 * Prepare the rule fields.
-	 *
-	 * @param array $rule The rule to prepare.
-	 *
-	 * @return array The prepared rule.
-	 */
-	private static function prepare_rule( $rule ) {
-		if ( 'product' === $rule['trigger_on'] ) {
-			$rule['product_ids'] = array_map( 'intval', explode( ',', $rule['product_ids'] ) );
-		}
-
-		if ( ! empty( $rule['pre_order_start'] ) ) {
-			$rule['pre_order_start'] = merchant_convert_date_to_timestamp( $rule['pre_order_start'], self::DATE_TIME_FORMAT );
-		}
-
-		if ( ! empty( $rule['pre_order_end'] ) ) {
-			$rule['pre_order_end'] = merchant_convert_date_to_timestamp( $rule['pre_order_end'], self::DATE_TIME_FORMAT );
-		}
-
-		$rule['shipping_timestamp'] = merchant_convert_date_to_timestamp( $rule['shipping_date'], self::DATE_TIME_FORMAT );
-
-		return $rule;
-	}
-
-	/**
-	 * Check if a product is excluded from a pre-order rule.
-	 *
-	 * @param int   $product_id The product ID.
-	 * @param array $rule       The pre-order rule.
-	 *
-	 * @return bool True if the product is excluded, false otherwise.
-	 */
-	private static function is_product_excluded( $product_id, $rule ) {
-		$trigger_on = $rule['trigger_on'] ?? 'product';
-		$product = wc_get_product( $product_id );
-		$_product_id = $product && $product->is_type( 'variation' ) ? $product->get_parent_id() : $product_id;
-
-		// Exclude products
-		if ( ! empty( $rule['exclude_products_toggle'] ) ) {
-			$excluded_product_ids = $rule['excluded_products'] ?? array();
-			$excluded_product_ids = merchant_parse_product_ids( $excluded_product_ids );
-
-			if ( in_array( (int) $product_id, $excluded_product_ids, true ) || in_array( (int) $_product_id, $excluded_product_ids, true ) ) {
-				return true;
-			}
-		}
-
-		// Exclude categories (only when not targeting specific categories)
-		if ( ! empty( $rule['exclude_categories_toggle'] ) && $trigger_on !== 'category' ) {
-			$excluded_categories_slugs = $rule['excluded_categories'] ?? array();
-
-			if ( ! empty( $excluded_categories_slugs ) && has_term( $excluded_categories_slugs, 'product_cat', $_product_id ) ) {
-				return true;
-			}
-		}
-
-		// Exclude tags (only when not targeting specific tags)
-		if ( ! empty( $rule['exclude_tags_toggle'] ) && $trigger_on !== 'tags' ) {
-			$excluded_tags_slugs = $rule['excluded_tags'] ?? array();
-
-			if ( ! empty( $excluded_tags_slugs ) && has_term( $excluded_tags_slugs, 'product_tag', $_product_id ) ) {
-				return true;
-			}
-		}
-
-		// Exclude brands (only when not targeting specific brands)
-		if ( ! empty( $rule['exclude_brands_toggle'] ) && $trigger_on !== 'brands' ) {
-			$excluded_brands_slugs = $rule['excluded_brands'] ?? array();
-
-			if ( ! empty( $excluded_brands_slugs ) && has_term( $excluded_brands_slugs, 'product_brand', $_product_id ) ) {
-				return true;
-			}
-		}
-
-		return false;
-	}
-
 	/**
 	 * Get the available product rule.
 	 *
-	 * @param string $product_id The product ID.
+	 * @param int $product_id The product ID.
 	 *
 	 * @return array The available product rule.
 	 */
 	public static function available_product_rule( $product_id ) {
-		$available_rule = array();
-		$rules          = self::pre_order_rules();
-		$current_time   = merchant_get_current_timestamp();
-
-		foreach ( $rules as $rule ) {
-			if ( isset( $rule['campaign_status'] ) && $rule['campaign_status'] === 'inactive' ) {
-				continue;
-			}
-
-			if ( self::is_valid_rule( $rule ) ) {
-				$rule = self::prepare_rule( $rule );
-
-				// check if pre-order start date is set and if it is not in the future
-				if ( ! empty( $rule['pre_order_start'] ) && $rule['pre_order_start'] > $current_time ) {
-					continue;
-				}
-
-				// check if pre-order end date is set and if it is in the past
-				if ( ! empty( $rule['pre_order_end'] ) && $rule['pre_order_end'] < $current_time ) {
-					continue;
-				}
-
-				$user_condition_passed = merchant_is_user_condition_passed( $rule );
-				if ( ! $user_condition_passed ) {
-					continue;
-				}
-
-				$trigger = $rule['trigger_on'] ?? 'product';
-
-				$is_excluded = self::is_product_excluded( $product_id, $rule );
-				if ( $is_excluded ) {
-					continue;
-				}
-
-				if ( 'product' === $trigger && in_array( $product_id, $rule['product_ids'], true ) ) {
-					$available_rule = $rule;
-					break;
-				} elseif ( 'category' === $trigger || 'tags' === $trigger || 'brands' === $trigger ) {
-					$taxonomy = $trigger === 'category' ? 'product_cat' : ( $trigger === 'tags' ? 'product_tag' : 'product_brand' );
-					$slugs    = $trigger === 'category' ? ( $rule['category_slugs'] ?? array() ) : ( $trigger === 'tags' ? ( $rule['tag_slugs'] ?? array() ) : ( $rule['brand_slugs'] ?? array() ) );
-
-					$terms = get_the_terms( $product_id, $taxonomy );
-					if ( ! empty( $terms ) ) {
-						foreach ( $terms as $term ) {
-							if ( in_array( $term->slug, $slugs, true ) ) {
-								$available_rule = $rule;
-								break;
-							}
-						}
-					}
-				} elseif ( 'all' === $trigger ) {
-					$available_rule = $rule;
-				}
-			}
-		}
-
-		/**
-		 * Filter the available product rule.
-		 *
-		 * @param array $available_rule The available product rule.
-		 * @param int   $product_id     The product ID.
-		 *
-		 * @return array The available product rule.
-		 *
-		 * @since 1.9.9
-		 */
-		return apply_filters( 'merchant_pre_order_available_rule', $available_rule, $product_id );
+		return Merchant_Pre_Orders_Rules_Repository::get_rule_for_product( $product_id );
 	}
 
 	/**
@@ -1663,7 +1421,7 @@ class Merchant_Pre_Orders_Main_Functionality {
 			return;
 		}
 
-		$rules = self::pre_order_rules();
+		$rules = Merchant_Pre_Orders_Rules_Repository::get_global_rules();
 		if ( empty( $rules ) ) {
 			update_option( $option_name, true );
 
@@ -1745,7 +1503,7 @@ class Merchant_Pre_Orders_Main_Functionality {
 		if ( ! $migrated ) {
 			$products = new WP_Query( $args );
 			if ( $products->have_posts() ) {
-				$rules = self::pre_order_rules();
+				$rules = Merchant_Pre_Orders_Rules_Repository::get_global_rules();
 				while ( $products->have_posts() ) {
 					$products->the_post();
 					$product_id     = get_the_ID();

@@ -280,3 +280,58 @@ Merchant_Admin_Options::create( array(
 		),
 	),
 ) );
+
+// Exclusion Settings
+Merchant_Admin_Options::create( array(
+	'module' => 'buy-now',
+	'title'  => esc_html__( 'Conditional Display', 'merchant' ),
+	'fields' => array(
+		array(
+			'id'      => 'exclusion',
+			'type'    => 'switcher',
+			'title'   => __( 'Enable conditional display', 'merchant' ),
+			'desc'    => __( 'Enable product exclusion rules', 'merchant' ),
+			'default' => 0,
+		),
+		array(
+			'id'      => 'excluded_products',
+			'type'    => 'products_selector',
+			'title'   => __( 'Exclude Products', 'merchant' ),
+			'desc'    => __( 'Select products to exclude from buy now button', 'merchant' ),
+			'condition' => array( 'exclusion', '==', '1' ),
+		),
+		array(
+			'id'      => 'excluded_categories',
+			'type'    => 'select_ajax',
+			'title'   => __( 'Exclude Categories', 'merchant' ),
+			'source'  => 'options',
+			'multiple' => true,
+			'options' => Merchant_Admin_Options::get_category_select2_choices(),
+			'placeholder' => __( 'Select categories', 'merchant' ),
+			'desc'    => __( 'Select categories to exclude from buy now button', 'merchant' ),
+			'condition' => array( 'exclusion', '==', '1' ),
+		),
+		array(
+			'id'      => 'excluded_tags',
+			'type'    => 'select_ajax',
+			'source'  => 'options',
+			'multiple' => true,
+			'options' => Merchant_Admin_Options::get_tag_select2_choices(),
+			'placeholder' => __( 'Select tags', 'merchant' ),
+			'title'   => __( 'Exclude Tags', 'merchant' ),
+			'desc'    => __( 'Select tags to exclude from buy now button', 'merchant' ),
+			'condition' => array( 'exclusion', '==', '1' ),
+		),
+		array(
+			'id'      => 'excluded_brands',
+			'type'    => 'select_ajax',
+			'source'  => 'options',
+			'multiple' => true,
+			'options' => Merchant_Admin_Options::get_brand_select2_choices(),
+			'placeholder' => __( 'Select brands', 'merchant' ),
+			'title'   => __( 'Exclude Brands', 'merchant' ),
+			'desc'    => __( 'Select brands to exclude from buy now button', 'merchant' ),
+			'condition' => array( 'exclusion', '==', '1' ),
+		),
+	),
+) );

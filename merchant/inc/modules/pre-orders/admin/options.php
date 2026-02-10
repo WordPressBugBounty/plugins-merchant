@@ -519,6 +519,26 @@ Merchant_Admin_Options::create(
 							),
 
 							array(
+								'id'      => 'border-width',
+								'type'    => 'range',
+								'title'   => esc_html__( 'Button Border Width (px)', 'merchant' ),
+								'min'     => 0,
+								'max'     => 10,
+								'step'    => 1,
+								'default' => 0,
+							),
+
+							array(
+								'id'      => 'border-radius',
+								'type'    => 'range',
+								'title'   => esc_html__( 'Button Border Radius (px)', 'merchant' ),
+								'min'     => 0,
+								'max'     => 50,
+								'step'    => 1,
+								'default' => 0,
+							),
+
+							array(
 								'id'      => 'background-color',
 								'type'    => 'color',
 								'title'   => esc_html__( 'Button background color', 'merchant' ),
