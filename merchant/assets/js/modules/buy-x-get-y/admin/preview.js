@@ -16,6 +16,8 @@
   function initPreview() {
     var layout = $('.merchant-flexible-content-control.buy-x-get-y-style').find('.layout.active'),
       titleTextColor = layout.find('.merchant-field-title_text_color input').val(),
+      titleFontSize = layout.find('.merchant-field-title_font_size input.merchant-range-number-input').val(),
+      titleFontWeight = layout.find('.merchant-field-title_font_weight select').val(),
       labelBgColor = layout.find('.merchant-field-label_bg_color input').val(),
       labelTextColor = layout.find('.merchant-field-label_text_color input').val(),
       arrowBgColor = layout.find('.merchant-field-arrow_bg_color input').val(),
@@ -31,7 +33,11 @@
       thankYouDiscountText = layout.find('.merchant-group-field-thank_you_page .merchant-field-discount_text input').val(),
       thankYouButtonText = layout.find('.merchant-group-field-thank_you_page .merchant-field-button_text input').val(),
       cartBundleButtonText = layout.find('.merchant-group-field-cart_page .merchant-field-button_text input').val();
-    $('.merchant-bogo-title').css('color', titleTextColor);
+    $('.merchant-bogo-title').css({
+      'color': titleTextColor,
+      'font-size': titleFontSize ? titleFontSize + 'px' : '',
+      'font-weight': titleFontWeight || ''
+    });
     $('.merchant-bogo-product-label').css({
       'background-color': labelBgColor,
       'color': labelTextColor

@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => 'athemes/merchant',
-        'pretty_version' => 'v2.2.3',
-        'version' => '2.2.3.0',
-        'reference' => '5cbe51d4529ad9865ec49d5645b66645c9afa829',
+        'pretty_version' => 'v2.2.4',
+        'version' => '2.2.4.0',
+        'reference' => 'ec9ce77ff87a8d3242f42406548992d76c953d25',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -11,9 +11,9 @@
     ),
     'versions' => array(
         'athemes/merchant' => array(
-            'pretty_version' => 'v2.2.3',
-            'version' => '2.2.3.0',
-            'reference' => '5cbe51d4529ad9865ec49d5645b66645c9afa829',
+            'pretty_version' => 'v2.2.4',
+            'version' => '2.2.4.0',
+            'reference' => 'ec9ce77ff87a8d3242f42406548992d76c953d25',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

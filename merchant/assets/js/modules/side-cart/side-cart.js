@@ -201,88 +201,75 @@ jQuery(document).ready(function ($) {
       var variationField = $(event.target),
         container = variationField.closest('.merchant-mini-cart-upsell-item-wrap'),
         variations = container.attr('data-variations') && JSON.parse(container.attr('data-variations')) || [],
-        dropDowns = container.find('.variation-selector');
-      container.attr('data-variation-id', 0); // reset variation ID
-      var currentField = {
-        name: $(event.target).attr('data-attribute_name'),
-        value: $(event.target).val()
-      };
-      var availableOptions = [];
-      var matchingVariations = variations.filter(function (variation) {
-        return typeof variation.attributes[currentField.name.toLowerCase()] !== 'undefined' && variation.attributes[currentField.name.toLowerCase()] === currentField.value;
-      });
+        messageEl = container.find('.upsell-variation-message');
 
-      // Hide not available options
-      dropDowns.each(function () {
-        var dropdown = $(this);
-        var attribute_name = dropdown.attr('data-attribute_name');
-        // Collect available options for this attribute
-        matchingVariations.forEach(function (variation) {
-          var optionValue = variation.attributes[attribute_name.toLowerCase()];
-          if (typeof optionValue !== 'undefined' && optionValue !== '' && !availableOptions.includes(optionValue)) {
-            availableOptions.push(optionValue);
-          }
-        });
-        if (currentField.name.toLowerCase() !== attribute_name.toLowerCase()) {
-          dropdown.find('option').each(function () {
-            var optionValue = $(this).attr('value');
-            if (optionValue !== '') {
-              if (availableOptions.includes(optionValue)) {
-                $(this).show();
-              } else {
-                $(this).hide();
-              }
-            }
-          });
-        }
-      });
-      if (this.isAllVariationsSelected(container)) {
-        this.fetchVariationDetails(container, container.attr('data-product-id'), this.getSelectedAttributes(container), this);
-        // ajax call here to get product information...
-        this.handleAddToCartBtnState(container, true);
-      } else {
-        this.handleAddToCartBtnState(container, false);
+      // Reset state
+      container.attr('data-variation-id', 0);
+      messageEl.text('').hide();
+
+      // Capture original price on first interaction (image is already in data-thumbnail-url)
+      if (!container.data('original-price')) {
+        container.data('original-price', container.find('.product-price').html());
       }
-    },
-    /**
-     * Fetches variation details via AJAX.
-     *
-     * @param {Object} container - The container element.
-     * @param {Object} productID - The product ID.
-     * @param {Object} selectedAttributes - The selected variation attributes.
-     * @param {Object} self - The current object.
-     *
-     * @return {void}
-     */
-    fetchVariationDetails: function fetchVariationDetails(container, productID, selectedAttributes, self) {
-      $.ajax({
-        type: 'POST',
-        url: ajax_url,
-        data: {
-          action: 'merchant_get_variation_data',
-          product_id: productID,
-          nonce: sideCartObj === null || sideCartObj === void 0 ? void 0 : sideCartObj.variation_info_nonce,
-          attributes: selectedAttributes
-        },
-        success: function success(response) {
-          if (response.success) {
-            container.attr('data-variation-id', response.data.id);
-            self.updateProductThumbnail(container, response.data.thumbnail_url);
-          }
-        },
-        error: function error(_error2) {
-          console.log('Error:', _error2);
+
+      // Wait until all dropdowns have a value
+      if (!this.isAllVariationsSelected(container)) {
+        this.handleAddToCartBtnState(container, false);
+
+        // Reset image and price to parent product defaults
+        var originalImg = container.find('.product-thumbnail').attr('data-thumbnail-url');
+        if (originalImg) {
+          container.find('.product-thumbnail a img').attr('src', originalImg);
         }
+        container.find('.product-price').html(container.data('original-price'));
+        return;
+      }
+
+      // Build selected attributes map
+      var selected = this.getSelectedAttributes(container);
+
+      // Find matching variation from enriched data
+      var match = variations.find(function (v) {
+        return Object.keys(selected).every(function (key) {
+          // Check key exists in variation attributes — don't fallback to "any" for missing keys
+          var hasKey = key in v.attributes;
+          var hasLowerKey = !hasKey && key.toLowerCase() in v.attributes;
+          if (!hasKey && !hasLowerKey) {
+            return false;
+          }
+          var varAttr = hasKey ? v.attributes[key] : v.attributes[key.toLowerCase()];
+
+          // Empty string means "any" — matches everything
+          return varAttr === '' || varAttr === selected[key];
+        });
       });
-    },
-    updateProductThumbnail: function updateProductThumbnail(container, thumbnailUrl) {
-      var productThumbnail = container.find('.product-thumbnail a img');
-      productThumbnail.attr('src', thumbnailUrl);
+      if (!match) {
+        messageEl.text((sideCartObj === null || sideCartObj === void 0 ? void 0 : sideCartObj.upsell_unavailable_message) || '').show();
+        this.handleAddToCartBtnState(container, false);
+        return;
+      }
+
+      // Update image and price for any matched variation (even out-of-stock)
+      if (match.image_url) {
+        container.find('.product-thumbnail a img').attr('src', match.image_url);
+      }
+      if (match.price_html) {
+        container.find('.product-price').html(match.price_html);
+      }
+      if (!match.is_in_stock) {
+        messageEl.text((sideCartObj === null || sideCartObj === void 0 ? void 0 : sideCartObj.upsell_out_of_stock_message) || '').show();
+        this.handleAddToCartBtnState(container, false);
+        return;
+      }
+
+      // Valid in-stock combination — enable add to cart
+      container.attr('data-variation-id', match.variation_id);
+      this.handleAddToCartBtnState(container, true);
     },
     getSelectedAttributes: function getSelectedAttributes(container) {
       var attributes = {};
       container.find('.variation-selector').each(function () {
-        attributes[$(this).attr('name')] = $(this).val();
+        attributes[$(this).attr('data-attribute_name')] = $(this).val();
       });
       return attributes;
     },
@@ -311,20 +298,25 @@ jQuery(document).ready(function ($) {
         productId = container.attr('data-product-id'),
         variationId = container.attr('data-variation-id');
       if (productType === 'variable' && variationId !== '0') {
-        this.addToCart(self, 'variable', productId, variationId, btn);
+        this.addToCart(self, 'variable', productId, variationId, btn, container);
       } else if (productType === 'simple') {
-        this.addToCart(self, 'simple', productId, variationId, btn);
+        this.addToCart(self, 'simple', productId, variationId, btn, container);
       } else {
         console.log('Unsupported product type:', productType);
       }
     },
-    addToCart: function addToCart(self, productType, productId, variationId, btn) {
+    addToCart: function addToCart(self, productType, productId, variationId, btn, container) {
       var data = {
         action: 'merchant_side_cart_upsells_add_to_cart',
         product_id: productId,
         variation_id: variationId,
         nonce: nonce
       };
+
+      // Include selected attributes for variable products
+      if (productType === 'variable' && container) {
+        data.attributes = this.getSelectedAttributes(container);
+      }
       $.ajax({
         type: 'POST',
         url: ajax_url,
@@ -336,8 +328,8 @@ jQuery(document).ready(function ($) {
           self.handleSuccess(response);
           $(document).trigger('add_to_cart', [response.data.fragments, response.data.cart_hash, btn, 'side-cart']);
         },
-        error: function error(_error3) {
-          self.handleError(_error3);
+        error: function error(_error2) {
+          self.handleError(_error2);
         },
         complete: function complete() {
           btn.removeClass('loading');
@@ -417,8 +409,8 @@ jQuery(document).ready(function ($) {
         success: function success(response) {
           self.handleCouponSuccess(response);
         },
-        error: function error(_error4) {
-          self.handleCouponError(_error4);
+        error: function error(_error3) {
+          self.handleCouponError(_error3);
         },
         complete: function complete() {
           container.removeClass('loading');
@@ -439,8 +431,8 @@ jQuery(document).ready(function ($) {
         success: function success(response) {
           self.handleCouponSuccess(response);
         },
-        error: function error(_error5) {
-          self.handleCouponError(_error5);
+        error: function error(_error4) {
+          self.handleCouponError(_error4);
         }
       });
     },

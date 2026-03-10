@@ -11,12 +11,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 $before_fields = array();
-if ( defined( 'MERCHANT_PRO_VERSION' ) && merchant_is_checkout_block_layout() ) {
+if ( defined( 'MERCHANT_PRO_VERSION' ) && merchant_is_checkout_block_layout() && ! class_exists( 'WC_Address_Provider' ) ) {
 	$before_fields = array(
 		'type'    => 'warning',
 		'content' => sprintf(
 		/* Translators: 1. docs link */
-			__( 'Your checkout page is being rendered through the new WooCommerce checkout block. You must edit the checkout page to use the classic checkout shortcode instead. Check <a href="%1$s" target="_blank">this documentation</a> to learn more.', 'merchant' ),
+			__( 'Your checkout page uses WooCommerce blocks. Address Autocomplete requires WooCommerce 9.9 or later for blocks checkout support. Please update WooCommerce or switch to the classic checkout shortcode. Check <a href="%1$s" target="_blank">this documentation</a> to learn more.', 'merchant' ),
 			'https://docs.athemes.com/article/how-to-switch-cart-checkout-blocks-to-the-classic-shortcodes/'
 		),
 	);

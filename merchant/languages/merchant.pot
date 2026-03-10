@@ -8,7 +8,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language-Team: aThemes <team@athemes.com>\n"
 "Last-Translator: aThemes <team@athemes.com>\n"
-"POT-Creation-Date: 2026-02-10 17:28+0000\n"
+"POT-Creation-Date: 2026-03-10 18:43+0000\n"
 "Report-Msgid-Bugs-To: https://athemes.com/contact/\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-KeywordsList: __;_e;_ex:1,2c;_n:1,2;_n_noop:1,2;_nx:1,2,4c;_nx_noop:1,2,3c;_x:1,2c;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c\n"
@@ -61,51 +61,51 @@ msgstr ""
 msgid "Copied!"
 msgstr ""
 
-#: inc/helpers.php:533, inc/modules/quick-social-links/class-quick-social-links.php:259, inc/modules/wishlist/admin/options.php:439
+#: inc/helpers.php:556, inc/modules/quick-social-links/class-quick-social-links.php:259, inc/modules/wishlist/admin/options.php:439
 msgid "Facebook"
 msgstr ""
 
-#: inc/helpers.php:537
+#: inc/helpers.php:560
 msgid "X"
 msgstr ""
 
-#: inc/helpers.php:541, inc/modules/quick-social-links/class-quick-social-links.php:267
+#: inc/helpers.php:564, inc/modules/quick-social-links/class-quick-social-links.php:267
 msgid "LinkedIn"
 msgstr ""
 
-#: inc/helpers.php:545, inc/modules/quick-social-links/class-quick-social-links.php:282, inc/modules/wishlist/admin/options.php:447
+#: inc/helpers.php:568, inc/modules/quick-social-links/class-quick-social-links.php:282, inc/modules/wishlist/admin/options.php:447
 msgid "Reddit"
 msgstr ""
 
-#: inc/helpers.php:549, inc/modules/quick-social-links/class-quick-social-links.php:264
+#: inc/helpers.php:572, inc/modules/quick-social-links/class-quick-social-links.php:264
 msgid "WhatsApp"
 msgstr ""
 
-#: inc/helpers.php:553, inc/modules/quick-social-links/class-quick-social-links.php:263, inc/modules/wishlist/admin/options.php:442
+#: inc/helpers.php:576, inc/modules/quick-social-links/class-quick-social-links.php:263, inc/modules/wishlist/admin/options.php:442
 msgid "Pinterest"
 msgstr ""
 
-#: inc/helpers.php:557, inc/modules/quick-social-links/class-quick-social-links.php:265, inc/modules/wishlist/admin/options.php:444
+#: inc/helpers.php:580, inc/modules/quick-social-links/class-quick-social-links.php:265, inc/modules/wishlist/admin/options.php:444
 msgid "Telegram"
 msgstr ""
 
-#: inc/helpers.php:561, inc/modules/quick-social-links/class-quick-social-links.php:273, inc/modules/wishlist/admin/options.php:446
+#: inc/helpers.php:584, inc/modules/quick-social-links/class-quick-social-links.php:273, inc/modules/wishlist/admin/options.php:446
 msgid "Weibo"
 msgstr ""
 
-#: inc/helpers.php:565, inc/modules/quick-social-links/class-quick-social-links.php:272, inc/modules/wishlist/admin/options.php:445
+#: inc/helpers.php:588, inc/modules/quick-social-links/class-quick-social-links.php:272, inc/modules/wishlist/admin/options.php:445
 msgid "VK"
 msgstr ""
 
-#: inc/helpers.php:569
+#: inc/helpers.php:592
 msgid "OK"
 msgstr ""
 
-#: inc/helpers.php:573, inc/modules/quick-social-links/class-quick-social-links.php:270, inc/modules/wishlist/admin/options.php:449
+#: inc/helpers.php:596, inc/modules/quick-social-links/class-quick-social-links.php:270, inc/modules/wishlist/admin/options.php:449
 msgid "Xing"
 msgstr ""
 
-#: inc/helpers.php:577, inc/modules/wishlist/admin/options.php:450
+#: inc/helpers.php:600, inc/modules/wishlist/admin/options.php:450
 msgid "Mail"
 msgstr ""
 
@@ -1670,7 +1670,7 @@ msgstr ""
 msgid "Select options"
 msgstr ""
 
-#: inc/modules/add-to-cart-text/class-add-to-cart-text.php:52, templates/modules/buy-x-get-y/single-product.php:241, inc/modules/add-to-cart-text/admin/options.php:106
+#: inc/modules/add-to-cart-text/class-add-to-cart-text.php:52, templates/modules/buy-x-get-y/single-product.php:251, inc/modules/add-to-cart-text/admin/options.php:106
 msgid "Out of stock"
 msgstr ""
 
@@ -1862,7 +1862,7 @@ msgstr ""
 msgid "Link in agree to terms module (you can use different link for each language)"
 msgstr ""
 
-#: inc/modules/animated-add-to-cart/class-animated-add-to-cart.php:185, inc/modules/buy-x-get-y/class-buy-x-get-y.php:253, inc/modules/frequently-bought-together/class-frequently-bought-together.php:219, inc/modules/quick-view/class-quick-view.php:399, inc/modules/volume-discounts/class-volume-discounts.php:373, templates/modules/buy-x-get-y/single-product.php:276, inc/modules/buy-x-get-y/admin/options.php:566, inc/modules/buy-x-get-y/admin/options.php:695, inc/modules/buy-x-get-y/admin/options.php:757, inc/modules/buy-x-get-y/admin/options.php:820, inc/modules/complementary-products/admin/options.php:599, inc/modules/frequently-bought-together/admin/options.php:759, inc/modules/volume-discounts/admin/options.php:717, inc/modules/volume-discounts/admin/options.php:781, inc/modules/volume-discounts/admin/options.php:853, templates/modules/complementary-products/admin-preview/cart.php:36
+#: inc/modules/animated-add-to-cart/class-animated-add-to-cart.php:185, inc/modules/buy-x-get-y/class-buy-x-get-y.php:205, inc/modules/frequently-bought-together/class-frequently-bought-together.php:219, inc/modules/quick-view/class-quick-view.php:399, inc/modules/volume-discounts/class-volume-discounts.php:373, templates/modules/buy-x-get-y/single-product.php:286, inc/modules/buy-x-get-y/admin/options.php:566, inc/modules/buy-x-get-y/admin/options.php:695, inc/modules/buy-x-get-y/admin/options.php:757, inc/modules/buy-x-get-y/admin/options.php:820, inc/modules/complementary-products/admin/options.php:599, inc/modules/frequently-bought-together/admin/options.php:759, inc/modules/volume-discounts/admin/options.php:717, inc/modules/volume-discounts/admin/options.php:781, inc/modules/volume-discounts/admin/options.php:853, templates/modules/complementary-products/admin-preview/cart.php:36
 msgid "Add To Cart"
 msgstr ""
 
@@ -1874,72 +1874,20 @@ msgstr ""
 msgid "Please choose the quantity of items you wish to add to your cart&hellip;"
 msgstr ""
 
-#: inc/modules/buy-x-get-y/class-buy-x-get-y.php:189
-msgid "No products found, please add some products to render the module preview"
+#: inc/modules/buy-x-get-y/class-buy-x-get-y.php:200, templates/modules/buy-x-get-y/single-product.php:88, inc/modules/buy-x-get-y/admin/options.php:526
+msgid "Buy One Get One"
 msgstr ""
 
-#: inc/modules/buy-x-get-y/class-buy-x-get-y.php:233, inc/modules/frequently-bought-together/class-frequently-bought-together.php:199, inc/modules/volume-discounts/class-volume-discounts.php:356, templates/modules/complementary-products/admin-preview/cart.php:9
-msgid "My Cart"
+#. translators: %s: quantity
+#. translators: 1. quantity
+#: inc/modules/buy-x-get-y/class-buy-x-get-y.php:202, templates/modules/buy-x-get-y/single-product.php:108, templates/modules/added-to-cart-popup/common/buy-x-get-y.php:35
+msgid "Buy %s"
 msgstr ""
 
-#: inc/modules/buy-x-get-y/class-buy-x-get-y.php:236, inc/modules/frequently-bought-together/class-frequently-bought-together.php:202, inc/modules/volume-discounts/class-volume-discounts.php:359, templates/modules/complementary-products/admin-preview/cart.php:13
-msgid "PRODUCT"
-msgstr ""
-
-#: inc/modules/buy-x-get-y/class-buy-x-get-y.php:237, inc/modules/frequently-bought-together/class-frequently-bought-together.php:203, inc/modules/volume-discounts/class-volume-discounts.php:360, templates/modules/complementary-products/admin-preview/cart.php:15
-msgid "PRICE"
-msgstr ""
-
-#: inc/modules/buy-x-get-y/class-buy-x-get-y.php:238, inc/modules/frequently-bought-together/class-frequently-bought-together.php:204, inc/modules/volume-discounts/class-volume-discounts.php:361, templates/modules/complementary-products/admin-preview/cart.php:17
-msgid "QUANTITY"
-msgstr ""
-
-#: inc/modules/buy-x-get-y/class-buy-x-get-y.php:239, inc/modules/frequently-bought-together/class-frequently-bought-together.php:205, inc/modules/volume-discounts/class-volume-discounts.php:362, templates/modules/complementary-products/admin-preview/cart.php:19
-msgid "TOTAL"
-msgstr ""
-
-#: inc/modules/buy-x-get-y/class-buy-x-get-y.php:246, inc/modules/buy-x-get-y/class-buy-x-get-y.php:296, inc/modules/buy-x-get-y/class-buy-x-get-y.php:335, inc/modules/countdown-timer/class-countdown-timer.php:208, inc/modules/free-gifts/class-free-gifts.php:245, inc/modules/frequently-bought-together/class-frequently-bought-together.php:212, inc/modules/frequently-bought-together/class-frequently-bought-together.php:258, inc/modules/frequently-bought-together/class-frequently-bought-together.php:300, inc/modules/volume-discounts/class-volume-discounts.php:299, inc/modules/volume-discounts/class-volume-discounts.php:336, inc/modules/volume-discounts/class-volume-discounts.php:369, templates/modules/complementary-products/admin-preview/cart.php:27, templates/modules/complementary-products/admin-preview/checkout.php:20, templates/modules/complementary-products/admin-preview/single-product.php:21, templates/modules/complementary-products/admin-preview/single-product.php:45, templates/modules/complementary-products/admin-preview/single-product.php:59, templates/modules/complementary-products/admin-preview/single-product.php:73, templates/modules/complementary-products/admin-preview/thank-you-page.php:32
-msgid "Your Product Name"
-msgstr ""
-
-#: inc/modules/buy-x-get-y/class-buy-x-get-y.php:247, inc/modules/frequently-bought-together/class-frequently-bought-together.php:213
-msgid "You are eligible to get {offer_quantity}"
-msgstr ""
-
-#: inc/modules/buy-x-get-y/class-buy-x-get-y.php:251, inc/modules/frequently-bought-together/class-frequently-bought-together.php:217, templates/modules/added-to-cart-popup/admin/layout-1.php:92, templates/modules/added-to-cart-popup/admin/layout-1.php:118, templates/modules/added-to-cart-popup/admin/layout-1.php:140, templates/modules/added-to-cart-popup/admin/layout-1.php:167, templates/modules/added-to-cart-popup/admin/layout-1.php:210, templates/modules/added-to-cart-popup/admin/layout-1.php:229, templates/modules/added-to-cart-popup/admin/layout-1.php:249, templates/modules/added-to-cart-popup/admin/layout-1.php:268, templates/modules/added-to-cart-popup/admin/layout-1.php:287, templates/modules/added-to-cart-popup/admin/layout-1.php:312, templates/modules/added-to-cart-popup/admin/layout-1.php:331, templates/modules/added-to-cart-popup/admin/layout-1.php:351, templates/modules/added-to-cart-popup/admin/layout-1.php:370, templates/modules/added-to-cart-popup/admin/layout-1.php:389, templates/modules/added-to-cart-popup/admin/layout-2.php:78, templates/modules/added-to-cart-popup/admin/layout-2.php:104, templates/modules/added-to-cart-popup/admin/layout-2.php:126, templates/modules/added-to-cart-popup/admin/layout-2.php:153, templates/modules/added-to-cart-popup/admin/layout-2.php:196, templates/modules/added-to-cart-popup/admin/layout-2.php:215, templates/modules/added-to-cart-popup/admin/layout-2.php:235, templates/modules/added-to-cart-popup/admin/layout-2.php:254, templates/modules/added-to-cart-popup/admin/layout-2.php:273, templates/modules/added-to-cart-popup/admin/layout-2.php:298, templates/modules/added-to-cart-popup/admin/layout-2.php:317, templates/modules/added-to-cart-popup/admin/layout-2.php:337, templates/modules/added-to-cart-popup/admin/layout-2.php:356, templates/modules/added-to-cart-popup/admin/layout-2.php:375, templates/modules/added-to-cart-popup/admin/layout-3.php:91, templates/modules/added-to-cart-popup/admin/layout-3.php:117, templates/modules/added-to-cart-popup/admin/layout-3.php:139, templates/modules/added-to-cart-popup/admin/layout-3.php:166, templates/modules/added-to-cart-popup/admin/layout-3.php:209, templates/modules/added-to-cart-popup/admin/layout-3.php:228, templates/modules/added-to-cart-popup/admin/layout-3.php:248, templates/modules/added-to-cart-popup/admin/layout-3.php:267, templates/modules/added-to-cart-popup/admin/layout-3.php:286, templates/modules/added-to-cart-popup/admin/layout-3.php:311, templates/modules/added-to-cart-popup/admin/layout-3.php:330, templates/modules/added-to-cart-popup/admin/layout-3.php:350, templates/modules/added-to-cart-popup/admin/layout-3.php:369, templates/modules/added-to-cart-popup/admin/layout-3.php:388, templates/modules/complementary-products/admin-preview/cart.php:34
-msgid "Product Name"
-msgstr ""
-
-#: inc/modules/buy-x-get-y/class-buy-x-get-y.php:252, inc/modules/buy-x-get-y/class-buy-x-get-y.php:297, inc/modules/buy-x-get-y/class-buy-x-get-y.php:336, inc/modules/frequently-bought-together/class-frequently-bought-together.php:259, inc/modules/frequently-bought-together/class-frequently-bought-together.php:301, inc/modules/volume-discounts/class-volume-discounts.php:300, inc/modules/volume-discounts/class-volume-discounts.php:337, inc/modules/buy-x-get-y/admin/options.php:679, inc/modules/buy-x-get-y/admin/options.php:742, inc/modules/buy-x-get-y/admin/options.php:804
-msgid "with {discount} off"
-msgstr ""
-
-#: inc/modules/buy-x-get-y/class-buy-x-get-y.php:289, inc/modules/frequently-bought-together/class-frequently-bought-together.php:251, inc/modules/volume-discounts/class-volume-discounts.php:292, inc/modules/quick-social-links/admin/options.php:192, inc/modules/recently-viewed-products/admin/options.php:204, inc/modules/side-cart/admin/options.php:64, templates/modules/added-to-cart-popup/admin/layout-1.php:70, templates/modules/added-to-cart-popup/common/action-buttons.php:53, templates/modules/complementary-products/admin-preview/checkout.php:9
-msgid "Checkout"
-msgstr ""
-
-#: inc/modules/buy-x-get-y/class-buy-x-get-y.php:292, inc/modules/buy-x-get-y/class-buy-x-get-y.php:331, inc/modules/frequently-bought-together/class-frequently-bought-together.php:254, inc/modules/frequently-bought-together/class-frequently-bought-together.php:290, inc/modules/volume-discounts/class-volume-discounts.php:295, inc/modules/volume-discounts/class-volume-discounts.php:332
-msgid "Last chance to get {offer_quantity} x"
-msgstr ""
-
-#: inc/modules/buy-x-get-y/class-buy-x-get-y.php:298, inc/modules/buy-x-get-y/class-buy-x-get-y.php:337, inc/modules/frequently-bought-together/class-frequently-bought-together.php:260, inc/modules/frequently-bought-together/class-frequently-bought-together.php:302, inc/modules/volume-discounts/class-volume-discounts.php:301, inc/modules/volume-discounts/class-volume-discounts.php:338, templates/modules/complementary-products/admin-preview/checkout.php:22, templates/modules/complementary-products/admin-preview/thank-you-page.php:36
-msgid "Add To My Order"
-msgstr ""
-
-#: inc/modules/buy-x-get-y/class-buy-x-get-y.php:318, inc/modules/frequently-bought-together/class-frequently-bought-together.php:277, inc/modules/volume-discounts/class-volume-discounts.php:319, inc/modules/quick-social-links/admin/options.php:220, templates/modules/complementary-products/admin-preview/thank-you-page.php:9
-msgid "Order Received"
-msgstr ""
-
-#: inc/modules/buy-x-get-y/class-buy-x-get-y.php:319, inc/modules/frequently-bought-together/class-frequently-bought-together.php:278, inc/modules/volume-discounts/class-volume-discounts.php:320, templates/modules/complementary-products/admin-preview/thank-you-page.php:11
-msgid "Thank you. Your order has been received."
-msgstr ""
-
-#: inc/modules/buy-x-get-y/class-buy-x-get-y.php:322, inc/modules/frequently-bought-together/class-frequently-bought-together.php:281, inc/modules/volume-discounts/class-volume-discounts.php:323, templates/modules/complementary-products/admin-preview/thank-you-page.php:15
-msgid "ORDER NUMBER:"
-msgstr ""
-
-#: inc/modules/buy-x-get-y/class-buy-x-get-y.php:326, inc/modules/frequently-bought-together/class-frequently-bought-together.php:285, inc/modules/volume-discounts/class-volume-discounts.php:327, templates/modules/complementary-products/admin-preview/thank-you-page.php:20
-msgid "PAYMENT METHOD:"
+#. translators: %1$s: quantity, %2$s: discount value
+#. translators: 1. quantity 2. discount value
+#: inc/modules/buy-x-get-y/class-buy-x-get-y.php:204, templates/modules/buy-x-get-y/single-product.php:167, templates/modules/added-to-cart-popup/common/buy-x-get-y.php:116
+msgid "Get %1$s with %2$s off"
 msgstr ""
 
 #: inc/modules/cart-reserved-timer/class-cart-reserved-timer.php:55, inc/modules/cart-reserved-timer/admin/options.php:47
@@ -2062,6 +2010,10 @@ msgstr ""
 msgid "Countdown Timer: Sale ending message"
 msgstr ""
 
+#: inc/modules/countdown-timer/class-countdown-timer.php:208, inc/modules/free-gifts/class-free-gifts.php:245, inc/modules/frequently-bought-together/class-frequently-bought-together.php:212, inc/modules/frequently-bought-together/class-frequently-bought-together.php:258, inc/modules/frequently-bought-together/class-frequently-bought-together.php:300, inc/modules/volume-discounts/class-volume-discounts.php:299, inc/modules/volume-discounts/class-volume-discounts.php:336, inc/modules/volume-discounts/class-volume-discounts.php:369, templates/modules/complementary-products/admin-preview/cart.php:27, templates/modules/complementary-products/admin-preview/checkout.php:20, templates/modules/complementary-products/admin-preview/single-product.php:21, templates/modules/complementary-products/admin-preview/single-product.php:45, templates/modules/complementary-products/admin-preview/single-product.php:59, templates/modules/complementary-products/admin-preview/single-product.php:73, templates/modules/complementary-products/admin-preview/thank-you-page.php:32
+msgid "Your Product Name"
+msgstr ""
+
 #: inc/modules/countdown-timer/class-countdown-timer.php:213, inc/modules/free-gifts/class-free-gifts.php:250
 msgid "reviews"
 msgstr ""
@@ -2163,8 +2115,68 @@ msgstr ""
 msgid "Product 1, Product 2, Product 3"
 msgstr ""
 
+#: inc/modules/frequently-bought-together/class-frequently-bought-together.php:199, inc/modules/volume-discounts/class-volume-discounts.php:356, templates/modules/complementary-products/admin-preview/cart.php:9
+msgid "My Cart"
+msgstr ""
+
+#: inc/modules/frequently-bought-together/class-frequently-bought-together.php:202, inc/modules/volume-discounts/class-volume-discounts.php:359, templates/modules/complementary-products/admin-preview/cart.php:13
+msgid "PRODUCT"
+msgstr ""
+
+#: inc/modules/frequently-bought-together/class-frequently-bought-together.php:203, inc/modules/volume-discounts/class-volume-discounts.php:360, templates/modules/complementary-products/admin-preview/cart.php:15
+msgid "PRICE"
+msgstr ""
+
+#: inc/modules/frequently-bought-together/class-frequently-bought-together.php:204, inc/modules/volume-discounts/class-volume-discounts.php:361, templates/modules/complementary-products/admin-preview/cart.php:17
+msgid "QUANTITY"
+msgstr ""
+
+#: inc/modules/frequently-bought-together/class-frequently-bought-together.php:205, inc/modules/volume-discounts/class-volume-discounts.php:362, templates/modules/complementary-products/admin-preview/cart.php:19
+msgid "TOTAL"
+msgstr ""
+
+#: inc/modules/frequently-bought-together/class-frequently-bought-together.php:213
+msgid "You are eligible to get {offer_quantity}"
+msgstr ""
+
+#: inc/modules/frequently-bought-together/class-frequently-bought-together.php:217, templates/modules/buy-x-get-y/single-product-admin-preview.php:47, templates/modules/buy-x-get-y/single-product-admin-preview.php:64, templates/modules/added-to-cart-popup/admin/layout-1.php:92, templates/modules/added-to-cart-popup/admin/layout-1.php:118, templates/modules/added-to-cart-popup/admin/layout-1.php:140, templates/modules/added-to-cart-popup/admin/layout-1.php:167, templates/modules/added-to-cart-popup/admin/layout-1.php:210, templates/modules/added-to-cart-popup/admin/layout-1.php:229, templates/modules/added-to-cart-popup/admin/layout-1.php:249, templates/modules/added-to-cart-popup/admin/layout-1.php:268, templates/modules/added-to-cart-popup/admin/layout-1.php:287, templates/modules/added-to-cart-popup/admin/layout-1.php:312, templates/modules/added-to-cart-popup/admin/layout-1.php:331, templates/modules/added-to-cart-popup/admin/layout-1.php:351, templates/modules/added-to-cart-popup/admin/layout-1.php:370, templates/modules/added-to-cart-popup/admin/layout-1.php:389, templates/modules/added-to-cart-popup/admin/layout-2.php:78, templates/modules/added-to-cart-popup/admin/layout-2.php:104, templates/modules/added-to-cart-popup/admin/layout-2.php:126, templates/modules/added-to-cart-popup/admin/layout-2.php:153, templates/modules/added-to-cart-popup/admin/layout-2.php:196, templates/modules/added-to-cart-popup/admin/layout-2.php:215, templates/modules/added-to-cart-popup/admin/layout-2.php:235, templates/modules/added-to-cart-popup/admin/layout-2.php:254, templates/modules/added-to-cart-popup/admin/layout-2.php:273, templates/modules/added-to-cart-popup/admin/layout-2.php:298, templates/modules/added-to-cart-popup/admin/layout-2.php:317, templates/modules/added-to-cart-popup/admin/layout-2.php:337, templates/modules/added-to-cart-popup/admin/layout-2.php:356, templates/modules/added-to-cart-popup/admin/layout-2.php:375, templates/modules/added-to-cart-popup/admin/layout-3.php:91, templates/modules/added-to-cart-popup/admin/layout-3.php:117, templates/modules/added-to-cart-popup/admin/layout-3.php:139, templates/modules/added-to-cart-popup/admin/layout-3.php:166, templates/modules/added-to-cart-popup/admin/layout-3.php:209, templates/modules/added-to-cart-popup/admin/layout-3.php:228, templates/modules/added-to-cart-popup/admin/layout-3.php:248, templates/modules/added-to-cart-popup/admin/layout-3.php:267, templates/modules/added-to-cart-popup/admin/layout-3.php:286, templates/modules/added-to-cart-popup/admin/layout-3.php:311, templates/modules/added-to-cart-popup/admin/layout-3.php:330, templates/modules/added-to-cart-popup/admin/layout-3.php:350, templates/modules/added-to-cart-popup/admin/layout-3.php:369, templates/modules/added-to-cart-popup/admin/layout-3.php:388, templates/modules/complementary-products/admin-preview/cart.php:34
+msgid "Product Name"
+msgstr ""
+
 #: inc/modules/frequently-bought-together/class-frequently-bought-together.php:218
 msgid "with {amount} off"
+msgstr ""
+
+#: inc/modules/frequently-bought-together/class-frequently-bought-together.php:251, inc/modules/volume-discounts/class-volume-discounts.php:292, inc/modules/quick-social-links/admin/options.php:192, inc/modules/recently-viewed-products/admin/options.php:204, inc/modules/side-cart/admin/options.php:64, templates/modules/added-to-cart-popup/admin/layout-1.php:70, templates/modules/added-to-cart-popup/common/action-buttons.php:53, templates/modules/complementary-products/admin-preview/checkout.php:9
+msgid "Checkout"
+msgstr ""
+
+#: inc/modules/frequently-bought-together/class-frequently-bought-together.php:254, inc/modules/frequently-bought-together/class-frequently-bought-together.php:290, inc/modules/volume-discounts/class-volume-discounts.php:295, inc/modules/volume-discounts/class-volume-discounts.php:332
+msgid "Last chance to get {offer_quantity} x"
+msgstr ""
+
+#: inc/modules/frequently-bought-together/class-frequently-bought-together.php:259, inc/modules/frequently-bought-together/class-frequently-bought-together.php:301, inc/modules/volume-discounts/class-volume-discounts.php:300, inc/modules/volume-discounts/class-volume-discounts.php:337, inc/modules/buy-x-get-y/admin/options.php:679, inc/modules/buy-x-get-y/admin/options.php:742, inc/modules/buy-x-get-y/admin/options.php:804
+msgid "with {discount} off"
+msgstr ""
+
+#: inc/modules/frequently-bought-together/class-frequently-bought-together.php:260, inc/modules/frequently-bought-together/class-frequently-bought-together.php:302, inc/modules/volume-discounts/class-volume-discounts.php:301, inc/modules/volume-discounts/class-volume-discounts.php:338, templates/modules/complementary-products/admin-preview/checkout.php:22, templates/modules/complementary-products/admin-preview/thank-you-page.php:36
+msgid "Add To My Order"
+msgstr ""
+
+#: inc/modules/frequently-bought-together/class-frequently-bought-together.php:277, inc/modules/volume-discounts/class-volume-discounts.php:319, inc/modules/quick-social-links/admin/options.php:220, templates/modules/complementary-products/admin-preview/thank-you-page.php:9
+msgid "Order Received"
+msgstr ""
+
+#: inc/modules/frequently-bought-together/class-frequently-bought-together.php:278, inc/modules/volume-discounts/class-volume-discounts.php:320, templates/modules/complementary-products/admin-preview/thank-you-page.php:11
+msgid "Thank you. Your order has been received."
+msgstr ""
+
+#: inc/modules/frequently-bought-together/class-frequently-bought-together.php:281, inc/modules/volume-discounts/class-volume-discounts.php:323, templates/modules/complementary-products/admin-preview/thank-you-page.php:15
+msgid "ORDER NUMBER:"
+msgstr ""
+
+#: inc/modules/frequently-bought-together/class-frequently-bought-together.php:285, inc/modules/volume-discounts/class-volume-discounts.php:327, templates/modules/complementary-products/admin-preview/thank-you-page.php:20
+msgid "PAYMENT METHOD:"
 msgstr ""
 
 #: inc/modules/frequently-bought-together/class-frequently-bought-together.php:295
@@ -2236,46 +2248,46 @@ msgstr ""
 msgid "PayPal"
 msgstr ""
 
-#: inc/modules/pre-orders/class-pre-orders-main-functionality.php:112
+#: inc/modules/pre-orders/class-pre-orders-main-functionality.php:113
 msgid "Shipping Date"
 msgstr ""
 
-#: inc/modules/pre-orders/class-pre-orders-main-functionality.php:876
+#: inc/modules/pre-orders/class-pre-orders-main-functionality.php:877
 msgid "We detected that your cart has pre-order products. Please remove them before being able to add this product."
 msgstr ""
 
-#: inc/modules/pre-orders/class-pre-orders-main-functionality.php:873
+#: inc/modules/pre-orders/class-pre-orders-main-functionality.php:874
 msgid "We detected that you are trying to add a pre-order product in your cart. Please remove the rest of the products before proceeding."
 msgstr ""
 
-#: inc/modules/pre-orders/class-pre-orders-main-functionality.php:940, inc/modules/pre-orders/class-pre-orders-main-functionality.php:1522, inc/modules/pre-orders/class-pre-orders.php:77, inc/modules/pre-orders/class-pre-orders.php:261
+#: inc/modules/pre-orders/class-pre-orders-main-functionality.php:941, inc/modules/pre-orders/class-pre-orders-main-functionality.php:1565, inc/modules/pre-orders/class-pre-orders.php:77, inc/modules/pre-orders/class-pre-orders.php:261
 msgid "Pre Order Now!"
 msgstr ""
 
-#: inc/modules/pre-orders/class-pre-orders-main-functionality.php:965, inc/modules/pre-orders/class-pre-orders-main-functionality.php:1084, inc/modules/pre-orders/class-pre-orders-main-functionality.php:1523, inc/modules/pre-orders/class-pre-orders.php:78
+#: inc/modules/pre-orders/class-pre-orders-main-functionality.php:966, inc/modules/pre-orders/class-pre-orders-main-functionality.php:1119, inc/modules/pre-orders/class-pre-orders-main-functionality.php:1566, inc/modules/pre-orders/class-pre-orders.php:78
 msgid "Ships on {date}."
 msgstr ""
 
-#: inc/modules/pre-orders/class-pre-orders-main-functionality.php:1099
+#: inc/modules/pre-orders/class-pre-orders-main-functionality.php:1134
 msgid "Pre Ordered"
 msgstr ""
 
 #. translators: %s: pre ordered product count
-#: inc/modules/pre-orders/class-pre-orders-main-functionality.php:1105
+#: inc/modules/pre-orders/class-pre-orders-main-functionality.php:1140
 msgid "Pre Ordered <span class=\"count\">(%s)</span>"
 msgid_plural "Pre Ordered <span class=\"count\">(%s)</span>"
 msgstr[0] ""
 msgstr[1] ""
 
-#: inc/modules/pre-orders/class-pre-orders-main-functionality.php:1117
+#: inc/modules/pre-orders/class-pre-orders-main-functionality.php:1152
 msgid "Pre-Ordered"
 msgstr ""
 
-#: inc/modules/pre-orders/class-pre-orders-main-functionality.php:1160, inc/modules/pre-orders/class-pre-orders-main-functionality.php:1350, inc/modules/pre-orders/class-pre-orders-main-functionality.php:1525, inc/modules/pre-orders/admin/options.php:491, inc/modules/pre-orders/classes/class-pre-orders-rules.php:277
+#: inc/modules/pre-orders/class-pre-orders-main-functionality.php:1195, inc/modules/pre-orders/class-pre-orders-main-functionality.php:1385, inc/modules/pre-orders/class-pre-orders-main-functionality.php:1568, inc/modules/pre-orders/admin/options.php:491, inc/modules/pre-orders/classes/class-pre-orders-rules.php:277
 msgid "Ships on"
 msgstr ""
 
-#: inc/modules/pre-orders/class-pre-orders-main-functionality.php:1516, inc/modules/pre-orders/admin/options.php:52
+#: inc/modules/pre-orders/class-pre-orders-main-functionality.php:1559, inc/modules/pre-orders/admin/options.php:52
 msgid "Custom Pre-order"
 msgstr ""
 
@@ -2971,26 +2983,12 @@ msgstr ""
 msgid "Photo first"
 msgstr ""
 
-#: templates/modules/buy-x-get-y/single-product.php:17
+#: templates/modules/buy-x-get-y/single-product.php:27
 msgid "Please update Merchant Pro plugin to the latest version to use this feature.."
 msgstr ""
 
-#: templates/modules/buy-x-get-y/single-product.php:78, inc/modules/buy-x-get-y/admin/options.php:526
-msgid "Buy One Get One"
-msgstr ""
-
-#. translators: 1. quantity
-#: templates/modules/buy-x-get-y/single-product.php:98, templates/modules/added-to-cart-popup/common/buy-x-get-y.php:35
-msgid "Buy %s"
-msgstr ""
-
-#. translators: 1. quantity 2. discount value
-#: templates/modules/buy-x-get-y/single-product.php:157, templates/modules/added-to-cart-popup/common/buy-x-get-y.php:116
-msgid "Get %1$s with %2$s off"
-msgstr ""
-
 #. translators: 1. Attribute name
-#: templates/modules/buy-x-get-y/single-product.php:262, templates/modules/frequently-bought-together/single-product.php:87, templates/modules/volume-discounts/single-product-radio.php:240, templates/modules/volume-discounts/single-product.php:221
+#: templates/modules/buy-x-get-y/single-product.php:272, templates/modules/frequently-bought-together/single-product.php:87, templates/modules/volume-discounts/single-product-radio.php:240, templates/modules/volume-discounts/single-product.php:221
 msgid "Select %s"
 msgstr ""
 
@@ -3347,8 +3345,8 @@ msgid "Suggested products price color"
 msgstr ""
 
 #. translators: 1. docs link
-#: inc/modules/address-autocomplete/admin/options.php:19, inc/modules/agree-to-terms-checkbox/admin/options.php:18, inc/modules/checkout/admin/options.php:19
-msgid "Your checkout page is being rendered through the new WooCommerce checkout block. You must edit the checkout page to use the classic checkout shortcode instead. Check <a href=\"%1$s\" target=\"_blank\">this documentation</a> to learn more."
+#: inc/modules/address-autocomplete/admin/options.php:19
+msgid "Your checkout page uses WooCommerce blocks. Address Autocomplete requires WooCommerce 9.9 or later for blocks checkout support. Please update WooCommerce or switch to the classic checkout shortcode. Check <a href=\"%1$s\" target=\"_blank\">this documentation</a> to learn more."
 msgstr ""
 
 #: inc/modules/address-autocomplete/admin/options.php:33
@@ -3967,6 +3965,11 @@ msgstr ""
 
 #: inc/modules/advanced-reviews/admin/options.php:1223, inc/modules/buy-x-get-y/admin/options.php:858, inc/modules/cart-reserved-timer/admin/options.php:119, inc/modules/clear-cart/admin/options.php:333, inc/modules/complementary-products/admin/options.php:831, inc/modules/countdown-timer/admin/options.php:352, inc/modules/free-shipping-progress-bar/admin/options.php:595, inc/modules/free-shipping-progress-bar/admin/options.php:770, inc/modules/free-shipping-progress-bar/admin/options.php:879, inc/modules/frequently-bought-together/admin/options.php:878, inc/modules/payment-logos/admin/options.php:141, inc/modules/product-audio/admin/options.php:50, inc/modules/product-brand-image/admin/options.php:98, inc/modules/product-bundles/admin/options.php:187, inc/modules/product-labels/admin/options.php:557, inc/modules/product-navigation-links/admin/options.php:160, inc/modules/product-video/admin/options.php:68, inc/modules/quick-social-links/admin/options.php:435, inc/modules/quick-view/admin/options.php:466, inc/modules/real-time-search/admin/options.php:128, inc/modules/reasons-to-buy/admin/options.php:390, inc/modules/recently-viewed-products/admin/options.php:231, inc/modules/size-chart/admin/options.php:231, inc/modules/stock-scarcity/admin/options.php:207, inc/modules/trust-badges/admin/options.php:160, inc/modules/volume-discounts/admin/options.php:918, inc/modules/wait-list/admin/options.php:166, inc/modules/wishlist/admin/options.php:504
 msgid "Shortcode text"
+msgstr ""
+
+#. translators: 1. docs link
+#: inc/modules/agree-to-terms-checkbox/admin/options.php:18, inc/modules/checkout/admin/options.php:19
+msgid "Your checkout page is being rendered through the new WooCommerce checkout block. You must edit the checkout page to use the classic checkout shortcode instead. Check <a href=\"%1$s\" target=\"_blank\">this documentation</a> to learn more."
 msgstr ""
 
 #: inc/modules/agree-to-terms-checkbox/admin/options.php:44

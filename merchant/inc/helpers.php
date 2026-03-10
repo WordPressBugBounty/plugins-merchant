@@ -385,6 +385,29 @@ if ( ! function_exists( 'merchant_kses_allowed_tags_for_code_snippets' ) ) {
 }
 
 /**
+ * Format a price for admin preview display.
+ *
+ * Uses wc_price() when WooCommerce is available, otherwise falls back to a plain
+ * currency symbol + number_format string.
+ *
+ * @param float  $price    The price value.
+ * @param string $currency Currency symbol fallback (used only when WC is unavailable).
+ *
+ * @return string Formatted price HTML.
+ *
+ * @since 2.3.0
+ */
+if ( ! function_exists( 'merchant_preview_price' ) ) {
+	function merchant_preview_price( $price, $currency = '$' ) {
+		if ( function_exists( 'wc_price' ) ) {
+			return wp_kses( wc_price( $price ), merchant_kses_allowed_tags( array( 'bdi' ) ) );
+		}
+
+		return esc_html( $currency ) . esc_html( number_format( (float) $price, 2 ) );
+	}
+}
+
+/**
  * Check if WooCommerce checkout page is being rendered by block.
  * Since WooCommerce 8.3.0 the checkout page is rendered by block.
  *

@@ -136,144 +136,153 @@ class Merchant_Buy_X_Get_Y extends Merchant_Add_Module {
 	}
 
 	/**
-	 * Render admin preview
+	 * Render admin preview.
 	 *
-	 * @param Merchant_Admin_Preview $preview
-	 * @param string                 $module
+	 * @param Merchant_Admin_Preview $preview The preview instance.
+	 * @param string                 $module  The module ID.
 	 *
 	 * @return Merchant_Admin_Preview
 	 */
 	public function render_admin_preview( $preview, $module ) {
-		if ( $module === self::MODULE_ID ) {
-			// get 2 simple wc products ids
-			$product_ids = wc_get_products(
-				array(
-					'limit'   => 2,
-					'type'    => 'simple',
-					'orderby' => 'rand',
-					'return'  => 'ids',
-				)
-			);
-			// HTML.
-			if ( ! empty( $product_ids ) && 1 < count( $product_ids ) ) {
-				$preview_html = '';
-				$preview_html .= '<div class="merchant-single-product-preview">';
-				$preview_html .= merchant_get_template_part(
-					self::MODULE_TEMPLATES,
-					'single-product',
-					array(
-						'offers'   => array(
-							array(
-								'rules_to_display'         => 'products',
-								'min_quantity'             => 2,
-								'product_ids'              => $product_ids[0],
-								'quantity'                 => 1,
-								'discount'                 => 10,
-								'discount_type'            => 'percentage',
-								'customer_get_product_ids' => $product_ids[1],
-								'total_discount'           => 2.8,
-							),
-						),
-						'nonce'    => '',
-						'settings' => Merchant_Admin_Options::get_all( self::MODULE_ID ),
-						'product'  => $product_ids[0],
-					),
-					true
-				);
-				$preview_html .= '</div>';
-                $preview_html .= $this->cart_preview();
-                $preview_html .= $this->checkout_page_preview();
-                $preview_html .= $this->thank_you_page_preview();
-				$preview->set_html( $preview_html );
-			} else {
-				$preview->set_html( '<p>' . esc_html__( 'No products found, please add some products to render the module preview', 'merchant' ) . '</p>' );
-			}
-			// Title Text.
-			$preview->set_text( 'title', '.merchant-bogo-title' );
-
-			// Buy Label Text ({quantity} gets replaced with a dummy "2" text)
-			$preview->set_text( 'buy_label', '.merchant-bogo-product-buy-label', array(
-				array(
-					'{quantity}',
-				),
-				array(
-					'2',
-				),
-			) );
-
-			// Get Label Text ({quantity} gets replaced with a dummy "2" text and {discount} gets replaced with dummy "10%" text)
-			$preview->set_text( 'get_label', '.merchant-bogo-product-get-label', array(
-				array(
-					'{quantity}',
-					'{discount}',
-				),
-				array(
-					'2',
-					'10%',
-				),
-			) );
-
-			// Button Text
-			$preview->set_text( 'button_text', '.merchant-bogo-add-to-cart' );
+		if ( $module !== self::MODULE_ID ) {
+			return $preview;
 		}
+
+		$template_args = $this->get_preview_template_args();
+
+		$preview_html  = $this->get_single_product_preview_html( $template_args );
+		$preview_html .= $this->cart_preview();
+		$preview_html .= $this->checkout_page_preview();
+		$preview_html .= $this->thank_you_page_preview();
+
+		$preview->set_html( $preview_html );
+
+		$this->register_preview_live_bindings( $preview );
 
 		return $preview;
 	}
 
 	/**
-     * Cart item admin preview.
-     *
+	 * Prepare template args for the single product admin preview.
+	 *
+	 * Handles all data computation: prices, labels, inline styles.
+	 *
+	 * @return array Ready-to-render template args.
+	 */
+	private function get_preview_template_args() {
+		// Currency symbol.
+		$currency_symbol = function_exists( 'get_woocommerce_currency_symbol' )
+			? get_woocommerce_currency_symbol()
+			: '$';
+
+		// Dummy offer values.
+		$buy_price     = 20;
+		$get_price     = 18;
+		$discount      = 10;
+		$discount_type = 'percentage';
+		$min_quantity  = 2;
+		$gift_quantity = 1;
+
+		// Calculate discounted price.
+		if ( $discount_type === 'percentage' ) {
+			$reduced_price = $get_price * ( 1 - $discount / 100 );
+		} else {
+			$reduced_price = max( 0, $get_price - $discount );
+		}
+		$reduced_price = round( $reduced_price, 2 );
+
+		// Discount display text.
+		$discount_display = $discount_type === 'percentage'
+			? $discount . '%'
+			: merchant_preview_price( $discount, $currency_symbol );
+
+		return array(
+			'title_text'         => __( 'Buy One Get One', 'merchant' ),
+			/* translators: %s: quantity */
+			'buy_label_text'     => sprintf( __( 'Buy %s', 'merchant' ), $min_quantity ),
+			/* translators: %1$s: quantity, %2$s: discount value */
+			'get_label_text'     => sprintf( __( 'Get %1$s with %2$s off', 'merchant' ), $gift_quantity, $discount_display ),
+			'button_text'        => __( 'Add To Cart', 'merchant' ),
+			'buy_price_html'     => merchant_preview_price( $buy_price, $currency_symbol ),
+			'get_price_html'     => merchant_preview_price( $get_price, $currency_symbol ),
+			'reduced_price_html' => merchant_preview_price( $reduced_price, $currency_symbol ),
+			'title_style'        => '',
+			'label_style'        => '',
+			'arrow_style'        => '',
+			'offer_y_style'      => '',
+		);
+	}
+
+	/**
+	 * Build the single product preview HTML with the product page simulation layout.
+	 *
+	 * @param array $template_args Pre-computed template args from get_preview_template_args().
+	 *
+	 * @return string The HTML string.
+	 */
+	private function get_single_product_preview_html( $template_args ) {
+		ob_start();
+		?>
+		<div class="merchant-single-product-preview">
+			<div class="mrc-preview-single-product-elements">
+				<div class="mrc-preview-left-column">
+					<div class="mrc-preview-product-image-wrapper">
+						<div class="mrc-preview-product-image"></div>
+					</div>
+				</div>
+				<div class="mrc-preview-right-column">
+					<div class="mrc-preview-product-info-placeholder">
+						<div class="mrc-preview-placeholder-bar mrc-preview-placeholder-bar--long mrc-preview-placeholder-bar--thick"></div>
+						<div class="mrc-preview-placeholder-bar mrc-preview-placeholder-bar--short mrc-preview-placeholder-bar--thick"></div>
+						<div class="mrc-preview-placeholder-bar mrc-preview-placeholder-bar--spacer"></div>
+						<div class="mrc-preview-placeholder-bar mrc-preview-placeholder-bar--long"></div>
+						<div class="mrc-preview-placeholder-bar mrc-preview-placeholder-bar--medium"></div>
+					</div>
+					<?php
+					merchant_get_template_part(
+						self::MODULE_TEMPLATES,
+						'single-product-admin-preview',
+						$template_args
+					);
+					?>
+				</div>
+			</div>
+		</div>
+		<?php
+
+		return ob_get_clean();
+	}
+
+	/**
+	 * Register live-binding text replacements for the admin preview.
+	 *
+	 * @param Merchant_Admin_Preview $preview The preview instance.
+	 *
+	 * @return void
+	 */
+	private function register_preview_live_bindings( $preview ) {
+		$preview->set_text( 'title', '.merchant-bogo-title' );
+
+		$preview->set_text( 'buy_label', '.merchant-bogo-product-buy-label', array(
+			array( '{quantity}' ),
+			array( '2' ),
+		) );
+
+		$preview->set_text( 'get_label', '.merchant-bogo-product-get-label', array(
+			array( '{quantity}', '{discount}' ),
+			array( '2', '10%' ),
+		) );
+
+		$preview->set_text( 'button_text', '.merchant-bogo-add-to-cart' );
+	}
+
+	/**
+	 * Cart item admin preview.
+	 *
 	 * @return string
 	 */
 	public function cart_preview() {
-		ob_start();
-		?>
-		<div class="merchant-cart-preview">
-            <div class="my-cart">
-                <div class="cart-title"><?php esc_html_e( 'My Cart', 'merchant' ); ?></div>
-                <table class="cart-table">
-                    <tr>
-                        <th class="product-col"><?php esc_html_e( 'PRODUCT', 'merchant' ); ?></th>
-                        <th class="price-col"><?php esc_html_e( 'PRICE', 'merchant' ); ?></th>
-                        <th class="quantity-col"><?php esc_html_e( 'QUANTITY', 'merchant' ); ?></th>
-                        <th class="total-col"><?php esc_html_e( 'TOTAL', 'merchant' ); ?></th>
-                    </tr>
-                    <tr class="cart-item">
-                        <td class="product-column">
-                            <div class="product">
-                                <div class="product-image"></div>
-                                <div class="product-info">
-                                    <div class="product-name"><?php esc_html_e( 'Your Product Name', 'merchant' ); ?></div>
-                                    <p class="upsell-offer"><?php esc_html_e( 'You are eligible to get {offer_quantity}', 'merchant' ); ?></p>
-                                    <div class="upsell-product">
-                                        <div class="upsell-image"></div>
-                                        <div class="upsell-info">
-                                            <div class="upsell-name"><?php esc_html_e( 'Product Name', 'merchant' ); ?></div>
-                                            <p><?php esc_html_e( 'with {discount} off', 'merchant' ); ?></p>
-                                            <button class="add-to-cart"><?php esc_html_e( 'Add To Cart', 'merchant' ); ?></button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </td>
-                        <td class="price-col">
-                            <span class="original-price"><?php echo wp_kses(wc_price(16), merchant_kses_allowed_tags(array( 'bdi' )))?></span>
-                            <span class="discounted-price"><?php echo wp_kses(wc_price(12), merchant_kses_allowed_tags(array( 'bdi' )))?></span>
-                        </td>
-                        <td class="quantity-col">
-                            <div class="quantity-control">
-                                <button class="decrease">-</button>
-                                <input type="text" value="1" min="1">
-                                <button class="increase">+</button>
-                            </div>
-                        </td>
-                        <td class="total-col"><?php echo wp_kses(wc_price(300), merchant_kses_allowed_tags(array( 'bdi' )))?></td>
-                    </tr>
-                </table>
-            </div>
-		</div>
-		<?php
-		return ob_get_clean();
+		return merchant_get_template_part( self::MODULE_TEMPLATES, 'cart-admin-preview', array(), true );
 	}
 
 	/**
@@ -282,66 +291,16 @@ class Merchant_Buy_X_Get_Y extends Merchant_Add_Module {
 	 * @return string
 	 */
 	public function checkout_page_preview() {
-		ob_start();
-		?>
-        <div class="merchant-checkout-preview">
-            <div class="order-received">
-                <div class="page-title"><?php esc_html_e('Checkout','merchant'); ?></div>
-                <br>
-                <div class="upsell-offer">
-                    <div class="offer-title"><?php esc_html_e('Last chance to get {offer_quantity} x','merchant'); ?></div>
-                    <div class="product-details">
-                        <div class="product-image"></div>
-                        <div class="product-info">
-                            <div class="product-name"><?php esc_html_e('Your Product Name','merchant'); ?></div>
-                            <p><?php esc_html_e('with {discount} off','merchant'); ?></p>
-                            <button class="add-to-order"><?php esc_html_e('Add To My Order','merchant'); ?></button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-		<?php
-		return ob_get_clean();
+		return merchant_get_template_part( self::MODULE_TEMPLATES, 'checkout-admin-preview', array(), true );
 	}
 
-    /**
-     * Thank you page preview.
-     *
-     * @return string
-     */
+	/**
+	 * Thank you page preview.
+	 *
+	 * @return string
+	 */
 	public function thank_you_page_preview() {
-		ob_start();
-		?>
-        <div class="merchant-thank-you-preview">
-            <div class="order-received">
-                <div class="page-title"><?php esc_html_e('Order Received','merchant'); ?></div>
-                <p><?php esc_html_e('Thank you. Your order has been received.','merchant'); ?></p>
-                <div class="order-details">
-                    <div class="order-info">
-                        <div class="item-title"><?php esc_html_e('ORDER NUMBER:','merchant'); ?></div>
-                        <p>550</p>
-                    </div>
-                    <div class="order-info">
-                        <div class="item-title"><?php esc_html_e('PAYMENT METHOD:','merchant'); ?></div>
-                        <p><?php echo esc_html( merchant_get_first_active_payment_gateway_label() ?? 'Apple Pay' ) ?></p>
-                    </div>
-                </div>
-                <div class="upsell-offer">
-                    <div class="offer-title"><?php esc_html_e('Last chance to get {offer_quantity} x','merchant'); ?></div>
-                    <div class="product-details">
-                        <div class="product-image"></div>
-                        <div class="product-info">
-                            <div class="product-name"><?php esc_html_e('Your Product Name','merchant'); ?></div>
-                            <p><?php esc_html_e('with {discount} off','merchant'); ?></p>
-                            <button class="add-to-order"><?php esc_html_e('Add To My Order','merchant'); ?></button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-		<?php
-		return ob_get_clean();
+		return merchant_get_template_part( self::MODULE_TEMPLATES, 'thank-you-admin-preview', array(), true );
 	}
 }
 

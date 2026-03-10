@@ -2,10 +2,20 @@
 /**
  * Template for buy x get y module content on single product.
  *
+ * @deprecated 2.2.4 Use the Merchant Pro version of this template instead.
+ *
  * @var $args array template args
  *
  * @since 1.0
  */
+
+if ( function_exists( '_deprecated_file' ) ) {
+	_deprecated_file(
+		basename( __FILE__ ),
+		'2.2.4',
+		'merchant-pro/templates/modules/buy-x-get-y/single-product.php'
+	);
+}
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly

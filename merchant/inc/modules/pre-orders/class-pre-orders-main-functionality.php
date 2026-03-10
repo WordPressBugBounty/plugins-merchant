@@ -64,6 +64,7 @@ class Merchant_Pre_Orders_Main_Functionality {
 		add_filter( 'woocommerce_available_variation', array( $this, 'attach_pre_order_data_to_variations' ), 10, 3 );
 		add_action( 'woocommerce_before_add_to_cart_form', array( $this, 'additional_information_before_cart_form' ) );
 		add_action( 'woocommerce_after_add_to_cart_form', array( $this, 'additional_information_after_cart_form' ) );
+		add_action( 'woocommerce_before_add_to_cart_form', array( $this, 'record_pre_order_impression' ) );
 
 		// Cart
 		add_filter( 'woocommerce_get_item_data', array( $this, 'cart_message_handler' ), 10, 2 );
@@ -1014,6 +1015,40 @@ class Merchant_Pre_Orders_Main_Functionality {
 			$pre_order_rule = self::available_product_rule( $_product->get_id() );
 			if ( ! empty( $pre_order_rule ) && $pre_order_rule['placement'] === 'before' ) {
 				$this->maybe_render_additional_information( $pre_order_rule );
+			}
+		}
+	}
+
+	/**
+	 * Record pre-order impression on product page view.
+	 *
+	 * Hooked to `woocommerce_before_add_to_cart_form` independently of placement,
+	 * so impressions are tracked regardless of where the pre-order message renders.
+	 *
+	 * @return void
+	 */
+	public function record_pre_order_impression() {
+		$input_post_data = array(
+			'product_id' => filter_input( INPUT_POST, 'product_id', FILTER_SANITIZE_NUMBER_INT ),
+		);
+
+		global $post, $product;
+
+		$_post    = $post;
+		$_product = $product;
+
+		if ( ! $_post && isset( $input_post_data['product_id'] ) ) {
+			$_post    = get_post( absint( $input_post_data['product_id'] ) );
+			$_product = wc_get_product( $_post->ID );
+		}
+
+		if ( ! $_post || ! $_product ) {
+			return;
+		}
+
+		if ( $this->is_pre_order( $_post->ID ) ) {
+			$pre_order_rule = self::available_product_rule( $_product->get_id() );
+			if ( ! empty( $pre_order_rule ) ) {
 				$this->record_impression( $_product->get_id(), $pre_order_rule );
 			}
 		}
@@ -1267,7 +1302,7 @@ class Merchant_Pre_Orders_Main_Functionality {
 	 * @return array
 	 */
 	public function add_block_title_filter( $context ) {
-		if ( ! empty( $context['postType'] ) && 'product' === $context['postType'] && ! $this->is_pre_order_filter_on ) {
+		if ( ! empty( $context['postType'] ) && 'product' === $context['postType'] && ! $this->is_pre_order_filter_on && ! is_singular( 'product' ) ) {
 			$this->is_pre_order_filter_on = true;
 			add_filter( 'the_title', array( $this, 'block_add_the_title_filter' ), 10, 2 );
 			add_filter( 'render_block', array( $this, 'block_remove_the_title_filter' ), 10, 3 );
@@ -1405,7 +1440,15 @@ class Merchant_Pre_Orders_Main_Functionality {
 	 * @return array The available product rule.
 	 */
 	public static function available_product_rule( $product_id ) {
-		return Merchant_Pre_Orders_Rules_Repository::get_rule_for_product( $product_id );
+		static $cache = array();
+
+		if ( isset( $cache[ $product_id ] ) ) {
+			return $cache[ $product_id ];
+		}
+
+		$cache[ $product_id ] = Merchant_Pre_Orders_Rules_Repository::get_rule_for_product( $product_id );
+
+		return $cache[ $product_id ];
 	}
 
 	/**
