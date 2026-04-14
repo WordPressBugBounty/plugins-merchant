@@ -14,8 +14,8 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
     var $ajaxHeader = $('.merchant-module-page-ajax-header');
     var $ajaxSaveBtn = $('.merchant-module-save-button');
     $('.merchant-module-page-content').on('change keypress change.merchant', function (e) {
-      if ($(e.target).hasClass('merchant-backup-file')) {
-        return; // Ignore backup file input
+      if ($(e.target).hasClass('merchant-backup-file') || $(e.target).hasClass('merchant-search-field')) {
+        return;
       }
       if (!$(this).is('.merchant-module-question-answer-textarea, .merchant-license-code-input')) {
         if (!merchant.show_save) {
@@ -26,9 +26,130 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
       }
       GroubField.initFlag();
     });
+
+    // Warn the user before leaving the page with unsaved changes.
+    window.addEventListener('beforeunload', function (e) {
+      if (merchant.show_save) {
+        e.preventDefault();
+      }
+    });
     $ajaxForm.ajaxForm({
-      beforeSubmit: function beforeSubmit() {
+      beforeSubmit: function beforeSubmit(arr) {
         $ajaxHeader.addClass('merchant-saving');
+
+        // Serialize merchant[] fields into a single JSON payload
+        // to bypass PHP's max_input_vars limit (Issue #608).
+        var merchantData = {};
+        var keepIndexes = [];
+        arr.forEach(function (field, index) {
+          if (field.name === 'merchant-search-field') {
+            keepIndexes.push(index);
+            return;
+          }
+          if (field.name && field.name.indexOf('merchant[') === 0) {
+            var keys = field.name.match(/\[([^\]]*)\]/g);
+            if (!keys) {
+              return;
+            }
+            var obj = merchantData;
+            for (var i = 0; i < keys.length - 1; i++) {
+              var key = keys[i].slice(1, -1);
+              if (obj[key] === undefined) {
+                var nextKey = keys[i + 1] ? keys[i + 1].slice(1, -1) : '';
+                obj[key] = /^\d+$/.test(nextKey) ? [] : {};
+              }
+              obj = obj[key];
+            }
+            var lastKey = keys[keys.length - 1].slice(1, -1);
+            if (lastKey === '') {
+              // Array notation (e.g. name="...[show_pages][]") — push into parent array.
+              var parentKey = keys[keys.length - 2].slice(1, -1);
+              var parentObj = merchantData;
+              for (var j = 0; j < keys.length - 2; j++) {
+                parentObj = parentObj[keys[j].slice(1, -1)];
+              }
+              if (!Array.isArray(parentObj[parentKey])) {
+                parentObj[parentKey] = [];
+              }
+              parentObj[parentKey].push(field.value);
+            } else {
+              obj[lastKey] = field.value;
+            }
+          } else {
+            keepIndexes.push(index);
+          }
+        });
+
+        // Ensure unchecked checkboxes inside hydrated FC rows are saved as 0.
+        // serializeArray() omits unchecked checkboxes entirely, which would
+        // silently drop the field from the JSON payload and lose the "off" state.
+        $('.merchant-flexible-content .layout:not([data-deferred])').each(function () {
+          $(this).find('.layout-body input[type="checkbox"]:not(:checked)').each(function () {
+            var name = $(this).attr('name') || '';
+            if (name.indexOf('merchant[') !== 0) {
+              return;
+            }
+
+            // Skip checkbox_multiple (name ends with []) — absence = empty array.
+            if (/\[\]$/.test(name)) {
+              return;
+            }
+            var keys = name.match(/\[([^\]]*)\]/g);
+            if (!keys) {
+              return;
+            }
+            var obj = merchantData;
+            for (var i = 0; i < keys.length - 1; i++) {
+              var key = keys[i].slice(1, -1);
+              if (obj[key] === undefined) {
+                obj[key] = {};
+              }
+              obj = obj[key];
+            }
+            var lastKey = keys[keys.length - 1].slice(1, -1);
+            if (obj[lastKey] === undefined) {
+              obj[lastKey] = 0;
+            }
+          });
+        });
+
+        // Merge deferred (non-hydrated) layout row data into merchantData.
+        // These rows have no form inputs, only a data-fields-json attribute.
+        $('.merchant-flexible-content .layout[data-deferred="1"]').each(function () {
+          var jsonStr = $(this).attr('data-fields-json');
+          if (!jsonStr) {
+            return;
+          }
+          var deferredData;
+          try {
+            deferredData = JSON.parse(jsonStr);
+          } catch (e) {
+            return;
+          }
+          var $control = $(this).closest('.merchant-flexible-content-control');
+          var fcFieldId = $control.attr('data-id');
+          var rowIndex = parseInt($(this).find('.layout-count').text(), 10) - 1;
+          if (!merchantData[fcFieldId]) {
+            merchantData[fcFieldId] = {};
+          }
+
+          // Build the row data from deferred values + layout/flexible_id from hidden inputs.
+          var rowData = $.extend({}, deferredData.values || {});
+          rowData.layout = $(this).attr('data-type') || '';
+          rowData.flexible_id = $(this).find('.flexible-id').val() || '';
+          merchantData[fcFieldId][rowIndex] = rowData;
+        });
+        var kept = keepIndexes.map(function (i) {
+          return arr[i];
+        });
+        kept.push({
+          name: 'merchant_json_payload',
+          value: JSON.stringify(merchantData)
+        });
+        arr.length = 0;
+        kept.forEach(function (item) {
+          arr.push(item);
+        });
       },
       success: function success() {
         $ajaxHeader.removeClass('merchant-show');
@@ -256,6 +377,7 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
               },
               success: function success(response) {
                 if (response.success) {
+                  merchant.show_save = false;
                   window.location.href = response.data.redirect_url;
                 } else {
                   self.displayError(response.data.message, container);
@@ -345,7 +467,7 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
           var input = $(this).find('input'),
             options = {
               locale: JSON.parse(merchant_datepicker_locale),
-              selectedDates: [input.val() ? new Date(input.val()) : ''],
+              selectedDates: input.val() ? [new Date(input.val())] : [],
               onSelect: function onSelect(_ref) {
                 var date = _ref.date,
                   formattedDate = _ref.formattedDate,
@@ -947,7 +1069,17 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
               header: function header(elem) {
                 return elem.find('.layout__inner > .layout-header');
               },
-              heightStyle: "content"
+              heightStyle: "content",
+              beforeActivate: function beforeActivate(event, ui) {
+                // Hydrate deferred layout before the accordion animation
+                // so the panel opens with content already rendered.
+                if (ui.newPanel.length) {
+                  var $layout = ui.newPanel.closest('.layout');
+                  if ($layout.attr('data-deferred') === '1') {
+                    self.hydrateLayout($layout);
+                  }
+                }
+              }
             }).sortable({
               axis: 'y',
               cursor: 'move',
@@ -1082,6 +1214,7 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
           initMerchantRange();
           self.updateLayoutTitle();
           self.updateDiscountPercentMaxVal();
+          $('.merchant-module-page-content').trigger('change.merchant');
         });
 
         // Duplicate item
@@ -1154,6 +1287,7 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
           }
           self.updateLayoutTitle();
           GroubField.init();
+          $('.merchant-module-page-content').trigger('change.merchant');
         });
 
         // Delete item
@@ -1172,7 +1306,7 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
           if (hasAccordion) {
             parentDiv.find('.merchant-flexible-content').accordion("refresh");
           }
-          $(document).trigger('change.merchant');
+          $('.merchant-module-page-content').trigger('change.merchant');
         });
 
         // Toggle Actions(delete/duplicate)
@@ -1198,6 +1332,285 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
             $layout.siblings().find('.layout-actions__inner').slideUp(300);
           }
         }
+
+        // Dismiss actions menu on click outside or Escape.
+        $(document).on('click', function (e) {
+          if (!$(e.target).closest('.layout-actions').length) {
+            $('.layout-actions__inner').slideUp(300);
+          }
+        });
+        $(document).on('keydown', function (e) {
+          if (e.key === 'Escape') {
+            $('.layout-actions__inner').slideUp(300);
+          }
+        });
+      },
+      /**
+       * Hydrate a deferred layout row.
+       *
+       * Clones the hidden template for the layout type, populates field values
+       * from the data-fields-json attribute, initialises all widgets, and
+       * replaces the empty layout-body content with the fully rendered fields.
+       *
+       * @param {jQuery} $layout The .layout element with data-deferred="1".
+       */
+      hydrateLayout: function hydrateLayout($layout) {
+        var jsonStr = $layout.attr('data-fields-json');
+        if (!jsonStr) {
+          return;
+        }
+        var data;
+        try {
+          data = JSON.parse(jsonStr);
+        } catch (e) {
+          return;
+        }
+        var layoutType = $layout.attr('data-type');
+        var $control = $layout.closest('.merchant-flexible-content-control');
+        var $template = $control.find('.layouts .layout[data-type="' + layoutType + '"]');
+        if (!$template.length) {
+          return;
+        }
+
+        // Clone the template's layout-body content (the rendered fields).
+        var $clonedBody = $template.find('.layout-body').clone();
+
+        // Determine the correct row index from layout-count.
+        var rowIndex = parseInt($layout.find('.layout-count').text(), 10) - 1;
+        var fieldId = $control.attr('data-id');
+
+        // Fix name attributes: replace data-name with name, and index [0] with [rowIndex].
+        $clonedBody.find('input, select, textarea').each(function () {
+          var dataName = $(this).attr('data-name');
+          if (dataName) {
+            $(this).attr('name', dataName.replace('[0]', '[' + rowIndex + ']'));
+            $(this).removeAttr('data-name');
+          }
+        });
+
+        // Populate field values from the resolved data.
+        this.populateFieldValues($clonedBody, data, fieldId, rowIndex);
+
+        // Sync color picker preview boxes to reflect populated values.
+        $clonedBody.find('.merchant-color').each(function () {
+          var colorVal = $(this).find('.merchant-color-input').val();
+          if (colorVal) {
+            $(this).find('.merchant-color-picker').css('background-color', colorVal);
+          }
+        });
+
+        // Sync range slider values from their sibling number inputs.
+        // populateFieldValues only sets the number input (it has the name attribute);
+        // the range slider (no name) still holds the template default.
+        $clonedBody.find('.merchant-range').each(function () {
+          var numVal = $(this).find('.merchant-range-number-input').val();
+          if (numVal !== undefined && numVal !== '') {
+            $(this).find('.merchant-range-input').val(numVal);
+          }
+        });
+
+        // Swap the content of the layout-body (not the element itself)
+        // to preserve jQuery UI accordion's internal panel reference.
+        var $existingBody = $layout.find('.layout-body');
+        $existingBody.empty().append($clonedBody.children());
+
+        // Initialise widgets within the hydrated layout.
+        if ($existingBody.find('.merchant-module-page-setting-field-upload').length) {
+          initUploadField($existingBody.find('.merchant-module-page-setting-field-upload'));
+        }
+        if ($existingBody.find('.merchant-module-page-setting-field-select_ajax').length) {
+          initSelectAjax($existingBody.find('.merchant-module-page-setting-field-select_ajax'));
+        }
+
+        // Trigger events to re-initialise fields_group, color pickers, conditions, etc.
+        $(document).trigger('merchant-flexible-content-added', [$layout]);
+        GroubField.init();
+        initMerchantRange();
+
+        // Init layout title binding.
+        var $title = $layout.find('.layout-title[data-title-field]');
+        if ($title.length) {
+          var titleFieldId = $title.attr('data-title-field');
+          var $titleInput = $layout.find('.layout-body .merchant-field-' + titleFieldId + ' input');
+          $titleInput.on('change keyup', function () {
+            $title.text($(this).val());
+          });
+        }
+
+        // Init discount max val.
+        this.updateDiscountPercentMaxVal();
+
+        // Remove the deferred flag and clean up.
+        $layout.removeAttr('data-deferred');
+        $layout.removeAttr('data-fields-json');
+
+        // Refresh accordion to re-sync panel references after DOM change.
+        var $content = $control.find('.merchant-flexible-content');
+        if ($content.data('ui-accordion')) {
+          $content.accordion('refresh');
+        }
+
+        // Trigger condition checks for the newly hydrated panel.
+        $(document).trigger('merchant-admin-check-fields');
+        $(document).trigger('merchant-admin-check-color-fields');
+      },
+      /**
+       * Populate field values from deferred data into a cloned template body.
+       *
+       * @param {jQuery} $body    The cloned .layout-body element.
+       * @param {Object} data     The parsed data-fields-json object.
+       * @param {string} fieldId  The flexible content field ID.
+       * @param {number} rowIndex The row index for name attribute construction.
+       */
+      populateFieldValues: function populateFieldValues($body, data, fieldId, rowIndex) {
+        var values = data.values || {};
+        var selectOptions = data.select_options || {};
+        var productOptions = data.product_options || {};
+        var reviewOptions = data.review_options || {};
+
+        // Populate simple field values.
+        $body.find('input, select, textarea').each(function () {
+          var $el = $(this);
+          var name = $el.attr('name') || '';
+
+          // Handle checkbox_multiple: name ends with [] (e.g. merchant[fc][0][show_pages][]).
+          var arrayMatch = name.match(/\[([^\]]+)\]\[\]$/);
+          if (arrayMatch) {
+            var arrayKey = arrayMatch[1];
+            var arrVal = values[arrayKey];
+            if (Array.isArray(arrVal) && $el.is(':checkbox')) {
+              $el.prop('checked', arrVal.indexOf($el.val()) !== -1);
+            }
+            return;
+          }
+
+          // Extract the field key from name="merchant[fieldId][rowIndex][fieldKey]".
+          var match = name.match(/\[([^\]]+)\]$/);
+          if (!match) {
+            return;
+          }
+          var fieldKey = match[1];
+          var val = values[fieldKey];
+          if (val === undefined || val === null) {
+            return;
+          }
+          if ($el.is(':checkbox') || $el.is(':radio')) {
+            // For checkboxes/radios, check if this input's value matches.
+            if ($el.val() === String(val) || val === '1' && $el.is(':checkbox')) {
+              $el.prop('checked', true);
+            }
+          } else if ($el.is('select')) {
+            $el.val(val);
+          } else {
+            $el.val(val);
+          }
+        });
+
+        // Populate select_ajax pre-selected options.
+        $.each(selectOptions, function (selectFieldId, options) {
+          var $select = $body.find('[data-id="' + selectFieldId + '"] select');
+          if (!$select.length) {
+            return;
+          }
+
+          // Clear any existing options and add resolved ones.
+          $select.empty();
+          $.each(options, function (_, opt) {
+            $select.append($('<option>').val(opt.id).text(opt.text).prop('selected', true));
+          });
+        });
+
+        // Populate products_selector pre-selected products.
+        $.each(productOptions, function (prodFieldId, products) {
+          var $container = $body.find('[data-id="' + prodFieldId + '"] .merchant-products-search-container');
+          if (!$container.length) {
+            return;
+          }
+          var $preview = $container.find('.merchant-selected-products-preview ul');
+          var ids = [];
+          $preview.empty();
+          $.each(products, function (_, product) {
+            ids.push(product.id);
+
+            // Build <li> matching the structure from Merchant_Admin_Ajax::product_data_li().
+            var $li = $('<li>').addClass('product-item').attr('data-id', product.id).attr('data-name', product.title);
+            if (product.image) {
+              $li.append($('<span>').addClass('img').append($('<img>').attr('src', product.image).attr('alt', product.title).attr('width', 30).attr('height', 30)));
+            }
+            $li.append($('<span>').addClass('data').append($('<span>').addClass('name').text(product.title), $('<span>').addClass('info').html(product.price)));
+            if (product.type || product.id) {
+              var typeHtml = (product.type || '') + '<br>#' + product.id;
+              var $typeSpan = $('<span>').addClass('type');
+              if (product.edit_url) {
+                $typeSpan.append($('<a>').attr('href', product.edit_url).attr('target', '_blank').html(typeHtml));
+              } else {
+                $typeSpan.html(typeHtml);
+              }
+              $li.append($typeSpan);
+            }
+            $li.append($('<span>').addClass('remove hint--left').attr('aria-label', 'Remove').html('&times;'));
+            $preview.append($li);
+          });
+          $container.find('.merchant-selected-products').val(ids.join(','));
+        });
+
+        // Populate reviews_selector pre-selected reviews.
+        $.each(reviewOptions, function (reviewFieldId, reviews) {
+          var $container = $body.find('[data-id="' + reviewFieldId + '"] .merchant-reviews-selector');
+          if (!$container.length) {
+            return;
+          }
+          var $selectedList = $container.find('.selected-reviews .product-reviews');
+          var ids = [];
+          $selectedList.empty();
+          $.each(reviews, function (_, review) {
+            ids.push(review.id);
+            var $reviewEl = $('<div>').addClass('product-review').attr('data-review-id', review.id);
+            $reviewEl.append($('<span>').addClass('review-author').text(review.author));
+            $reviewEl.append($('<span>').addClass('review-content').text(review.content));
+            $reviewEl.append($('<span>').addClass('review-rating').text('★'.repeat(parseInt(review.rating) || 0)));
+            $reviewEl.append($('<span>').addClass('review-product').text(review.product_name));
+            $reviewEl.append($('<span>').addClass('product-review-delete').html('&times;'));
+            $reviewEl.append($('<span>').addClass('product-review-move').html('⋮⋮'));
+            $selectedList.append($reviewEl);
+          });
+          $container.find('.merchant-selected-reviews').val(ids.join(','));
+        });
+
+        // Handle fields_group and compound (e.g. hook_select) nested values.
+        // Recursively walks the value tree to find and set inputs
+        // at any nesting depth (e.g. fields_group → hook_select → hook_name).
+        var _setNestedValues = function setNestedValues(obj, namePrefix) {
+          $.each(obj, function (key, val) {
+            if (_typeof(val) === 'object' && val !== null && !Array.isArray(val)) {
+              // Recurse into nested objects.
+              _setNestedValues(val, namePrefix + '[' + key + ']');
+            } else if (Array.isArray(val)) {
+              // checkbox_multiple inside a nested object: check boxes whose value is in the array.
+              $body.find('[name="' + namePrefix + '[' + key + '][]"]').each(function () {
+                if ($(this).is(':checkbox')) {
+                  $(this).prop('checked', val.indexOf($(this).val()) !== -1);
+                }
+              });
+            } else {
+              var $field = $body.find('[name="' + namePrefix + '[' + key + ']"]');
+              if ($field.length) {
+                if ($field.is(':checkbox') || $field.is(':radio')) {
+                  if ($field.val() === String(val) || val === '1' && $field.is(':checkbox')) {
+                    $field.prop('checked', true);
+                  }
+                } else {
+                  $field.val(val);
+                }
+              }
+            }
+          });
+        };
+        $.each(values, function (key, val) {
+          if (_typeof(val) === 'object' && val !== null && !Array.isArray(val)) {
+            _setNestedValues(val, 'merchant[' + fieldId + '][' + rowIndex + '][' + key + ']');
+          }
+        });
       },
       refreshNumbers: function refreshNumbers($content) {
         $content.find('.layout').each(function (index) {
@@ -1268,6 +1681,21 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
       }
     });
 
+    // Products selector: dismiss search results on click outside or Escape.
+    $(document).on('click touch', function (e) {
+      if (!$(e.target).closest('.merchant-products-search-container').length) {
+        $('.merchant-selections-products-preview').html('').hide();
+        $('.merchant-search-field').val('');
+      }
+    });
+    $(document).on('keydown', '.merchant-search-field', function (e) {
+      if (e.key === 'Escape') {
+        var parent = $(this).closest('.merchant-products-search-container');
+        parent.find('.merchant-selections-products-preview').html('').hide();
+        $(this).val('').blur();
+      }
+    });
+
     // Products selector.
     // Handle click/touch event for the search results
     $(document).on('click touch', '.merchant-module-page-setting-field-products_selector .merchant-selections-products-preview li', function () {
@@ -1300,25 +1728,21 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
     // Products selector.
     // Handle click/touch event for the remove button.
     $(document).on('click touch', '.merchant-selected-products-preview .remove', function () {
-      // Store a reference to the remove button
       var removeButton = $(this);
-      // Ask for confirmation before removing the product
-      if (confirm(merchant_admin_options.product_delete_confirmation_message)) {
-        var parent = removeButton.closest('.merchant-products-search-container'),
-          valueField = parent.find('.merchant-selected-products'),
-          id = removeButton.parent().data('id');
-        removeButton.parent().remove();
-        var currentValue = valueField.val().split(',');
-        if (currentValue.length > 0) {
-          for (var key in currentValue) {
-            if (parseInt(currentValue[key]) === parseInt(id)) {
-              currentValue.splice(key, 1);
-            }
+      var parent = removeButton.closest('.merchant-products-search-container'),
+        valueField = parent.find('.merchant-selected-products'),
+        id = removeButton.parent().data('id');
+      removeButton.parent().remove();
+      var currentValue = valueField.val().split(',');
+      if (currentValue.length > 0) {
+        for (var key in currentValue) {
+          if (parseInt(currentValue[key]) === parseInt(id)) {
+            currentValue.splice(key, 1);
           }
         }
-        valueField.val(currentValue.join(',')).change();
-        valueField.trigger('change.merchant');
       }
+      valueField.val(currentValue.join(',')).change();
+      valueField.trigger('change.merchant');
     });
     $(document).on('merchant-admin-check-fields merchant-flexible-content-added', function () {
       $('.merchant-module-page-setting-field').each(function () {

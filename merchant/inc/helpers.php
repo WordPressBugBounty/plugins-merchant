@@ -395,7 +395,7 @@ if ( ! function_exists( 'merchant_kses_allowed_tags_for_code_snippets' ) ) {
  *
  * @return string Formatted price HTML.
  *
- * @since 2.3.0
+ * @since 2.2.5
  */
 if ( ! function_exists( 'merchant_preview_price' ) ) {
 	function merchant_preview_price( $price, $currency = '$' ) {

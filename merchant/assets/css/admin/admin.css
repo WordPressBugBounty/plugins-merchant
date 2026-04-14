@@ -2579,6 +2579,14 @@ body.merchant-module-disabled .merchant-module-page-link-preview svg path {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  white-space: nowrap;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
   cursor: pointer;
   gap: 3px;
 }
@@ -2804,6 +2812,8 @@ body.merchant-module-disabled .merchant-module-page-link-preview svg path {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
   grid-gap: 30px;
 }
 .merchant-module-page-setting-field-radio label,
@@ -3797,6 +3807,10 @@ body.merchant-module-disabled .merchant-module-page-link-preview svg path {
 }
 .merchant-flexible-content-control.has-accordion .layout-header {
   cursor: pointer;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
 }
 .merchant-flexible-content-control .layouts {
   display: none;

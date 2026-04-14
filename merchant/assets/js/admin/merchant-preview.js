@@ -198,6 +198,10 @@ function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length)
             }
           });
           flexibleContentSettings.each(function () {
+            // Skip deferred (lazy-loaded) rows — they have no rendered field inputs.
+            if ($(this).attr('data-deferred') === '1') {
+              return;
+            }
             var item = flexibleContentTemplate.clone();
             var layout = $(this).data('type');
             for (var variable in manipulators.flexible_content[_key7].variables[layout]) {

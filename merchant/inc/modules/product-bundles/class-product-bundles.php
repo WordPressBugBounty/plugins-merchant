@@ -97,7 +97,7 @@ class Merchant_Product_Bundles extends Merchant_Add_Module {
      * @return void
      */
 	public function help_banner( $module_id ) {
-		if ( $module_id === 'product-bundles' ) {
+		if ( $module_id === 'product-bundles' && merchant_is_pro_active() ) {
 			?>
             <div class="merchant-module-page-setting-fields">
                 <div class="merchant-module-page-setting-field merchant-module-page-setting-field-content">

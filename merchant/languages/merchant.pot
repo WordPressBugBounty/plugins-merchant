@@ -8,7 +8,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language-Team: aThemes <team@athemes.com>\n"
 "Last-Translator: aThemes <team@athemes.com>\n"
-"POT-Creation-Date: 2026-03-10 18:43+0000\n"
+"POT-Creation-Date: 2026-04-14 17:55+0000\n"
 "Report-Msgid-Bugs-To: https://athemes.com/contact/\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-KeywordsList: __;_e;_ex:1,2c;_n:1,2;_n_noop:1,2;_nx:1,2,4c;_nx_noop:1,2,3c;_x:1,2c;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c\n"
@@ -17,7 +17,7 @@ msgstr ""
 "X-Poedit-SourceCharset: UTF-8\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: admin/class-merchant-admin-loader.php:144, inc/class-merchant-loader.php:273, admin/classes/class-merchant-admin-menu.php:282, admin/classes/class-merchant-admin-menu.php:283, admin/classes/class-merchant-admin-menu.php:373, admin/classes/class-merchant-admin-menu.php:376, inc/modules/address-autocomplete/admin/options.php:27, inc/modules/agree-to-terms-checkbox/admin/options.php:28, inc/modules/auto-external-links/admin/options.php:16, inc/modules/buy-now/admin/options.php:14, inc/modules/cart-count-favicon/admin/options.php:16, inc/modules/cart-reserved-timer/admin/options.php:30, inc/modules/checkout/admin/options.php:27, inc/modules/clear-cart/admin/options.php:16, inc/modules/cookie-banner/admin/options.php:14, inc/modules/countdown-timer/admin/options.php:14, inc/modules/inactive-tab-message/admin/options.php:16, inc/modules/login-popup/admin/options.php:15, inc/modules/payment-logos/admin/options.php:33, inc/modules/product-audio/admin/options.php:15, inc/modules/product-brand-image/admin/options.php:15, inc/modules/product-labels/admin/options.php:44, inc/modules/product-navigation-links/admin/options.php:16, inc/modules/product-swatches/admin/options.php:17, inc/modules/product-video/admin/options.php:15, inc/modules/quick-social-links/admin/options.php:16, inc/modules/quick-view/admin/options.php:17, inc/modules/real-time-search/admin/options.php:14, inc/modules/reasons-to-buy/admin/options.php:14, inc/modules/recently-viewed-products/admin/options.php:15, inc/modules/size-chart/admin/options.php:15, inc/modules/spending-goal/admin/options.php:15, inc/modules/sticky-add-to-cart/admin/options.php:15, inc/modules/stock-scarcity/admin/options.php:16, inc/modules/trust-badges/admin/options.php:45
+#: admin/class-merchant-admin-loader.php:157, inc/class-merchant-loader.php:273, admin/classes/class-merchant-admin-menu.php:282, admin/classes/class-merchant-admin-menu.php:283, admin/classes/class-merchant-admin-menu.php:373, admin/classes/class-merchant-admin-menu.php:376, inc/modules/address-autocomplete/admin/options.php:27, inc/modules/agree-to-terms-checkbox/admin/options.php:28, inc/modules/auto-external-links/admin/options.php:16, inc/modules/buy-now/admin/options.php:14, inc/modules/cart-count-favicon/admin/options.php:16, inc/modules/cart-reserved-timer/admin/options.php:30, inc/modules/checkout/admin/options.php:27, inc/modules/clear-cart/admin/options.php:16, inc/modules/cookie-banner/admin/options.php:14, inc/modules/countdown-timer/admin/options.php:14, inc/modules/inactive-tab-message/admin/options.php:16, inc/modules/login-popup/admin/options.php:15, inc/modules/payment-logos/admin/options.php:33, inc/modules/product-audio/admin/options.php:15, inc/modules/product-brand-image/admin/options.php:15, inc/modules/product-labels/admin/options.php:44, inc/modules/product-navigation-links/admin/options.php:16, inc/modules/product-swatches/admin/options.php:17, inc/modules/product-video/admin/options.php:15, inc/modules/quick-social-links/admin/options.php:16, inc/modules/quick-view/admin/options.php:17, inc/modules/real-time-search/admin/options.php:14, inc/modules/reasons-to-buy/admin/options.php:14, inc/modules/recently-viewed-products/admin/options.php:15, inc/modules/size-chart/admin/options.php:15, inc/modules/spending-goal/admin/options.php:15, inc/modules/sticky-add-to-cart/admin/options.php:15, inc/modules/stock-scarcity/admin/options.php:16, inc/modules/trust-badges/admin/options.php:45
 msgid "Settings"
 msgstr ""
 
@@ -109,6 +109,101 @@ msgstr ""
 msgid "Mail"
 msgstr ""
 
+#: admin/classes/class-merchant-admin-ajax.php:245, admin/classes/class-merchant-admin-ajax.php:264, admin/classes/class-merchant-admin-ajax.php:289, admin/classes/class-merchant-admin-ajax.php:330, admin/classes/class-merchant-admin-ajax.php:434
+msgid "Nonce verification failed"
+msgstr ""
+
+#: admin/classes/class-merchant-admin-ajax.php:270
+msgid "Invalid product ID"
+msgstr ""
+
+#: admin/classes/class-merchant-admin-ajax.php:293, admin/classes/class-merchant-admin-ajax.php:334
+msgid "You do not have permission to access this page"
+msgstr ""
+
+#: admin/classes/class-merchant-admin-ajax.php:297, admin/classes/class-merchant-admin-ajax.php:371
+msgid "Module ID is required"
+msgstr ""
+
+#: admin/classes/class-merchant-admin-ajax.php:305, admin/classes/class-merchant-admin-ajax.php:378
+msgid "Module not found"
+msgstr ""
+
+#: admin/classes/class-merchant-admin-ajax.php:311, admin/classes/class-merchant-admin-ajax.php:343
+msgid "Module not available"
+msgstr ""
+
+#: admin/classes/class-merchant-admin-ajax.php:354
+msgid "Settings restored successfully"
+msgstr ""
+
+#: admin/classes/class-merchant-admin-ajax.php:397
+msgid "Default settings not found"
+msgstr ""
+
+#: admin/classes/class-merchant-admin-ajax.php:405
+msgid "Invalid settings data"
+msgstr ""
+
+#: admin/classes/class-merchant-admin-ajax.php:411
+msgid "Invalid module ID"
+msgstr ""
+
+#: admin/classes/class-merchant-admin-ajax.php:415
+msgid "Invalid or missing settings data"
+msgstr ""
+
+#: admin/classes/class-merchant-admin-ajax.php:438
+msgid "Invalid review ID"
+msgstr ""
+
+#: admin/classes/class-merchant-admin-ajax.php:444
+msgid "No images found"
+msgstr ""
+
+#. translators: %s is the search keyword
+#: admin/classes/class-merchant-admin-ajax.php:492
+msgid "No results found for \"%s\""
+msgstr ""
+
+#: admin/classes/class-merchant-admin-ajax.php:727
+msgid "Review"
+msgid_plural "Reviews"
+msgstr[0] ""
+msgstr[1] ""
+
+#: admin/classes/class-merchant-admin-ajax.php:769
+msgid "Number of selected reviews"
+msgstr ""
+
+#: admin/classes/class-merchant-admin-ajax.php:838
+msgid "Load more"
+msgstr ""
+
+#: admin/classes/class-merchant-admin-ajax.php:895
+msgid "Add this review"
+msgstr ""
+
+#: admin/classes/class-merchant-admin-ajax.php:919
+msgid "View customer's uploaded review photos."
+msgstr ""
+
+#: admin/classes/class-merchant-admin-ajax.php:923, admin/pages/page-campaigns.php:145
+msgid "Edit"
+msgstr ""
+
+#: admin/classes/class-merchant-admin-ajax.php:1074
+msgid "sold individually"
+msgstr ""
+
+#: admin/classes/class-merchant-admin-ajax.php:1105, inc/modules/complementary-products/admin/options.php:522, inc/modules/frequently-bought-together/admin/options.php:660, inc/modules/side-cart/admin/options.php:438, templates/modules/complementary-products/admin-preview/cart.php:29
+msgid "Add"
+msgstr ""
+
+#: admin/classes/class-merchant-admin-ajax.php:1106, inc/classes/class-merchant-metabox.php:1009, inc/classes/class-merchant-metabox.php:1053
+msgid "Remove"
+msgstr ""
+
 #: admin/classes/class-merchant-admin-menu.php:62, admin/pages/page-analytics.php:25
 msgid "Daily added revenue by Merchant"
 msgstr ""
@@ -129,183 +224,183 @@ msgstr ""
 msgid "Orders AOV"
 msgstr ""
 
-#: admin/classes/class-merchant-admin-menu.php:132, admin/classes/class-merchant-admin-options.php:80, inc/classes/class-merchant-metabox.php:84
+#: admin/classes/class-merchant-admin-menu.php:132, inc/classes/class-merchant-metabox.php:84, admin/classes/admin-options/class-merchant-admin-assets.php:106
 msgid "Sunday"
 msgstr ""
 
-#: admin/classes/class-merchant-admin-menu.php:133, admin/classes/class-merchant-admin-options.php:81, inc/classes/class-merchant-metabox.php:85
+#: admin/classes/class-merchant-admin-menu.php:133, inc/classes/class-merchant-metabox.php:85, admin/classes/admin-options/class-merchant-admin-assets.php:107
 msgid "Monday"
 msgstr ""
 
-#: admin/classes/class-merchant-admin-menu.php:134, admin/classes/class-merchant-admin-options.php:82, inc/classes/class-merchant-metabox.php:86
+#: admin/classes/class-merchant-admin-menu.php:134, inc/classes/class-merchant-metabox.php:86, admin/classes/admin-options/class-merchant-admin-assets.php:108
 msgid "Tuesday"
 msgstr ""
 
-#: admin/classes/class-merchant-admin-menu.php:135, admin/classes/class-merchant-admin-options.php:83, inc/classes/class-merchant-metabox.php:87
+#: admin/classes/class-merchant-admin-menu.php:135, inc/classes/class-merchant-metabox.php:87, admin/classes/admin-options/class-merchant-admin-assets.php:109
 msgid "Wednesday"
 msgstr ""
 
-#: admin/classes/class-merchant-admin-menu.php:136, admin/classes/class-merchant-admin-options.php:84, inc/classes/class-merchant-metabox.php:88
+#: admin/classes/class-merchant-admin-menu.php:136, inc/classes/class-merchant-metabox.php:88, admin/classes/admin-options/class-merchant-admin-assets.php:110
 msgid "Thursday"
 msgstr ""
 
-#: admin/classes/class-merchant-admin-menu.php:137, admin/classes/class-merchant-admin-options.php:85, inc/classes/class-merchant-metabox.php:89
+#: admin/classes/class-merchant-admin-menu.php:137, inc/classes/class-merchant-metabox.php:89, admin/classes/admin-options/class-merchant-admin-assets.php:111
 msgid "Friday"
 msgstr ""
 
-#: admin/classes/class-merchant-admin-menu.php:138, admin/classes/class-merchant-admin-options.php:86, inc/classes/class-merchant-metabox.php:90
+#: admin/classes/class-merchant-admin-menu.php:138, inc/classes/class-merchant-metabox.php:90, admin/classes/admin-options/class-merchant-admin-assets.php:112
 msgid "Saturday"
 msgstr ""
 
-#: admin/classes/class-merchant-admin-menu.php:141, admin/classes/class-merchant-admin-options.php:89, inc/classes/class-merchant-metabox.php:93
+#: admin/classes/class-merchant-admin-menu.php:141, inc/classes/class-merchant-metabox.php:93, admin/classes/admin-options/class-merchant-admin-assets.php:115
 msgid "Sun"
 msgstr ""
 
-#: admin/classes/class-merchant-admin-menu.php:142, admin/classes/class-merchant-admin-options.php:90, inc/classes/class-merchant-metabox.php:94
+#: admin/classes/class-merchant-admin-menu.php:142, inc/classes/class-merchant-metabox.php:94, admin/classes/admin-options/class-merchant-admin-assets.php:116
 msgid "Mon"
 msgstr ""
 
-#: admin/classes/class-merchant-admin-menu.php:143, admin/classes/class-merchant-admin-options.php:91, inc/classes/class-merchant-metabox.php:95
+#: admin/classes/class-merchant-admin-menu.php:143, inc/classes/class-merchant-metabox.php:95, admin/classes/admin-options/class-merchant-admin-assets.php:117
 msgid "Tue"
 msgstr ""
 
-#: admin/classes/class-merchant-admin-menu.php:144, admin/classes/class-merchant-admin-options.php:92, inc/classes/class-merchant-metabox.php:96
+#: admin/classes/class-merchant-admin-menu.php:144, inc/classes/class-merchant-metabox.php:96, admin/classes/admin-options/class-merchant-admin-assets.php:118
 msgid "Wed"
 msgstr ""
 
-#: admin/classes/class-merchant-admin-menu.php:145, admin/classes/class-merchant-admin-options.php:93, inc/classes/class-merchant-metabox.php:97
+#: admin/classes/class-merchant-admin-menu.php:145, inc/classes/class-merchant-metabox.php:97, admin/classes/admin-options/class-merchant-admin-assets.php:119
 msgid "Thu"
 msgstr ""
 
-#: admin/classes/class-merchant-admin-menu.php:146, admin/classes/class-merchant-admin-options.php:94, inc/classes/class-merchant-metabox.php:98
+#: admin/classes/class-merchant-admin-menu.php:146, inc/classes/class-merchant-metabox.php:98, admin/classes/admin-options/class-merchant-admin-assets.php:120
 msgid "Fri"
 msgstr ""
 
-#: admin/classes/class-merchant-admin-menu.php:147, admin/classes/class-merchant-admin-options.php:95, inc/classes/class-merchant-metabox.php:99
+#: admin/classes/class-merchant-admin-menu.php:147, inc/classes/class-merchant-metabox.php:99, admin/classes/admin-options/class-merchant-admin-assets.php:121
 msgid "Sat"
 msgstr ""
 
-#: admin/classes/class-merchant-admin-menu.php:150, admin/classes/class-merchant-admin-options.php:98, inc/classes/class-merchant-metabox.php:102
+#: admin/classes/class-merchant-admin-menu.php:150, inc/classes/class-merchant-metabox.php:102, admin/classes/admin-options/class-merchant-admin-assets.php:124
 msgid "Su"
 msgstr ""
 
-#: admin/classes/class-merchant-admin-menu.php:151, admin/classes/class-merchant-admin-options.php:99, inc/classes/class-merchant-metabox.php:103
+#: admin/classes/class-merchant-admin-menu.php:151, inc/classes/class-merchant-metabox.php:103, admin/classes/admin-options/class-merchant-admin-assets.php:125
 msgid "Mo"
 msgstr ""
 
-#: admin/classes/class-merchant-admin-menu.php:152, admin/classes/class-merchant-admin-options.php:100, inc/classes/class-merchant-metabox.php:104
+#: admin/classes/class-merchant-admin-menu.php:152, inc/classes/class-merchant-metabox.php:104, admin/classes/admin-options/class-merchant-admin-assets.php:126
 msgid "Tu"
 msgstr ""
 
-#: admin/classes/class-merchant-admin-menu.php:153, admin/classes/class-merchant-admin-options.php:101, inc/classes/class-merchant-metabox.php:105
+#: admin/classes/class-merchant-admin-menu.php:153, inc/classes/class-merchant-metabox.php:105, admin/classes/admin-options/class-merchant-admin-assets.php:127
 msgid "We"
 msgstr ""
 
-#: admin/classes/class-merchant-admin-menu.php:154, admin/classes/class-merchant-admin-options.php:102, inc/classes/class-merchant-metabox.php:106
+#: admin/classes/class-merchant-admin-menu.php:154, inc/classes/class-merchant-metabox.php:106, admin/classes/admin-options/class-merchant-admin-assets.php:128
 msgid "Th"
 msgstr ""
 
-#: admin/classes/class-merchant-admin-menu.php:155, admin/classes/class-merchant-admin-options.php:103, inc/classes/class-merchant-metabox.php:107
+#: admin/classes/class-merchant-admin-menu.php:155, inc/classes/class-merchant-metabox.php:107, admin/classes/admin-options/class-merchant-admin-assets.php:129
 msgid "Fr"
 msgstr ""
 
-#: admin/classes/class-merchant-admin-menu.php:156, admin/classes/class-merchant-admin-options.php:104, inc/classes/class-merchant-metabox.php:108
+#: admin/classes/class-merchant-admin-menu.php:156, inc/classes/class-merchant-metabox.php:108, admin/classes/admin-options/class-merchant-admin-assets.php:130
 msgid "Sa"
 msgstr ""
 
-#: admin/classes/class-merchant-admin-menu.php:159, admin/classes/class-merchant-admin-options.php:107, inc/classes/class-merchant-metabox.php:111
+#: admin/classes/class-merchant-admin-menu.php:159, inc/classes/class-merchant-metabox.php:111, admin/classes/admin-options/class-merchant-admin-assets.php:133
 msgid "January"
 msgstr ""
 
-#: admin/classes/class-merchant-admin-menu.php:160, admin/classes/class-merchant-admin-options.php:108, inc/classes/class-merchant-metabox.php:112
+#: admin/classes/class-merchant-admin-menu.php:160, inc/classes/class-merchant-metabox.php:112, admin/classes/admin-options/class-merchant-admin-assets.php:134
 msgid "February"
 msgstr ""
 
-#: admin/classes/class-merchant-admin-menu.php:161, admin/classes/class-merchant-admin-options.php:109, inc/classes/class-merchant-metabox.php:113
+#: admin/classes/class-merchant-admin-menu.php:161, inc/classes/class-merchant-metabox.php:113, admin/classes/admin-options/class-merchant-admin-assets.php:135
 msgid "March"
 msgstr ""
 
-#: admin/classes/class-merchant-admin-menu.php:162, admin/classes/class-merchant-admin-options.php:110, inc/classes/class-merchant-metabox.php:114
+#: admin/classes/class-merchant-admin-menu.php:162, inc/classes/class-merchant-metabox.php:114, admin/classes/admin-options/class-merchant-admin-assets.php:136
 msgid "April"
 msgstr ""
 
-#: admin/classes/class-merchant-admin-menu.php:163, admin/classes/class-merchant-admin-menu.php:177, admin/classes/class-merchant-admin-options.php:111, admin/classes/class-merchant-admin-options.php:125, inc/classes/class-merchant-metabox.php:115, inc/classes/class-merchant-metabox.php:129
+#: admin/classes/class-merchant-admin-menu.php:163, admin/classes/class-merchant-admin-menu.php:177, inc/classes/class-merchant-metabox.php:115, inc/classes/class-merchant-metabox.php:129, admin/classes/admin-options/class-merchant-admin-assets.php:137, admin/classes/admin-options/class-merchant-admin-assets.php:151
 msgid "May"
 msgstr ""
 
-#: admin/classes/class-merchant-admin-menu.php:164, admin/classes/class-merchant-admin-options.php:112, inc/classes/class-merchant-metabox.php:116
+#: admin/classes/class-merchant-admin-menu.php:164, inc/classes/class-merchant-metabox.php:116, admin/classes/admin-options/class-merchant-admin-assets.php:138
 msgid "June"
 msgstr ""
 
-#: admin/classes/class-merchant-admin-menu.php:165, admin/classes/class-merchant-admin-options.php:113, inc/classes/class-merchant-metabox.php:117
+#: admin/classes/class-merchant-admin-menu.php:165, inc/classes/class-merchant-metabox.php:117, admin/classes/admin-options/class-merchant-admin-assets.php:139
 msgid "July"
 msgstr ""
 
-#: admin/classes/class-merchant-admin-menu.php:166, admin/classes/class-merchant-admin-options.php:114, inc/classes/class-merchant-metabox.php:118
+#: admin/classes/class-merchant-admin-menu.php:166, inc/classes/class-merchant-metabox.php:118, admin/classes/admin-options/class-merchant-admin-assets.php:140
 msgid "August"
 msgstr ""
 
-#: admin/classes/class-merchant-admin-menu.php:167, admin/classes/class-merchant-admin-options.php:115, inc/classes/class-merchant-metabox.php:119
+#: admin/classes/class-merchant-admin-menu.php:167, inc/classes/class-merchant-metabox.php:119, admin/classes/admin-options/class-merchant-admin-assets.php:141
 msgid "September"
 msgstr ""
 
-#: admin/classes/class-merchant-admin-menu.php:168, admin/classes/class-merchant-admin-options.php:116, inc/classes/class-merchant-metabox.php:120
+#: admin/classes/class-merchant-admin-menu.php:168, inc/classes/class-merchant-metabox.php:120, admin/classes/admin-options/class-merchant-admin-assets.php:142
 msgid "October"
 msgstr ""
 
-#: admin/classes/class-merchant-admin-menu.php:169, admin/classes/class-merchant-admin-options.php:117, inc/classes/class-merchant-metabox.php:121
+#: admin/classes/class-merchant-admin-menu.php:169, inc/classes/class-merchant-metabox.php:121, admin/classes/admin-options/class-merchant-admin-assets.php:143
 msgid "November"
 msgstr ""
 
-#: admin/classes/class-merchant-admin-menu.php:170, admin/classes/class-merchant-admin-options.php:118, inc/classes/class-merchant-metabox.php:122
+#: admin/classes/class-merchant-admin-menu.php:170, inc/classes/class-merchant-metabox.php:122, admin/classes/admin-options/class-merchant-admin-assets.php:144
 msgid "December"
 msgstr ""
 
-#: admin/classes/class-merchant-admin-menu.php:173, admin/classes/class-merchant-admin-options.php:121, inc/classes/class-merchant-metabox.php:125
+#: admin/classes/class-merchant-admin-menu.php:173, inc/classes/class-merchant-metabox.php:125, admin/classes/admin-options/class-merchant-admin-assets.php:147
 msgid "Jan"
 msgstr ""
 
-#: admin/classes/class-merchant-admin-menu.php:174, admin/classes/class-merchant-admin-options.php:122, inc/classes/class-merchant-metabox.php:126
+#: admin/classes/class-merchant-admin-menu.php:174, inc/classes/class-merchant-metabox.php:126, admin/classes/admin-options/class-merchant-admin-assets.php:148
 msgid "Feb"
 msgstr ""
 
-#: admin/classes/class-merchant-admin-menu.php:175, admin/classes/class-merchant-admin-options.php:123, inc/classes/class-merchant-metabox.php:127
+#: admin/classes/class-merchant-admin-menu.php:175, inc/classes/class-merchant-metabox.php:127, admin/classes/admin-options/class-merchant-admin-assets.php:149
 msgid "Mar"
 msgstr ""
 
-#: admin/classes/class-merchant-admin-menu.php:176, admin/classes/class-merchant-admin-options.php:124, inc/classes/class-merchant-metabox.php:128
+#: admin/classes/class-merchant-admin-menu.php:176, inc/classes/class-merchant-metabox.php:128, admin/classes/admin-options/class-merchant-admin-assets.php:150
 msgid "Apr"
 msgstr ""
 
-#: admin/classes/class-merchant-admin-menu.php:178, admin/classes/class-merchant-admin-options.php:126, inc/classes/class-merchant-metabox.php:130
+#: admin/classes/class-merchant-admin-menu.php:178, inc/classes/class-merchant-metabox.php:130, admin/classes/admin-options/class-merchant-admin-assets.php:152
 msgid "Jun"
 msgstr ""
 
-#: admin/classes/class-merchant-admin-menu.php:179, admin/classes/class-merchant-admin-options.php:127, inc/classes/class-merchant-metabox.php:131
+#: admin/classes/class-merchant-admin-menu.php:179, inc/classes/class-merchant-metabox.php:131, admin/classes/admin-options/class-merchant-admin-assets.php:153
 msgid "Jul"
 msgstr ""
 
-#: admin/classes/class-merchant-admin-menu.php:180, admin/classes/class-merchant-admin-options.php:128, inc/classes/class-merchant-metabox.php:132
+#: admin/classes/class-merchant-admin-menu.php:180, inc/classes/class-merchant-metabox.php:132, admin/classes/admin-options/class-merchant-admin-assets.php:154
 msgid "Aug"
 msgstr ""
 
-#: admin/classes/class-merchant-admin-menu.php:181, admin/classes/class-merchant-admin-options.php:129, inc/classes/class-merchant-metabox.php:133
+#: admin/classes/class-merchant-admin-menu.php:181, inc/classes/class-merchant-metabox.php:133, admin/classes/admin-options/class-merchant-admin-assets.php:155
 msgid "Sep"
 msgstr ""
 
-#: admin/classes/class-merchant-admin-menu.php:182, admin/classes/class-merchant-admin-options.php:130, inc/classes/class-merchant-metabox.php:134
+#: admin/classes/class-merchant-admin-menu.php:182, inc/classes/class-merchant-metabox.php:134, admin/classes/admin-options/class-merchant-admin-assets.php:156
 msgid "Oct"
 msgstr ""
 
-#: admin/classes/class-merchant-admin-menu.php:183, admin/classes/class-merchant-admin-options.php:131, inc/classes/class-merchant-metabox.php:135
+#: admin/classes/class-merchant-admin-menu.php:183, inc/classes/class-merchant-metabox.php:135, admin/classes/admin-options/class-merchant-admin-assets.php:157
 msgid "Nov"
 msgstr ""
 
-#: admin/classes/class-merchant-admin-menu.php:184, admin/classes/class-merchant-admin-options.php:132, inc/classes/class-merchant-metabox.php:136
+#: admin/classes/class-merchant-admin-menu.php:184, inc/classes/class-merchant-metabox.php:136, admin/classes/admin-options/class-merchant-admin-assets.php:158
 msgid "Dec"
 msgstr ""
 
-#: admin/classes/class-merchant-admin-menu.php:186, admin/classes/class-merchant-admin-options.php:134, inc/classes/class-merchant-metabox.php:139
+#: admin/classes/class-merchant-admin-menu.php:186, inc/classes/class-merchant-metabox.php:139, admin/classes/admin-options/class-merchant-admin-assets.php:160
 msgid "Clear"
 msgstr ""
 
@@ -741,229 +836,6 @@ msgstr ""
 msgid "Inform your visitors that the site uses cookies via a dismissable banner"
 msgstr ""
 
-#: admin/classes/class-merchant-admin-options.php:70
-msgid "Are you sure you want to remove this product?"
-msgstr ""
-
-#: admin/classes/class-merchant-admin-options.php:71
-msgid "Invalid file"
-msgstr ""
-
-#: admin/classes/class-merchant-admin-options.php:687, admin/components/all-modules.php:69
-msgid "This option is only available on Merchant Pro"
-msgstr ""
-
-#: admin/classes/class-merchant-admin-options.php:703
-msgid "Field not found!"
-msgstr ""
-
-#: admin/classes/class-merchant-admin-options.php:728, admin/classes/class-merchant-admin-options.php:728
-msgid "Show more"
-msgstr ""
-
-#: admin/classes/class-merchant-admin-options.php:728
-msgid "Show less"
-msgstr ""
-
-#: admin/classes/class-merchant-admin-options.php:1069
-msgid "Select Reviews"
-msgstr ""
-
-#: admin/classes/class-merchant-admin-options.php:1077
-msgid "Search & filter"
-msgstr ""
-
-#: admin/classes/class-merchant-admin-options.php:1079
-msgid "Search for a product"
-msgstr ""
-
-#: admin/classes/class-merchant-admin-options.php:1082, templates/modules/added-to-cart-popup/common/popup-header.php:22
-msgid "Close"
-msgstr ""
-
-#: admin/classes/class-merchant-admin-options.php:1106, admin/classes/class-merchant-admin-options.php:1124, admin/classes/class-merchant-admin-options.php:1143, admin/classes/class-merchant-admin-options.php:1173, admin/classes/class-merchant-admin-options.php:1424
-msgid "Nonce verification failed"
-msgstr ""
-
-#: admin/classes/class-merchant-admin-options.php:1130
-msgid "Invalid product ID"
-msgstr ""
-
-#: admin/classes/class-merchant-admin-options.php:1147, admin/classes/class-merchant-admin-options.php:1177
-msgid "You do not have permission to access this page"
-msgstr ""
-
-#: admin/classes/class-merchant-admin-options.php:1151, admin/classes/class-merchant-admin-options.php:1181
-msgid "Module ID is required"
-msgstr ""
-
-#: admin/classes/class-merchant-admin-options.php:1161, admin/classes/class-merchant-admin-options.php:1189
-msgid "Module not found"
-msgstr ""
-
-#: admin/classes/class-merchant-admin-options.php:1193
-msgid "Default settings not found"
-msgstr ""
-
-#: admin/classes/class-merchant-admin-options.php:1201
-msgid "Invalid settings data"
-msgstr ""
-
-#: admin/classes/class-merchant-admin-options.php:1209
-msgid "Invalid module ID"
-msgstr ""
-
-#: admin/classes/class-merchant-admin-options.php:1221
-msgid "Settings restored successfully"
-msgstr ""
-
-#: admin/classes/class-merchant-admin-options.php:1258
-msgid "Review"
-msgid_plural "Reviews"
-msgstr[0] ""
-msgstr[1] ""
-
-#: admin/classes/class-merchant-admin-options.php:1272
-msgid "Number of selected reviews"
-msgstr ""
-
-#: admin/classes/class-merchant-admin-options.php:1337
-msgid "Load more"
-msgstr ""
-
-#: admin/classes/class-merchant-admin-options.php:1360
-msgid "Add this review"
-msgstr ""
-
-#: admin/classes/class-merchant-admin-options.php:1374
-msgid "View customer's uploaded review photos."
-msgstr ""
-
-#: admin/classes/class-merchant-admin-options.php:1376, admin/pages/page-campaigns.php:145
-msgid "Edit"
-msgstr ""
-
-#: admin/classes/class-merchant-admin-options.php:1428
-msgid "Invalid review ID"
-msgstr ""
-
-#: admin/classes/class-merchant-admin-options.php:1434
-msgid "No images found"
-msgstr ""
-
-#: admin/classes/class-merchant-admin-options.php:1702
-msgid "WooCommerce is not installed or activated."
-msgstr ""
-
-#: admin/classes/class-merchant-admin-options.php:1725
-msgid "Search products"
-msgstr ""
-
-#: admin/classes/class-merchant-admin-options.php:1727
-msgid "Searching..."
-msgstr ""
-
-#: admin/classes/class-merchant-admin-options.php:1729
-msgid "Search icon"
-msgstr ""
-
-#: admin/classes/class-merchant-admin-options.php:1788, inc/classes/class-merchant-metabox.php:1009, inc/classes/class-merchant-metabox.php:1053
-msgid "Remove"
-msgstr ""
-
-#: admin/classes/class-merchant-admin-options.php:1786, inc/modules/complementary-products/admin/options.php:522, inc/modules/frequently-bought-together/admin/options.php:660, inc/modules/side-cart/admin/options.php:438, templates/modules/complementary-products/admin-preview/cart.php:29
-msgid "Add"
-msgstr ""
-
-#: admin/classes/class-merchant-admin-options.php:1825
-msgid "sold individually"
-msgstr ""
-
-#. translators: %s is the search keyword
-#: admin/classes/class-merchant-admin-options.php:1956
-msgid "No results found for \"%s\""
-msgstr ""
-
-#: admin/classes/class-merchant-admin-options.php:1996, inc/classes/class-merchant-metabox.php:1102, inc/modules/advanced-reviews/admin/options.php:89, inc/modules/product-navigation-links/admin/options.php:35
-msgid "Default"
-msgstr ""
-
-#: admin/classes/class-merchant-admin-options.php:2181
-msgid "Select Images"
-msgstr ""
-
-#: admin/classes/class-merchant-admin-options.php:2227
-msgid "Select Image"
-msgstr ""
-
-#: admin/classes/class-merchant-admin-options.php:2246
-msgid "Upload image"
-msgstr ""
-
-#. translators: 1. Coupon admin url 2. Link target attribute value
-#: admin/classes/class-merchant-admin-options.php:2391, inc/classes/class-merchant-metabox.php:1154
-msgid "No coupons found! <a href=\"%1$s\" target=\"%2$s\">Create a new coupon</a>"
-msgstr ""
-
-#: admin/classes/class-merchant-admin-options.php:2370, inc/classes/class-merchant-metabox.php:1136
-msgid "Select a coupon"
-msgstr ""
-
-#: admin/classes/class-merchant-admin-options.php:2381, inc/classes/class-merchant-metabox.php:1147
-msgid "Manage coupons"
-msgstr ""
-
-#: admin/classes/class-merchant-admin-options.php:2767, admin/pages/page-campaigns.php:90, inc/modules/buy-x-get-y/admin/options.php:33, inc/modules/complementary-products/admin/options.php:34, inc/modules/free-gifts/admin/options.php:33, inc/modules/frequently-bought-together/admin/options.php:33, inc/modules/pre-orders/admin/options.php:41, inc/modules/product-labels/admin/options.php:63, inc/modules/reasons-to-buy/admin/options.php:33, inc/modules/storewide-sale/admin/options.php:33, inc/modules/volume-discounts/admin/options.php:33
-msgid "Status"
-msgstr ""
-
-#: admin/classes/class-merchant-admin-options.php:2769, admin/pages/page-settings.php:106, inc/modules/buy-x-get-y/admin/options.php:36, inc/modules/complementary-products/admin/options.php:37, inc/modules/free-gifts/admin/options.php:36, inc/modules/frequently-bought-together/admin/options.php:36, inc/modules/pre-orders/admin/options.php:44, inc/modules/product-labels/admin/options.php:66, inc/modules/reasons-to-buy/admin/options.php:36, inc/modules/storewide-sale/admin/options.php:36, inc/modules/volume-discounts/admin/options.php:36
-msgid "Inactive"
-msgstr ""
-
-#: admin/classes/class-merchant-admin-options.php:2770, admin/pages/page-settings.php:98, inc/modules/buy-x-get-y/admin/options.php:35, inc/modules/complementary-products/admin/options.php:36, inc/modules/free-gifts/admin/options.php:35, inc/modules/frequently-bought-together/admin/options.php:35, inc/modules/pre-orders/admin/options.php:43, inc/modules/product-labels/admin/options.php:65, inc/modules/reasons-to-buy/admin/options.php:35, inc/modules/storewide-sale/admin/options.php:35, inc/modules/volume-discounts/admin/options.php:35
-msgid "Active"
-msgstr ""
-
-#. translators: 1: page name
-#: admin/classes/class-merchant-admin-options.php:2843
-msgid "It looks like you haven't created a <strong>%1$s</strong> page yet. Click the below button to create the page."
-msgstr ""
-
-#. translators: 1: link to edit page
-#: admin/classes/class-merchant-admin-options.php:2852
-msgid "<p class=\"merchant-module-page-setting-field-desc\">Page created with success!</p><p class=\"merchant-module-page-setting-field-desc\">Click <a href=\"%1$s\" target=\"_blank\">here</a> if you want to edit the page.</p><p class=\"merchant-module-page-setting-field-desc mrc-mb-0\">To display the page in your theme header area, assign the page to the primary menu by clicking <a href=\"%2$s\" target=\"_blank\">here</a></p>"
-msgstr ""
-
-#. translators: 1: page title, 2: page meta key, 3: page meta value, 4: option name, 5: nonce, 6: loading text, 7: success text
-#: admin/classes/class-merchant-admin-options.php:2861
-msgid "<a href=\"#\" class=\"merchant-create-page-control-button button-tertiary\" data-page-title=\"%2$s\" data-page-meta-key=\"%3$s\" data-page-meta-value=\"%4$s\" data-option-name=\"%5$s\" data-nonce=\"%6$s\" data-creating-text=\"%7$s\" data-created-text=\"%8$s\">%1$s</a>"
-msgstr ""
-
-#: admin/classes/class-merchant-admin-options.php:2863
-msgid "Create Page"
-msgstr ""
-
-#: admin/classes/class-merchant-admin-options.php:2869
-msgid "Creating..."
-msgstr ""
-
-#: admin/classes/class-merchant-admin-options.php:2870
-msgid "Created!"
-msgstr ""
-
-#: admin/classes/class-merchant-admin-options.php:2832
-msgid "<p class=\"merchant-module-page-setting-field-desc mrc-mt-0\">Your page is created!</p><p class=\"merchant-module-page-setting-field-desc\">Click <a href=\"%1$s\" target=\"_blank\">here</a> if you want to edit the page.</p><p class=\"merchant-module-page-setting-field-desc mrc-mb-0\">To display the page in your theme header area, assign the page to the primary menu by clicking <a href=\"%2$s\" target=\"_blank\">here</a></p>"
-msgstr ""
-
-#: admin/classes/class-merchant-admin-options.php:3079, admin/classes/class-merchant-admin-options.php:3083, inc/classes/class-merchant-metabox.php:995, inc/classes/class-merchant-metabox.php:1039
-msgid "Duplicate"
-msgstr ""
-
-#: admin/classes/class-merchant-admin-options.php:3091
-msgid "Delete"
-msgstr ""
-
 #: admin/classes/class-merchant-plugin-installer.php:58
 msgid "Install and Activate"
 msgstr ""
@@ -1034,6 +906,10 @@ msgstr ""
 
 #: admin/components/all-modules.php:62
 msgid "WOO"
+msgstr ""
+
+#: admin/components/all-modules.php:69, admin/classes/admin-options/class-merchant-settings-renderer.php:253
+msgid "This option is only available on Merchant Pro"
 msgstr ""
 
 #: admin/components/analytics-overview.php:20, admin/pages/page-analytics.php:29, admin/pages/page-analytics.php:59, admin/pages/page-analytics.php:89, admin/pages/page-analytics.php:120, admin/pages/page-campaigns.php:73
@@ -1172,6 +1048,10 @@ msgstr ""
 
 #: admin/pages/page-campaigns.php:89
 msgid "Module Name"
+msgstr ""
+
+#: admin/pages/page-campaigns.php:90, inc/modules/buy-x-get-y/admin/options.php:33, inc/modules/complementary-products/admin/options.php:34, inc/modules/free-gifts/admin/options.php:33, inc/modules/frequently-bought-together/admin/options.php:33, inc/modules/pre-orders/admin/options.php:41, inc/modules/product-labels/admin/options.php:63, inc/modules/reasons-to-buy/admin/options.php:33, inc/modules/storewide-sale/admin/options.php:33, inc/modules/volume-discounts/admin/options.php:33, admin/classes/admin-options/fields/fields-group/status.php:36
+msgid "Status"
 msgstr ""
 
 #: admin/pages/page-campaigns.php:96
@@ -1494,12 +1374,20 @@ msgstr ""
 msgid "Merchant Operating Mode"
 msgstr ""
 
+#: admin/pages/page-settings.php:98, inc/modules/buy-x-get-y/admin/options.php:35, inc/modules/complementary-products/admin/options.php:36, inc/modules/free-gifts/admin/options.php:35, inc/modules/frequently-bought-together/admin/options.php:35, inc/modules/pre-orders/admin/options.php:43, inc/modules/product-labels/admin/options.php:65, inc/modules/reasons-to-buy/admin/options.php:35, inc/modules/storewide-sale/admin/options.php:35, inc/modules/volume-discounts/admin/options.php:35, admin/classes/admin-options/fields/fields-group/status.php:39
+msgid "Active"
+msgstr ""
+
 #: admin/pages/page-settings.php:99
 msgid "Merchant is active and visible for all customers. This is the standard operating mode."
 msgstr ""
 
 #: admin/pages/page-settings.php:103
 msgid "All Merchant modules are active and visible only to admins. Use this mode to test Merchant modules before going live."
+msgstr ""
+
+#: admin/pages/page-settings.php:106, inc/modules/buy-x-get-y/admin/options.php:36, inc/modules/complementary-products/admin/options.php:37, inc/modules/free-gifts/admin/options.php:36, inc/modules/frequently-bought-together/admin/options.php:36, inc/modules/pre-orders/admin/options.php:44, inc/modules/product-labels/admin/options.php:66, inc/modules/reasons-to-buy/admin/options.php:36, inc/modules/storewide-sale/admin/options.php:36, inc/modules/volume-discounts/admin/options.php:36, admin/classes/admin-options/fields/fields-group/status.php:38
+msgid "Inactive"
 msgstr ""
 
 #: admin/pages/page-settings.php:107
@@ -1622,12 +1510,33 @@ msgstr ""
 msgid "Chart Name"
 msgstr ""
 
+#: inc/classes/class-merchant-metabox.php:995, inc/classes/class-merchant-metabox.php:1039, admin/classes/admin-options/fields/flexible-content/actions.php:33, admin/classes/admin-options/fields/flexible-content/actions.php:37
+msgid "Duplicate"
+msgstr ""
+
 #: inc/classes/class-merchant-metabox.php:1062
 msgid "Add Size Chart"
 msgstr ""
 
 #: inc/classes/class-merchant-metabox.php:1082
 msgid "Select a size chart"
+msgstr ""
+
+#: inc/classes/class-merchant-metabox.php:1102, inc/modules/advanced-reviews/admin/options.php:89, inc/modules/product-navigation-links/admin/options.php:35, admin/classes/admin-options/fields/select-size-chart/template.php:18
+msgid "Default"
+msgstr ""
+
+#. translators: 1. Coupon admin url 2. Link target attribute value
+#: inc/classes/class-merchant-metabox.php:1154, admin/classes/admin-options/fields/wc-coupons/template.php:49
+msgid "No coupons found! <a href=\"%1$s\" target=\"%2$s\">Create a new coupon</a>"
+msgstr ""
+
+#: inc/classes/class-merchant-metabox.php:1136, admin/classes/admin-options/fields/wc-coupons/template.php:30
+msgid "Select a coupon"
+msgstr ""
+
+#: inc/classes/class-merchant-metabox.php:1147, admin/classes/admin-options/fields/wc-coupons/template.php:40
+msgid "Manage coupons"
 msgstr ""
 
 #: inc/compatibility/class-merchant-divi-theme.php:72
@@ -1660,6 +1569,36 @@ msgstr ""
 
 #: inc/usage-tracking/class-merchant-usage-tracking.php:126
 msgid "By allowing us to track usage data, we can better help you, as we will know which WordPress configurations, themes, and plugins we should test. No sensitive data is collected."
+msgstr ""
+
+#: admin/classes/admin-options/class-merchant-abstract-field.php:254, admin/classes/admin-options/class-merchant-settings-renderer.php:295
+msgid "Merchant field error:"
+msgstr ""
+
+#. translators: 1: template name, 2: field type
+#: admin/classes/admin-options/class-merchant-abstract-field.php:258
+msgid "Template \"%1$s\" not found for field type \"%2$s\"."
+msgstr ""
+
+#: admin/classes/admin-options/class-merchant-admin-assets.php:73
+msgid "Are you sure you want to remove this product?"
+msgstr ""
+
+#: admin/classes/admin-options/class-merchant-admin-assets.php:74
+msgid "Invalid file"
+msgstr ""
+
+#. translators: %s: the unsupported field type slug
+#: admin/classes/admin-options/class-merchant-settings-renderer.php:299
+msgid "Unknown field type \"%s\". Register it via the merchant_field_types filter."
+msgstr ""
+
+#: admin/classes/admin-options/class-merchant-settings-renderer.php:345, admin/classes/admin-options/class-merchant-settings-renderer.php:345
+msgid "Show more"
+msgstr ""
+
+#: admin/classes/admin-options/class-merchant-settings-renderer.php:345
+msgid "Show less"
 msgstr ""
 
 #: inc/modules/add-to-cart-text/class-add-to-cart-text.php:46, inc/modules/add-to-cart-text/class-add-to-cart-text.php:47, inc/modules/add-to-cart-text/class-add-to-cart-text.php:49, inc/modules/countdown-timer/class-countdown-timer.php:225, inc/modules/free-gifts/class-free-gifts.php:261, templates/modules/frequently-bought-together/single-product.php:151, templates/modules/volume-discounts/admin-preview-tiered-radio.php:190, templates/modules/volume-discounts/single-product-radio.php:261, templates/modules/volume-discounts/single-product.php:242, inc/modules/add-to-cart-text/admin/options.php:22, inc/modules/add-to-cart-text/admin/options.php:46, inc/modules/add-to-cart-text/admin/options.php:86, inc/modules/complementary-products/admin/options.php:537, inc/modules/complementary-products/admin/options.php:661, inc/modules/frequently-bought-together/admin/options.php:607, inc/modules/frequently-bought-together/admin/options.php:705, inc/modules/frequently-bought-together/admin/options.php:838
@@ -1862,7 +1801,7 @@ msgstr ""
 msgid "Link in agree to terms module (you can use different link for each language)"
 msgstr ""
 
-#: inc/modules/animated-add-to-cart/class-animated-add-to-cart.php:185, inc/modules/buy-x-get-y/class-buy-x-get-y.php:205, inc/modules/frequently-bought-together/class-frequently-bought-together.php:219, inc/modules/quick-view/class-quick-view.php:399, inc/modules/volume-discounts/class-volume-discounts.php:373, templates/modules/buy-x-get-y/single-product.php:286, inc/modules/buy-x-get-y/admin/options.php:566, inc/modules/buy-x-get-y/admin/options.php:695, inc/modules/buy-x-get-y/admin/options.php:757, inc/modules/buy-x-get-y/admin/options.php:820, inc/modules/complementary-products/admin/options.php:599, inc/modules/frequently-bought-together/admin/options.php:759, inc/modules/volume-discounts/admin/options.php:717, inc/modules/volume-discounts/admin/options.php:781, inc/modules/volume-discounts/admin/options.php:853, templates/modules/complementary-products/admin-preview/cart.php:36
+#: inc/modules/animated-add-to-cart/class-animated-add-to-cart.php:185, inc/modules/buy-x-get-y/class-buy-x-get-y.php:205, inc/modules/frequently-bought-together/class-frequently-bought-together.php:219, inc/modules/quick-view/class-quick-view.php:399, inc/modules/volume-discounts/class-volume-discounts.php:373, templates/modules/buy-x-get-y/cart-admin-preview.php:38, templates/modules/buy-x-get-y/single-product.php:286, inc/modules/buy-x-get-y/admin/options.php:566, inc/modules/buy-x-get-y/admin/options.php:695, inc/modules/buy-x-get-y/admin/options.php:757, inc/modules/buy-x-get-y/admin/options.php:820, inc/modules/complementary-products/admin/options.php:599, inc/modules/frequently-bought-together/admin/options.php:759, inc/modules/volume-discounts/admin/options.php:717, inc/modules/volume-discounts/admin/options.php:781, inc/modules/volume-discounts/admin/options.php:853, templates/modules/complementary-products/admin-preview/cart.php:36
 msgid "Add To Cart"
 msgstr ""
 
@@ -2010,7 +1949,7 @@ msgstr ""
 msgid "Countdown Timer: Sale ending message"
 msgstr ""
 
-#: inc/modules/countdown-timer/class-countdown-timer.php:208, inc/modules/free-gifts/class-free-gifts.php:245, inc/modules/frequently-bought-together/class-frequently-bought-together.php:212, inc/modules/frequently-bought-together/class-frequently-bought-together.php:258, inc/modules/frequently-bought-together/class-frequently-bought-together.php:300, inc/modules/volume-discounts/class-volume-discounts.php:299, inc/modules/volume-discounts/class-volume-discounts.php:336, inc/modules/volume-discounts/class-volume-discounts.php:369, templates/modules/complementary-products/admin-preview/cart.php:27, templates/modules/complementary-products/admin-preview/checkout.php:20, templates/modules/complementary-products/admin-preview/single-product.php:21, templates/modules/complementary-products/admin-preview/single-product.php:45, templates/modules/complementary-products/admin-preview/single-product.php:59, templates/modules/complementary-products/admin-preview/single-product.php:73, templates/modules/complementary-products/admin-preview/thank-you-page.php:32
+#: inc/modules/countdown-timer/class-countdown-timer.php:208, inc/modules/free-gifts/class-free-gifts.php:245, inc/modules/frequently-bought-together/class-frequently-bought-together.php:212, inc/modules/frequently-bought-together/class-frequently-bought-together.php:258, inc/modules/frequently-bought-together/class-frequently-bought-together.php:300, inc/modules/volume-discounts/class-volume-discounts.php:299, inc/modules/volume-discounts/class-volume-discounts.php:336, inc/modules/volume-discounts/class-volume-discounts.php:369, templates/modules/buy-x-get-y/cart-admin-preview.php:31, templates/modules/buy-x-get-y/checkout-admin-preview.php:25, templates/modules/buy-x-get-y/thank-you-admin-preview.php:39, templates/modules/complementary-products/admin-preview/cart.php:27, templates/modules/complementary-products/admin-preview/checkout.php:20, templates/modules/complementary-products/admin-preview/single-product.php:21, templates/modules/complementary-products/admin-preview/single-product.php:45, templates/modules/complementary-products/admin-preview/single-product.php:59, templates/modules/complementary-products/admin-preview/single-product.php:73, templates/modules/complementary-products/admin-preview/thank-you-page.php:32
 msgid "Your Product Name"
 msgstr ""
 
@@ -2115,31 +2054,31 @@ msgstr ""
 msgid "Product 1, Product 2, Product 3"
 msgstr ""
 
-#: inc/modules/frequently-bought-together/class-frequently-bought-together.php:199, inc/modules/volume-discounts/class-volume-discounts.php:356, templates/modules/complementary-products/admin-preview/cart.php:9
+#: inc/modules/frequently-bought-together/class-frequently-bought-together.php:199, inc/modules/volume-discounts/class-volume-discounts.php:356, templates/modules/buy-x-get-y/cart-admin-preview.php:18, templates/modules/complementary-products/admin-preview/cart.php:9
 msgid "My Cart"
 msgstr ""
 
-#: inc/modules/frequently-bought-together/class-frequently-bought-together.php:202, inc/modules/volume-discounts/class-volume-discounts.php:359, templates/modules/complementary-products/admin-preview/cart.php:13
+#: inc/modules/frequently-bought-together/class-frequently-bought-together.php:202, inc/modules/volume-discounts/class-volume-discounts.php:359, templates/modules/buy-x-get-y/cart-admin-preview.php:21, templates/modules/complementary-products/admin-preview/cart.php:13
 msgid "PRODUCT"
 msgstr ""
 
-#: inc/modules/frequently-bought-together/class-frequently-bought-together.php:203, inc/modules/volume-discounts/class-volume-discounts.php:360, templates/modules/complementary-products/admin-preview/cart.php:15
+#: inc/modules/frequently-bought-together/class-frequently-bought-together.php:203, inc/modules/volume-discounts/class-volume-discounts.php:360, templates/modules/buy-x-get-y/cart-admin-preview.php:22, templates/modules/complementary-products/admin-preview/cart.php:15
 msgid "PRICE"
 msgstr ""
 
-#: inc/modules/frequently-bought-together/class-frequently-bought-together.php:204, inc/modules/volume-discounts/class-volume-discounts.php:361, templates/modules/complementary-products/admin-preview/cart.php:17
+#: inc/modules/frequently-bought-together/class-frequently-bought-together.php:204, inc/modules/volume-discounts/class-volume-discounts.php:361, templates/modules/buy-x-get-y/cart-admin-preview.php:23, templates/modules/complementary-products/admin-preview/cart.php:17
 msgid "QUANTITY"
 msgstr ""
 
-#: inc/modules/frequently-bought-together/class-frequently-bought-together.php:205, inc/modules/volume-discounts/class-volume-discounts.php:362, templates/modules/complementary-products/admin-preview/cart.php:19
+#: inc/modules/frequently-bought-together/class-frequently-bought-together.php:205, inc/modules/volume-discounts/class-volume-discounts.php:362, templates/modules/buy-x-get-y/cart-admin-preview.php:24, templates/modules/complementary-products/admin-preview/cart.php:19
 msgid "TOTAL"
 msgstr ""
 
-#: inc/modules/frequently-bought-together/class-frequently-bought-together.php:213
+#: inc/modules/frequently-bought-together/class-frequently-bought-together.php:213, templates/modules/buy-x-get-y/cart-admin-preview.php:32
 msgid "You are eligible to get {offer_quantity}"
 msgstr ""
 
-#: inc/modules/frequently-bought-together/class-frequently-bought-together.php:217, templates/modules/buy-x-get-y/single-product-admin-preview.php:47, templates/modules/buy-x-get-y/single-product-admin-preview.php:64, templates/modules/added-to-cart-popup/admin/layout-1.php:92, templates/modules/added-to-cart-popup/admin/layout-1.php:118, templates/modules/added-to-cart-popup/admin/layout-1.php:140, templates/modules/added-to-cart-popup/admin/layout-1.php:167, templates/modules/added-to-cart-popup/admin/layout-1.php:210, templates/modules/added-to-cart-popup/admin/layout-1.php:229, templates/modules/added-to-cart-popup/admin/layout-1.php:249, templates/modules/added-to-cart-popup/admin/layout-1.php:268, templates/modules/added-to-cart-popup/admin/layout-1.php:287, templates/modules/added-to-cart-popup/admin/layout-1.php:312, templates/modules/added-to-cart-popup/admin/layout-1.php:331, templates/modules/added-to-cart-popup/admin/layout-1.php:351, templates/modules/added-to-cart-popup/admin/layout-1.php:370, templates/modules/added-to-cart-popup/admin/layout-1.php:389, templates/modules/added-to-cart-popup/admin/layout-2.php:78, templates/modules/added-to-cart-popup/admin/layout-2.php:104, templates/modules/added-to-cart-popup/admin/layout-2.php:126, templates/modules/added-to-cart-popup/admin/layout-2.php:153, templates/modules/added-to-cart-popup/admin/layout-2.php:196, templates/modules/added-to-cart-popup/admin/layout-2.php:215, templates/modules/added-to-cart-popup/admin/layout-2.php:235, templates/modules/added-to-cart-popup/admin/layout-2.php:254, templates/modules/added-to-cart-popup/admin/layout-2.php:273, templates/modules/added-to-cart-popup/admin/layout-2.php:298, templates/modules/added-to-cart-popup/admin/layout-2.php:317, templates/modules/added-to-cart-popup/admin/layout-2.php:337, templates/modules/added-to-cart-popup/admin/layout-2.php:356, templates/modules/added-to-cart-popup/admin/layout-2.php:375, templates/modules/added-to-cart-popup/admin/layout-3.php:91, templates/modules/added-to-cart-popup/admin/layout-3.php:117, templates/modules/added-to-cart-popup/admin/layout-3.php:139, templates/modules/added-to-cart-popup/admin/layout-3.php:166, templates/modules/added-to-cart-popup/admin/layout-3.php:209, templates/modules/added-to-cart-popup/admin/layout-3.php:228, templates/modules/added-to-cart-popup/admin/layout-3.php:248, templates/modules/added-to-cart-popup/admin/layout-3.php:267, templates/modules/added-to-cart-popup/admin/layout-3.php:286, templates/modules/added-to-cart-popup/admin/layout-3.php:311, templates/modules/added-to-cart-popup/admin/layout-3.php:330, templates/modules/added-to-cart-popup/admin/layout-3.php:350, templates/modules/added-to-cart-popup/admin/layout-3.php:369, templates/modules/added-to-cart-popup/admin/layout-3.php:388, templates/modules/complementary-products/admin-preview/cart.php:34
+#: inc/modules/frequently-bought-together/class-frequently-bought-together.php:217, templates/modules/buy-x-get-y/cart-admin-preview.php:36, templates/modules/buy-x-get-y/single-product-admin-preview.php:47, templates/modules/buy-x-get-y/single-product-admin-preview.php:64, templates/modules/added-to-cart-popup/admin/layout-1.php:92, templates/modules/added-to-cart-popup/admin/layout-1.php:118, templates/modules/added-to-cart-popup/admin/layout-1.php:140, templates/modules/added-to-cart-popup/admin/layout-1.php:167, templates/modules/added-to-cart-popup/admin/layout-1.php:210, templates/modules/added-to-cart-popup/admin/layout-1.php:229, templates/modules/added-to-cart-popup/admin/layout-1.php:249, templates/modules/added-to-cart-popup/admin/layout-1.php:268, templates/modules/added-to-cart-popup/admin/layout-1.php:287, templates/modules/added-to-cart-popup/admin/layout-1.php:312, templates/modules/added-to-cart-popup/admin/layout-1.php:331, templates/modules/added-to-cart-popup/admin/layout-1.php:351, templates/modules/added-to-cart-popup/admin/layout-1.php:370, templates/modules/added-to-cart-popup/admin/layout-1.php:389, templates/modules/added-to-cart-popup/admin/layout-2.php:78, templates/modules/added-to-cart-popup/admin/layout-2.php:104, templates/modules/added-to-cart-popup/admin/layout-2.php:126, templates/modules/added-to-cart-popup/admin/layout-2.php:153, templates/modules/added-to-cart-popup/admin/layout-2.php:196, templates/modules/added-to-cart-popup/admin/layout-2.php:215, templates/modules/added-to-cart-popup/admin/layout-2.php:235, templates/modules/added-to-cart-popup/admin/layout-2.php:254, templates/modules/added-to-cart-popup/admin/layout-2.php:273, templates/modules/added-to-cart-popup/admin/layout-2.php:298, templates/modules/added-to-cart-popup/admin/layout-2.php:317, templates/modules/added-to-cart-popup/admin/layout-2.php:337, templates/modules/added-to-cart-popup/admin/layout-2.php:356, templates/modules/added-to-cart-popup/admin/layout-2.php:375, templates/modules/added-to-cart-popup/admin/layout-3.php:91, templates/modules/added-to-cart-popup/admin/layout-3.php:117, templates/modules/added-to-cart-popup/admin/layout-3.php:139, templates/modules/added-to-cart-popup/admin/layout-3.php:166, templates/modules/added-to-cart-popup/admin/layout-3.php:209, templates/modules/added-to-cart-popup/admin/layout-3.php:228, templates/modules/added-to-cart-popup/admin/layout-3.php:248, templates/modules/added-to-cart-popup/admin/layout-3.php:267, templates/modules/added-to-cart-popup/admin/layout-3.php:286, templates/modules/added-to-cart-popup/admin/layout-3.php:311, templates/modules/added-to-cart-popup/admin/layout-3.php:330, templates/modules/added-to-cart-popup/admin/layout-3.php:350, templates/modules/added-to-cart-popup/admin/layout-3.php:369, templates/modules/added-to-cart-popup/admin/layout-3.php:388, templates/modules/complementary-products/admin-preview/cart.php:34
 msgid "Product Name"
 msgstr ""
 
@@ -2147,35 +2086,35 @@ msgstr ""
 msgid "with {amount} off"
 msgstr ""
 
-#: inc/modules/frequently-bought-together/class-frequently-bought-together.php:251, inc/modules/volume-discounts/class-volume-discounts.php:292, inc/modules/quick-social-links/admin/options.php:192, inc/modules/recently-viewed-products/admin/options.php:204, inc/modules/side-cart/admin/options.php:64, templates/modules/added-to-cart-popup/admin/layout-1.php:70, templates/modules/added-to-cart-popup/common/action-buttons.php:53, templates/modules/complementary-products/admin-preview/checkout.php:9
+#: inc/modules/frequently-bought-together/class-frequently-bought-together.php:251, inc/modules/volume-discounts/class-volume-discounts.php:292, templates/modules/buy-x-get-y/checkout-admin-preview.php:18, inc/modules/quick-social-links/admin/options.php:192, inc/modules/recently-viewed-products/admin/options.php:204, inc/modules/side-cart/admin/options.php:64, templates/modules/added-to-cart-popup/admin/layout-1.php:70, templates/modules/added-to-cart-popup/common/action-buttons.php:53, templates/modules/complementary-products/admin-preview/checkout.php:9
 msgid "Checkout"
 msgstr ""
 
-#: inc/modules/frequently-bought-together/class-frequently-bought-together.php:254, inc/modules/frequently-bought-together/class-frequently-bought-together.php:290, inc/modules/volume-discounts/class-volume-discounts.php:295, inc/modules/volume-discounts/class-volume-discounts.php:332
+#: inc/modules/frequently-bought-together/class-frequently-bought-together.php:254, inc/modules/frequently-bought-together/class-frequently-bought-together.php:290, inc/modules/volume-discounts/class-volume-discounts.php:295, inc/modules/volume-discounts/class-volume-discounts.php:332, templates/modules/buy-x-get-y/checkout-admin-preview.php:21, templates/modules/buy-x-get-y/thank-you-admin-preview.php:35
 msgid "Last chance to get {offer_quantity} x"
 msgstr ""
 
-#: inc/modules/frequently-bought-together/class-frequently-bought-together.php:259, inc/modules/frequently-bought-together/class-frequently-bought-together.php:301, inc/modules/volume-discounts/class-volume-discounts.php:300, inc/modules/volume-discounts/class-volume-discounts.php:337, inc/modules/buy-x-get-y/admin/options.php:679, inc/modules/buy-x-get-y/admin/options.php:742, inc/modules/buy-x-get-y/admin/options.php:804
+#: inc/modules/frequently-bought-together/class-frequently-bought-together.php:259, inc/modules/frequently-bought-together/class-frequently-bought-together.php:301, inc/modules/volume-discounts/class-volume-discounts.php:300, inc/modules/volume-discounts/class-volume-discounts.php:337, templates/modules/buy-x-get-y/cart-admin-preview.php:37, templates/modules/buy-x-get-y/checkout-admin-preview.php:26, templates/modules/buy-x-get-y/thank-you-admin-preview.php:40, inc/modules/buy-x-get-y/admin/options.php:679, inc/modules/buy-x-get-y/admin/options.php:742, inc/modules/buy-x-get-y/admin/options.php:804
 msgid "with {discount} off"
 msgstr ""
 
-#: inc/modules/frequently-bought-together/class-frequently-bought-together.php:260, inc/modules/frequently-bought-together/class-frequently-bought-together.php:302, inc/modules/volume-discounts/class-volume-discounts.php:301, inc/modules/volume-discounts/class-volume-discounts.php:338, templates/modules/complementary-products/admin-preview/checkout.php:22, templates/modules/complementary-products/admin-preview/thank-you-page.php:36
+#: inc/modules/frequently-bought-together/class-frequently-bought-together.php:260, inc/modules/frequently-bought-together/class-frequently-bought-together.php:302, inc/modules/volume-discounts/class-volume-discounts.php:301, inc/modules/volume-discounts/class-volume-discounts.php:338, templates/modules/buy-x-get-y/checkout-admin-preview.php:27, templates/modules/buy-x-get-y/thank-you-admin-preview.php:41, templates/modules/complementary-products/admin-preview/checkout.php:22, templates/modules/complementary-products/admin-preview/thank-you-page.php:36
 msgid "Add To My Order"
 msgstr ""
 
-#: inc/modules/frequently-bought-together/class-frequently-bought-together.php:277, inc/modules/volume-discounts/class-volume-discounts.php:319, inc/modules/quick-social-links/admin/options.php:220, templates/modules/complementary-products/admin-preview/thank-you-page.php:9
+#: inc/modules/frequently-bought-together/class-frequently-bought-together.php:277, inc/modules/volume-discounts/class-volume-discounts.php:319, templates/modules/buy-x-get-y/thank-you-admin-preview.php:22, inc/modules/quick-social-links/admin/options.php:220, templates/modules/complementary-products/admin-preview/thank-you-page.php:9
 msgid "Order Received"
 msgstr ""
 
-#: inc/modules/frequently-bought-together/class-frequently-bought-together.php:278, inc/modules/volume-discounts/class-volume-discounts.php:320, templates/modules/complementary-products/admin-preview/thank-you-page.php:11
+#: inc/modules/frequently-bought-together/class-frequently-bought-together.php:278, inc/modules/volume-discounts/class-volume-discounts.php:320, templates/modules/buy-x-get-y/thank-you-admin-preview.php:23, templates/modules/complementary-products/admin-preview/thank-you-page.php:11
 msgid "Thank you. Your order has been received."
 msgstr ""
 
-#: inc/modules/frequently-bought-together/class-frequently-bought-together.php:281, inc/modules/volume-discounts/class-volume-discounts.php:323, templates/modules/complementary-products/admin-preview/thank-you-page.php:15
+#: inc/modules/frequently-bought-together/class-frequently-bought-together.php:281, inc/modules/volume-discounts/class-volume-discounts.php:323, templates/modules/buy-x-get-y/thank-you-admin-preview.php:26, templates/modules/complementary-products/admin-preview/thank-you-page.php:15
 msgid "ORDER NUMBER:"
 msgstr ""
 
-#: inc/modules/frequently-bought-together/class-frequently-bought-together.php:285, inc/modules/volume-discounts/class-volume-discounts.php:327, templates/modules/complementary-products/admin-preview/thank-you-page.php:20
+#: inc/modules/frequently-bought-together/class-frequently-bought-together.php:285, inc/modules/volume-discounts/class-volume-discounts.php:327, templates/modules/buy-x-get-y/thank-you-admin-preview.php:30, templates/modules/complementary-products/admin-preview/thank-you-page.php:20
 msgid "PAYMENT METHOD:"
 msgstr ""
 
@@ -9092,10 +9031,89 @@ msgstr ""
 msgid "Added to Cart"
 msgstr ""
 
+#: templates/modules/added-to-cart-popup/common/popup-header.php:22, admin/classes/admin-options/fields/reviews-selector/template.php:40
+msgid "Close"
+msgstr ""
+
 #: templates/modules/complementary-products/admin-preview/single-product.php:31
 msgid "This is bundle title"
 msgstr ""
 
 #: templates/modules/complementary-products/admin-preview/single-product.php:35
 msgid "This is bundle description"
+msgstr ""
+
+#. translators: 1: page name
+#: admin/classes/admin-options/fields/create-page/template.php:35
+msgid "It looks like you haven't created a <strong>%1$s</strong> page yet. Click the below button to create the page."
+msgstr ""
+
+#. translators: 1: link to edit page
+#: admin/classes/admin-options/fields/create-page/template.php:44
+msgid "<p class=\"merchant-module-page-setting-field-desc\">Page created with success!</p><p class=\"merchant-module-page-setting-field-desc\">Click <a href=\"%1$s\" target=\"_blank\">here</a> if you want to edit the page.</p><p class=\"merchant-module-page-setting-field-desc mrc-mb-0\">To display the page in your theme header area, assign the page to the primary menu by clicking <a href=\"%2$s\" target=\"_blank\">here</a></p>"
+msgstr ""
+
+#. translators: 1: page title, 2: page meta key, 3: page meta value, 4: option name, 5: nonce, 6: loading text, 7: success text
+#: admin/classes/admin-options/fields/create-page/template.php:53
+msgid "<a href=\"#\" class=\"merchant-create-page-control-button button-tertiary\" data-page-title=\"%2$s\" data-page-meta-key=\"%3$s\" data-page-meta-value=\"%4$s\" data-option-name=\"%5$s\" data-nonce=\"%6$s\" data-creating-text=\"%7$s\" data-created-text=\"%8$s\">%1$s</a>"
+msgstr ""
+
+#: admin/classes/admin-options/fields/create-page/template.php:55
+msgid "Create Page"
+msgstr ""
+
+#: admin/classes/admin-options/fields/create-page/template.php:61
+msgid "Creating..."
+msgstr ""
+
+#: admin/classes/admin-options/fields/create-page/template.php:62
+msgid "Created!"
+msgstr ""
+
+#: admin/classes/admin-options/fields/create-page/template.php:24
+msgid "<p class=\"merchant-module-page-setting-field-desc mrc-mt-0\">Your page is created!</p><p class=\"merchant-module-page-setting-field-desc\">Click <a href=\"%1$s\" target=\"_blank\">here</a> if you want to edit the page.</p><p class=\"merchant-module-page-setting-field-desc mrc-mb-0\">To display the page in your theme header area, assign the page to the primary menu by clicking <a href=\"%2$s\" target=\"_blank\">here</a></p>"
+msgstr ""
+
+#: admin/classes/admin-options/fields/flexible-content/actions.php:45
+msgid "Delete"
+msgstr ""
+
+#: admin/classes/admin-options/fields/gallery/template.php:18
+msgid "Select Images"
+msgstr ""
+
+#: admin/classes/admin-options/fields/products-selector/template.php:18
+msgid "WooCommerce is not installed or activated."
+msgstr ""
+
+#: admin/classes/admin-options/fields/products-selector/template.php:38
+msgid "Search products"
+msgstr ""
+
+#: admin/classes/admin-options/fields/products-selector/template.php:40
+msgid "Searching..."
+msgstr ""
+
+#: admin/classes/admin-options/fields/products-selector/template.php:42
+msgid "Search icon"
+msgstr ""
+
+#: admin/classes/admin-options/fields/reviews-selector/template.php:28
+msgid "Select Reviews"
+msgstr ""
+
+#: admin/classes/admin-options/fields/reviews-selector/template.php:35
+msgid "Search & filter"
+msgstr ""
+
+#: admin/classes/admin-options/fields/reviews-selector/template.php:37
+msgid "Search for a product"
+msgstr ""
+
+#: admin/classes/admin-options/fields/upload/template.php:18
+msgid "Select Image"
+msgstr ""
+
+#: admin/classes/admin-options/fields/upload/template.php:36
+msgid "Upload image"
 msgstr ""

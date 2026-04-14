@@ -81,8 +81,9 @@
     }
     document.documentElement.style.setProperty('--merchant-rsn-bg-color', bgColor);
     if (themeType === 'template') {
-      if (customBgImage.val()) {
-        var sizes = JSON.parse(customBgImage.closest('.merchant-field-background_image').find('.merchant-upload-image').attr('data-sizes'));
+      var sizesAttr = customBgImage.closest('.merchant-field-background_image').find('.merchant-upload-image').attr('data-sizes');
+      if (customBgImage.val() && sizesAttr) {
+        var sizes = JSON.parse(sizesAttr);
         if (sizes.full !== undefined) {
           document.documentElement.style.setProperty('--merchant-rsn-bg-image', 'url( "' + sizes.full.url + '")');
         } else {

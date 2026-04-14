@@ -72,7 +72,20 @@ if ( ! class_exists( 'Merchant_Admin_Loader' ) ) {
 
 			// Admin classes.
 			require_once MERCHANT_DIR . 'admin/classes/class-merchant-admin-menu.php';
+
+			// Field architecture.
+			require_once MERCHANT_DIR . 'admin/classes/admin-options/interface-merchant-field.php';
+			require_once MERCHANT_DIR . 'admin/classes/admin-options/class-merchant-abstract-field.php';
+			require_once MERCHANT_DIR . 'admin/classes/admin-options/class-merchant-field-registry.php';
+
+			// Extracted SRP classes.
+			require_once MERCHANT_DIR . 'admin/classes/admin-options/class-merchant-admin-assets.php';
+			require_once MERCHANT_DIR . 'admin/classes/admin-options/class-merchant-select2-choices.php';
+			require_once MERCHANT_DIR . 'admin/classes/admin-options/class-merchant-settings-saver.php';
+			require_once MERCHANT_DIR . 'admin/classes/admin-options/class-merchant-settings-renderer.php';
+
 			require_once MERCHANT_DIR . 'admin/classes/class-merchant-admin-options.php';
+			require_once MERCHANT_DIR . 'admin/classes/class-merchant-admin-ajax.php';
 			require_once MERCHANT_DIR . 'admin/classes/class-merchant-admin-utils.php';
 			require_once MERCHANT_DIR . 'admin/classes/class-merchant-admin-preview.php';
 			// Plugin installer.

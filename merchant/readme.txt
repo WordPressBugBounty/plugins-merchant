@@ -3,7 +3,7 @@ Tags: pre-orders, buy now button, product labels, quick view, clear cart
 Requires at least: 6.4
 Tested up to: 6.9
 Requires PHP: 7.3
-Stable tag: 2.2.4
+Stable tag: 2.2.5
 Contributors: aThemes
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
@@ -218,6 +218,10 @@ Absolutely not. You can enable and customize modules without any coding knowledg
 15. Cookie Banner Module
 
 == Changelog ==
+= 2.2.5 =
+* Fixed - Admin Options: Module settings no longer silently lose data when exceeding PHP max_input_vars limit
+* Fixed - Admin Options: Pro-only module fields are now read-only when Merchant Pro is not active
+
 = 2.2.4 =
 * Added - Buy X Get Y: Improved admin preview layout
 * Fixed - Merchant analytics compatibility with Ohio theme

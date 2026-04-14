@@ -21,8 +21,13 @@
   });
   function initPreview() {
     var _merchant2, _merchant3, _merchant4;
-    var layout = $('.merchant-flexible-content-control.frequently-bought-together-style').find('.layout.active'),
-      titleTextColor = layout.find('.merchant-field-title input').val(),
+    var layout = $('.merchant-flexible-content-control.frequently-bought-together-style').find('.layout.active');
+
+    // Skip preview update if the active layout is deferred (not yet hydrated).
+    if (!layout.length || layout.attr('data-deferred') === '1') {
+      return;
+    }
+    var titleTextColor = layout.find('.merchant-field-title input').val(),
       totalText = layout.find('.merchant-field-price_label input').val(),
       addToCartText = layout.find('.merchant-field-button_text input').val(),
       plusSignBgColor = layout.find('.merchant-field-plus_bg_color input').val(),
