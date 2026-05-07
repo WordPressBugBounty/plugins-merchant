@@ -307,17 +307,50 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
         this.events();
       },
       events: function events() {
+        var self = this;
         $(document).on('click', '#download-backup-button', this.download.bind(this));
-        $(document).on('click', '#restore-backup-button', this.restore.bind(this));
-        $(document).on('change', '#merchant-backup-file', this.removeBackupFile.bind(this));
+
+        // Browse button opens file picker.
+        $(document).on('click', '.merchant-dropzone__browse', function (e) {
+          e.preventDefault();
+          e.stopPropagation();
+          $(this).closest('.merchant-dropzone').find('.merchant-backup-file').trigger('click');
+        });
+
+        // Auto-restore when a file is selected (via browse or drop).
+        $(document).on('change', '#merchant-backup-file', function () {
+          var file = this.files[0];
+          if (file) {
+            self.restoreFile(file);
+          }
+        });
+
+        // Drag-and-drop visual feedback.
+        var $dropzone = $('#merchant-restore-dropzone');
+        $dropzone.on('dragover dragenter', function (e) {
+          e.preventDefault();
+          e.stopPropagation();
+          $(this).addClass('drag-over');
+        });
+        $dropzone.on('dragleave drop', function (e) {
+          e.preventDefault();
+          e.stopPropagation();
+          $(this).removeClass('drag-over');
+        });
+        $dropzone.on('drop', function (e) {
+          var file = e.originalEvent.dataTransfer.files[0];
+          if (file) {
+            self.restoreFile(file);
+          }
+        });
       },
       download: function download(e) {
         var self = this;
         e.preventDefault();
         var container = $('.merchant-module-page-setting-fields .backup-section');
-        self.hideError(container);
+        var $status = container.find('.merchant-backup-status');
+        $status.removeAttr('class').addClass('merchant-backup-status').text('');
         var module_id = $(e.target).attr('data-module-id');
-        // ajax get
         $.ajax({
           url: merchant_admin_options.ajaxurl,
           type: 'GET',
@@ -330,87 +363,72 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
             self.showLoadingIndicator(container);
           },
           success: function success(response) {
+            self.hideLoadingIndicator(container);
             if (response.success) {
               var moduleSettings = response.data;
-              var fileName = 'merchant-' + module_id + '-backup-' + new Date().toISOString().slice(0, 10) + '-' +
-              //time
-              new Date().getHours() + '-' + new Date().getMinutes() + '-' + new Date().getSeconds() + '.json';
+              var fileName = 'merchant-' + module_id + '-backup-' + new Date().toISOString().slice(0, 10) + '-' + new Date().getHours() + '-' + new Date().getMinutes() + '-' + new Date().getSeconds() + '.json';
               self.downloadJson(moduleSettings, fileName);
-              self.hideLoadingIndicator(container);
+              $status.addClass('is-success').text(merchant_admin_options.backup_success || 'Downloaded!');
             } else {
-              self.displayError(response.data.message, container);
-              self.hideLoadingIndicator(container);
+              $status.addClass('is-error').text(response.data.message);
             }
+            setTimeout(function () {
+              $status.removeAttr('class').addClass('merchant-backup-status').text('');
+            }, 3000);
           },
           error: function error(xhr, status, _error) {
-            self.displayError(_error, container);
             self.hideLoadingIndicator(container);
+            $status.addClass('is-error').text(_error);
+            setTimeout(function () {
+              $status.removeAttr('class').addClass('merchant-backup-status').text('');
+            }, 3000);
           }
         });
       },
-      restore: function restore(e) {
+      restoreFile: function restoreFile(file) {
         var self = this;
-        e.preventDefault();
         var container = $('.merchant-module-page-setting-fields .restore-section');
-        self.hideError(container);
-        var module_id = $(e.target).attr('data-module-id');
-        var file = $('.merchant-backup-file').prop('files')[0];
-
-        // Check if file is selected and it's a JSON file
-        if (file && file.type === 'application/json') {
-          var reader = new FileReader();
-          reader.onload = function (e) {
-            // Send the raw file content instead of parsing it
-            var moduleSettings = e.target.result;
-            // AJAX post
-            $.ajax({
-              url: merchant_admin_options.ajaxurl,
-              type: 'POST',
-              data: {
-                action: 'merchant_restore_module_settings',
-                nonce: merchant_admin_options.ajaxnonce,
-                module_id: module_id,
-                module_settings: moduleSettings
-              },
-              beforeSend: function beforeSend() {
-                self.showLoadingIndicator(container);
-              },
-              success: function success(response) {
-                if (response.success) {
-                  merchant.show_save = false;
-                  window.location.href = response.data.redirect_url;
-                } else {
-                  self.displayError(response.data.message, container);
-                }
-                self.hideLoadingIndicator(container);
-              },
-              error: function error(xhr, status, _error2) {
-                self.displayError(_error2, container);
-                self.hideLoadingIndicator(container);
-              }
-            });
-          };
-          reader.readAsText(file);
-        } else {
-          self.displayError(merchant_admin_options.invalid_file, container);
-        }
-      },
-      removeBackupFile: function removeBackupFile(e) {
-        var _file$;
-        var file = $(e.target);
-        if (!file.length) {
+        var module_id = $('#merchant-restore-dropzone').data('module-id');
+        self.hideError();
+        if (!file || file.type !== 'application/json') {
+          self.displayError(merchant_admin_options.invalid_file);
           return;
         }
-        var crossIcon = $('.backup-file-remove');
-        if (((_file$ = file[0]) === null || _file$ === void 0 ? void 0 : _file$.files.length) > 0) {
-          crossIcon.show();
-        } else {
-          crossIcon.hide();
-        }
-        crossIcon.on('click', function () {
-          file.val('');
-          $(this).hide();
-        });
+        var reader = new FileReader();
+        reader.onload = function (e) {
+          var moduleSettings = e.target.result;
+          $.ajax({
+            url: merchant_admin_options.ajaxurl,
+            type: 'POST',
+            data: {
+              action: 'merchant_restore_module_settings',
+              nonce: merchant_admin_options.ajaxnonce,
+              module_id: module_id,
+              module_settings: moduleSettings
+            },
+            beforeSend: function beforeSend() {
+              $('#merchant-restore-dropzone').addClass('is-loading');
+              self.showLoadingIndicator(container);
+            },
+            success: function success(response) {
+              if (response.success) {
+                merchant.show_save = false;
+                var $dz = $('#merchant-restore-dropzone');
+                $dz.removeClass('is-loading').addClass('is-success');
+                self.hideLoadingIndicator(container);
+                setTimeout(function () {
+                  window.location.href = response.data.redirect_url;
+                }, 1500);
+              } else {
+                self.displayError(response.data.message);
+              }
+            },
+            error: function error(xhr, status, _error2) {
+              self.displayError(_error2);
+            }
+          });
+        };
+        reader.readAsText(file);
       },
       downloadJson: function downloadJson(data, filename) {
         if (_typeof(data) === 'object') {
@@ -426,11 +444,19 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
         a.click();
         URL.revokeObjectURL(url);
       },
-      displayError: function displayError(errorMsg, container) {
-        container.append("<div class=\"error-message\"><p>".concat(errorMsg, "</p></div>"));
+      displayError: function displayError(errorMsg) {
+        var $dz = $('#merchant-restore-dropzone');
+        $dz.find('.merchant-dropzone__error p').text(errorMsg);
+        $dz.removeClass('is-loading').addClass('is-error');
+        this.hideLoadingIndicator($('.merchant-module-page-setting-fields .restore-section'));
+        setTimeout(function () {
+          $dz.removeClass('is-error');
+          // Reset file input so same file can be re-selected.
+          $dz.find('.merchant-backup-file').val('');
+        }, 3000);
       },
-      hideError: function hideError(container) {
-        container.find('.error-message').remove();
+      hideError: function hideError() {
+        $('#merchant-restore-dropzone').removeClass('is-error');
       },
       showLoadingIndicator: function showLoadingIndicator(container) {
         container.find('.merchant-loading-spinner').addClass('show');
@@ -1071,6 +1097,12 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
               },
               heightStyle: "content",
               beforeActivate: function beforeActivate(event, ui) {
+                // Prevent accordion toggle when clicking the status badge.
+                if (event.originalEvent && $(event.originalEvent.target).hasClass('layout-status')) {
+                  event.preventDefault();
+                  return;
+                }
+
                 // Hydrate deferred layout before the accordion animation
                 // so the panel opens with content already rendered.
                 if (ui.newPanel.length) {
@@ -1106,6 +1138,7 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
           }
         });
         this.updateLayoutTitle();
+        this.updateLayoutStatus();
         this.updateDiscountPercentMaxVal();
         // Events.
         this.events();
@@ -1120,6 +1153,158 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
               title.text($(this).val());
             });
             title.text(input.val());
+          }
+        });
+      },
+      /**
+       * Resolve a status field inside a layout, returning a unified adapter
+       * that works with select, radio, and switcher field types.
+       *
+       * @param {jQuery} $layout  The .layout element.
+       * @param {string} fieldId  The field identifier (e.g. 'campaign_status').
+       * @returns {object|null}   Adapter with getValue, getLabel, getOptions, setNext, onChange — or null.
+       */
+      resolveStatusField: function resolveStatusField($layout, fieldId) {
+        var $wrapper = $layout.find('.layout-body .merchant-field-' + fieldId);
+        if (!$wrapper.length) return null;
+        var $select = $wrapper.find('select');
+        var $radios = $wrapper.find('input[type="radio"]');
+        var $checkbox = $wrapper.find('input[type="checkbox"]');
+
+        // Select field adapter.
+        if ($select.length) {
+          return {
+            getValue: function getValue() {
+              return $select.val() || 'active';
+            },
+            getLabel: function getLabel() {
+              return $select.find('option:selected').text() || this.getValue();
+            },
+            getOptions: function getOptions() {
+              return $select.find('option').map(function () {
+                return $(this).val();
+              }).get();
+            },
+            setNext: function setNext() {
+              var opts = $select.find('option');
+              var idx = opts.index(opts.filter(':selected'));
+              var next = (idx + 1) % opts.length;
+              $select.val(opts.eq(next).val()).trigger('change');
+            },
+            onChange: function onChange(fn) {
+              $select.off('change.statusBadge').on('change.statusBadge', fn);
+            }
+          };
+        }
+
+        // Radio field adapter.
+        if ($radios.length) {
+          return {
+            getValue: function getValue() {
+              return $radios.filter(':checked').val() || 'active';
+            },
+            getLabel: function getLabel() {
+              var $checked = $radios.filter(':checked');
+              var $label = $wrapper.find('label[for="' + $checked.attr('id') + '"]');
+              return $label.length ? $label.text() : this.getValue();
+            },
+            getOptions: function getOptions() {
+              return $radios.map(function () {
+                return $(this).val();
+              }).get();
+            },
+            setNext: function setNext() {
+              var vals = this.getOptions();
+              var idx = vals.indexOf(this.getValue());
+              var next = (idx + 1) % vals.length;
+              $radios.filter('[value="' + vals[next] + '"]').prop('checked', true).trigger('change');
+            },
+            onChange: function onChange(fn) {
+              $radios.off('change.statusBadge').on('change.statusBadge', fn);
+            }
+          };
+        }
+
+        // Switcher (checkbox) field adapter — on/off.
+        if ($checkbox.length) {
+          return {
+            getValue: function getValue() {
+              return $checkbox.is(':checked') ? 'active' : 'inactive';
+            },
+            getLabel: function getLabel() {
+              return $checkbox.is(':checked') ? 'Active' : 'Inactive';
+            },
+            getOptions: function getOptions() {
+              return ['active', 'inactive'];
+            },
+            setNext: function setNext() {
+              $checkbox.prop('checked', !$checkbox.is(':checked')).trigger('change');
+            },
+            onChange: function onChange(fn) {
+              $checkbox.off('change.statusBadge').on('change.statusBadge', fn);
+            }
+          };
+        }
+        return null;
+      },
+      updateLayoutStatus: function updateLayoutStatus() {
+        var self = this;
+
+        // Sync status badge on each layout header with the field value.
+        $('.merchant-flexible-content .layout').each(function () {
+          var $badge = $(this).find('.layout-header .layout-status[data-status-field]');
+          if (!$badge.length) return;
+          var fieldId = $badge.data('status-field');
+          var adapter = self.resolveStatusField($(this), fieldId);
+          if (!adapter) return;
+          function syncBadge() {
+            var val = adapter.getValue();
+            var label = adapter.getLabel();
+            $badge.removeClass(function (i, cls) {
+              return (cls.match(/layout-status--\S+/g) || []).join(' ');
+            }).addClass('layout-status--' + val).text(label.trim());
+          }
+          adapter.onChange(syncBadge);
+          syncBadge();
+        });
+
+        // Delegated click handler for badge toggle — works on all rows including deferred.
+        $(document).off('click.statusToggle').on('click.statusToggle', '.layout-status[data-status-field]', function (e) {
+          e.stopPropagation();
+          e.preventDefault();
+          var $badge = $(this);
+          var fieldId = $badge.data('status-field');
+          var $layout = $badge.closest('.layout');
+          var adapter = self.resolveStatusField($layout, fieldId);
+          if (adapter) {
+            // Hydrated row: toggle via the field adapter.
+            adapter.setNext();
+          } else {
+            // Deferred row: cycle through options stored in data-status-options,
+            // falling back to active/inactive.
+            var optionsAttr = $badge.attr('data-status-options');
+            var options = optionsAttr ? optionsAttr.split(',') : ['active', 'inactive'];
+            var currentVal = $badge.attr('class').match(/layout-status--(\S+)/);
+            currentVal = currentVal ? currentVal[1] : options[0];
+            var idx = options.indexOf(currentVal);
+            var nextIdx = (idx + 1) % options.length;
+            var newVal = options[nextIdx];
+            var newLabel = newVal.charAt(0).toUpperCase() + newVal.slice(1);
+            $badge.removeClass('layout-status--' + currentVal).addClass('layout-status--' + newVal).text(newLabel);
+
+            // Update data-fields-json so the value persists when hydrated.
+            var jsonAttr = $layout.attr('data-fields-json');
+            if (jsonAttr) {
+              try {
+                var data = JSON.parse(jsonAttr);
+                if (!data.values) data.values = {};
+                data.values[fieldId] = newVal;
+                $layout.attr('data-fields-json', JSON.stringify(data));
+              } catch (ex) {/* ignore parse errors */}
+            }
+
+            // Mark the form as changed.
+            $('.merchant-module-page-content').trigger('change.merchant');
           }
         });
       },
@@ -1213,6 +1398,7 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
           $(document).trigger('merchant-flexible-content-added', [$layout]);
           initMerchantRange();
           self.updateLayoutTitle();
+          self.updateLayoutStatus();
           self.updateDiscountPercentMaxVal();
           $('.merchant-module-page-content').trigger('change.merchant');
         });
@@ -1286,6 +1472,7 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
             $flexibleContent.accordion('refresh');
           }
           self.updateLayoutTitle();
+          self.updateLayoutStatus();
           GroubField.init();
           $('.merchant-module-page-content').trigger('change.merchant');
         });
@@ -1435,6 +1622,24 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
           $titleInput.on('change keyup', function () {
             $title.text($(this).val());
           });
+        }
+
+        // Init status badge binding for hydrated row.
+        var $badge = $layout.find('.layout-header .layout-status[data-status-field]');
+        if ($badge.length) {
+          var statusFieldId = $badge.data('status-field');
+          var statusAdapter = this.resolveStatusField($layout, statusFieldId);
+          if (statusAdapter) {
+            var syncHydratedBadge = function syncHydratedBadge() {
+              var val = statusAdapter.getValue();
+              var label = statusAdapter.getLabel();
+              $badge.removeClass(function (i, cls) {
+                return (cls.match(/layout-status--\S+/g) || []).join(' ');
+              }).addClass('layout-status--' + val).text(label.trim());
+            };
+            statusAdapter.onChange(syncHydratedBadge);
+            syncHydratedBadge();
+          }
         }
 
         // Init discount max val.
@@ -1935,9 +2140,11 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
       },
       ajaxResponseHandler: function ajaxResponseHandler(response, $this, $success_message, $create_message) {
         if ('success' === response.status) {
-          var href = $success_message.find('a').attr('href'),
-            newhref = href.replace('?post=&', '?post=' + response.page_id + '&');
-          $success_message.find('a').attr('href', newhref);
+          var $editLink = $success_message.find('a').first(),
+            href = $editLink.attr('href');
+          if (href) {
+            $editLink.attr('href', href.replace('?post=&', '?post=' + response.page_id + '&'));
+          }
           $success_message.css('display', 'block');
           $create_message.remove();
           $this.remove();

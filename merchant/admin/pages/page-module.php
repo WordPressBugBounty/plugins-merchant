@@ -275,6 +275,7 @@ Merchant_Admin_Preview::set_preview( $merchant_module );
                                         <p><?php esc_html_e( 'Download a backup of your currently saved module settings as a JSON file. To capture the most up-to-date configuration, remember to save your settings before downloading the backup. You can then use this file to restore your settings later.', 'merchant' ); ?></p>
                                         <div class="form-field">
                                             <button type="button" data-module-id="<?php echo esc_attr($merchant_module)?>" id="download-backup-button"><?php esc_html_e( 'Download', 'merchant' ); ?></button>
+                                            <span class="merchant-backup-status"></span>
                                             <span class="merchant-loading-spinner"></span>
                                         </div>
                                     </section>
@@ -282,11 +283,26 @@ Merchant_Admin_Preview::set_preview( $merchant_module );
                                         <h3><?php esc_html_e( 'Restore Module Settings', 'merchant' ); ?></h3>
                                         <p><?php esc_html_e( 'Restore the module settings by uploading a previously saved backup file. Please be aware that restoring settings will overwrite your current module configurations.', 'merchant' ); ?></p>
                                         <div class="form-field">
-                                            <label for="backup-file"><?php esc_html_e( 'Upload Backup File', 'merchant' ); ?></label>
-                                            <input type="file" id="merchant-backup-file" class="merchant-backup-file" name="backup-file" accept=".json">
-                                            <i style="display: none;" class="dashicons dashicons-no-alt backup-file-remove"></i>
-                                            <span class="merchant-loading-spinner"></span>
-                                            <button type="button" data-module-id="<?php echo esc_attr( $merchant_module )?>" id="restore-backup-button" class="restore-button"><?php esc_html_e( 'Restore', 'merchant' ); ?></button>
+                                            <div class="merchant-dropzone" id="merchant-restore-dropzone" data-module-id="<?php echo esc_attr( $merchant_module )?>">
+                                                <div class="merchant-dropzone__content">
+                                                    <span class="dashicons dashicons-upload"></span>
+                                                    <p><?php esc_html_e( 'Drag & drop a JSON backup file here, or', 'merchant' ); ?></p>
+                                                    <button type="button" class="merchant-dropzone__browse"><?php esc_html_e( 'Browse', 'merchant' ); ?></button>
+                                                </div>
+                                                <input type="file" id="merchant-backup-file" class="merchant-backup-file" name="backup-file" accept=".json">
+                                                <div class="merchant-dropzone__loading">
+                                                    <span class="merchant-loading-spinner"></span>
+                                                    <p><?php esc_html_e( 'Restoring...', 'merchant' ); ?></p>
+                                                </div>
+                                                <div class="merchant-dropzone__success">
+                                                    <span class="dashicons dashicons-yes-alt"></span>
+                                                    <p><?php esc_html_e( 'Settings restored successfully!', 'merchant' ); ?></p>
+                                                </div>
+                                                <div class="merchant-dropzone__error">
+                                                    <span class="dashicons dashicons-warning"></span>
+                                                    <p></p>
+                                                </div>
+                                            </div>
                                         </div>
                                     </section>
                                 </div>

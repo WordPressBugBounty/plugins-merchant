@@ -36,8 +36,14 @@ class Merchant_Select2_Choices {
 	 * @return array<int, array{id: string, text: string}> Formatted category choices.
 	 */
 	public static function get_category_select2_choices() {
-		$choices    = array();
+		$choices = array();
+
+		// Bypass language filtering so every term is visible, including
+		// categories that exist only in a non-default language.
+		// Deduplication happens in build_category_select2_choices().
+		Merchant_Translator::switch_to_all_languages();
 		$categories = merchant_get_product_categories();
+		Merchant_Translator::restore_language();
 
 		if ( is_array( $categories ) && ! empty( $categories ) ) {
 			$choices = self::build_category_select2_choices( $categories );
@@ -51,8 +57,8 @@ class Merchant_Select2_Choices {
 	 *
 	 * @since 1.9.3
 	 *
-	 * @param array<int, array{slug?: string, name?: string, children?: array<int, mixed>}> $categories Category data.
-	 * @param int $level Current nesting depth (used for indentation).
+	 * @param array<int, array{id?: int, slug?: string, name?: string, children?: array<int, mixed>}> $categories Category data.
+	 * @param int                                                                                     $level Current nesting depth (used for indentation).
 	 *
 	 * @return array<int, array{id: string, text: string}> Formatted choices.
 	 */
@@ -60,11 +66,22 @@ class Merchant_Select2_Choices {
 		$choices = array();
 
 		foreach ( $categories as $cat ) {
+			$slug    = $cat['slug'] ?? '';
+			$term_id = $cat['id'] ?? 0;
+
+			// Deduplicate: skip non-default language versions that have a default counterpart.
+			// Keeps the default-language term (ASCII slug) and orphans (no default version).
+			$default_term_id = Merchant_Translator::translate_term_to_default( $term_id, 'product_cat' );
+			if ( $default_term_id !== $term_id ) {
+				continue;
+			}
+
 			$indent = str_repeat( '&nbsp;', $level * 4 );
+			$label  = self::resolve_term_label( $term_id, 'product_cat', $cat['name'] ?? '' );
 
 			$choices[] = array(
-				'id'   => esc_attr( $cat['slug'] ?? '' ),
-				'text' => esc_html( $indent . ( $cat['name'] ?? '' ) ),
+				'id'   => esc_attr( $slug ),
+				'text' => esc_html( $indent . $label ),
 			);
 
 			if ( ! empty( $cat['children'] ) ) {
@@ -87,13 +104,30 @@ class Merchant_Select2_Choices {
 	 */
 	public static function get_tag_select2_choices() {
 		$choices = array();
-		$tags    = merchant_get_product_tags();
 
-		if ( is_array( $tags ) && ! empty( $tags ) ) {
-			foreach ( $tags as $slug => $name ) {
+		// Bypass language filtering so every term is visible.
+		Merchant_Translator::switch_to_all_languages();
+		$tags = get_terms(
+			array(
+				'taxonomy'   => 'product_tag',
+				'hide_empty' => false,
+			)
+		);
+		Merchant_Translator::restore_language();
+
+		if ( is_array( $tags ) && ! is_wp_error( $tags ) && ! empty( $tags ) ) { // @phpstan-ignore function.impossibleType
+			foreach ( $tags as $tag ) {
+				// Deduplicate: skip non-default language versions that have a default counterpart.
+				$default_tag_id = Merchant_Translator::translate_term_to_default( $tag->term_id, 'product_tag' );
+				if ( $default_tag_id !== $tag->term_id ) {
+					continue;
+				}
+
+				$label = self::resolve_term_label( $tag->term_id, 'product_tag', $tag->name );
+
 				$choices[] = array(
-					'id'   => esc_attr( $slug ),
-					'text' => esc_html( $name ),
+					'id'   => esc_attr( $tag->slug ),
+					'text' => esc_html( $label ),
 				);
 			}
 		}
@@ -119,21 +153,71 @@ class Merchant_Select2_Choices {
 			return $choices;
 		}
 
-		$brands = get_terms( array(
-			'taxonomy'   => 'product_brand',
-			'hide_empty' => false,
-		) );
+		// Bypass language filtering so every term is visible.
+		Merchant_Translator::switch_to_all_languages();
+		$brands = get_terms(
+			array(
+				'taxonomy'   => 'product_brand',
+				'hide_empty' => false,
+			)
+		);
+		Merchant_Translator::restore_language();
 
 		if ( is_array( $brands ) && ! is_wp_error( $brands ) && ! empty( $brands ) ) { // @phpstan-ignore function.impossibleType
 			foreach ( $brands as $brand ) {
+				// Deduplicate: skip non-default language versions that have a default counterpart.
+				$default_brand_id = Merchant_Translator::translate_term_to_default( $brand->term_id, 'product_brand' );
+				if ( $default_brand_id !== $brand->term_id ) {
+					continue;
+				}
+
+				$label = self::resolve_term_label( $brand->term_id, 'product_brand', $brand->name );
+
 				$choices[] = array(
 					'id'   => esc_attr( $brand->slug ),
-					'text' => esc_html( $brand->name ),
+					'text' => esc_html( $label ),
 				);
 			}
 		}
 
 		return $choices;
+	}
+
+	/**
+	 * Resolve the current-language label for a term using its ID.
+	 *
+	 * Translates the default-language term_id to the current language,
+	 * then fetches the translated term's name. Falls back to the provided
+	 * default name when no translation exists.
+	 *
+	 * @since 2.1.9
+	 *
+	 * @param int    $term_id      Default-language term ID.
+	 * @param string $taxonomy     Taxonomy name.
+	 * @param string $default_name Fallback name if no translation exists.
+	 *
+	 * @return string The current-language term name, or $default_name.
+	 */
+	private static function resolve_term_label( $term_id, $taxonomy, $default_name ) {
+		if ( empty( $term_id ) ) {
+			return $default_name;
+		}
+
+		// translate_term( int ) returns the translated term_id via pll_get_term / wpml_object_id.
+		$translated_id = Merchant_Translator::translate_term( $term_id, $taxonomy );
+
+		if ( $translated_id === $term_id ) {
+			// No translation exists, keep the default name.
+			return $default_name;
+		}
+
+		$translated_term = get_term( (int) $translated_id, $taxonomy );
+
+		if ( $translated_term instanceof \WP_Term ) {
+			return $translated_term->name;
+		}
+
+		return $default_name;
 	}
 
 	/**

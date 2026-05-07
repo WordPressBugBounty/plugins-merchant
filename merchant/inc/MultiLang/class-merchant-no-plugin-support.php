@@ -19,7 +19,7 @@ if ( ! class_exists( 'Merchant_No_Plugin_Support' ) ) {
 		 * @param string $context            The context of the string.
 		 * @param bool   $multiline          Whether the string is multiline or not.
 		 */
-		public function register_string( $string_to_register, $context, $multiline = false ) {
+		public function register_string( $string_to_register, $context, $multiline = false ): void {
 			// Do nothing.
 		}
 
@@ -41,6 +41,70 @@ if ( ! class_exists( 'Merchant_No_Plugin_Support' ) ) {
 		 */
 		public function get_current_lang() {
 			return get_locale();
+		}
+
+		/**
+		 * Translate a taxonomy term — passthrough (no multilingual plugin active).
+		 *
+		 * @param string|int  $term     The term slug or term ID.
+		 * @param string      $taxonomy The taxonomy name.
+		 * @param string|null $language Target language code (ignored).
+		 *
+		 * @return string|int Same value as input.
+		 *
+		 * @since 2.1.9
+		 */
+		public function translate_term( $term, $taxonomy, $language = null ) {
+			return $term;
+		}
+
+		/**
+		 * Switch the active language context — no-op without a plugin.
+		 *
+		 * @param string $language Language code (ignored).
+		 *
+		 * @return void
+		 *
+		 * @since 2.1.9
+		 */
+		public function switch_language( $language ) {
+			// No-op: no multilingual plugin active.
+		}
+
+		/**
+		 * Restore the language context — no-op without a plugin.
+		 *
+		 * @return void
+		 *
+		 * @since 2.1.9
+		 */
+		public function restore_language() {
+			// No-op: no multilingual plugin active.
+		}
+
+		/**
+		 * Get the default language code — not applicable without a plugin.
+		 *
+		 * @return string Empty string.
+		 *
+		 * @since 2.1.9
+		 */
+		public function get_default_language() {
+			return '';
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		public function get_all_languages_code() {
+			return '';
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		public function get_post_language( $post_id ) {
+			return '';
 		}
 	}
 }

@@ -3,7 +3,7 @@ Tags: pre-orders, buy now button, product labels, quick view, clear cart
 Requires at least: 6.4
 Tested up to: 6.9
 Requires PHP: 7.3
-Stable tag: 2.2.5
+Stable tag: 2.2.6
 Contributors: aThemes
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
@@ -218,6 +218,13 @@ Absolutely not. You can enable and customize modules without any coding knowledg
 15. Cookie Banner Module
 
 == Changelog ==
+= 2.2.6 =
+* Added - Admin Options: Clickable Active/Inactive status badge on flexible content row headers for quick campaign toggling
+* Added - Backup & Restore: Drag-and-drop restore with visual success and error feedback
+* Changed - Scroll to Top Button: Increased mobile offset max from 50px to 150px and raised z-index to 1100 to prevent overlap with sticky elements
+* Fixed - WPML/Polylang: Select2 dropdowns now show all translated taxonomy terms (categories, tags, brands) when the admin dashboard is set to a non-default language
+* Fixed - Admin Options: "Create Page" success handler no longer overwrites the menu assignment link with the edit link
+
 = 2.2.5 =
 * Fixed - Admin Options: Module settings no longer silently lose data when exceeding PHP max_input_vars limit
 * Fixed - Admin Options: Pro-only module fields are now read-only when Merchant Pro is not active

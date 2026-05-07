@@ -26,6 +26,7 @@ Merchant_Admin_Options::create( array(
 				'offer-details' => array(
 					'title'       => esc_html__( 'Campaign', 'merchant' ),
 					'title-field' => 'offer-title', // text field ID to use as title for the layout
+					'status-field' => 'campaign_status',
 					'fields'      => array(
 						array(
 							'id'      => 'campaign_status',

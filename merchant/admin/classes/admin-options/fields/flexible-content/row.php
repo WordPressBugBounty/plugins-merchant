@@ -24,10 +24,21 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$deferred    = ! empty( $deferred );
-$title_field = $layout_config['title-field'] ?? '';
-$row_title   = $is_clone ? ( $layout_config['title'] ?? '' ) : ( $option[ $title_field ] ?? '' );
-$count       = $is_clone ? 1 : absint( $option_key + 1 );
+$deferred     = ! empty( $deferred );
+$title_field  = $layout_config['title-field'] ?? '';
+$row_title    = $is_clone ? ( $layout_config['title'] ?? '' ) : ( $option[ $title_field ] ?? '' );
+$count        = $is_clone ? 1 : absint( $option_key + 1 );
+$status_field = $layout_config['status-field'] ?? '';
+$status_value = '';
+
+if ( ! empty( $status_field ) ) {
+	if ( $is_clone ) {
+		// Clone template: default value will be set via JS on add/duplicate.
+		$status_value = 'active';
+	} else {
+		$status_value = $option[ $status_field ] ?? 'active';
+	}
+}
 
 $name_attr   = $is_clone ? 'data-name' : 'name';
 ?>
@@ -63,6 +74,26 @@ $name_attr   = $is_clone ? 'data-name' : 'name';
 			} ?>>
 				<?php echo esc_html( $row_title ); ?>
 			</div>
+			<?php if ( ! empty( $status_field ) ) :
+				// Resolve the field's option keys for JS deferred toggle.
+				$status_options = array();
+				if ( ! empty( $layout_config['fields'] ) ) {
+					foreach ( $layout_config['fields'] as $sub_field ) {
+						if ( isset( $sub_field['id'] ) && $sub_field['id'] === $status_field && ! empty( $sub_field['options'] ) ) {
+							$status_options = array_keys( $sub_field['options'] );
+							break;
+						}
+					}
+				}
+			?>
+				<span class="layout-status layout-status--<?php echo esc_attr( $status_value ); ?>"
+					data-status-field="<?php echo esc_attr( $status_field ); ?>"
+					<?php if ( ! empty( $status_options ) ) : ?>
+						data-status-options="<?php echo esc_attr( implode( ',', $status_options ) ); ?>"
+					<?php endif; ?>>
+					<?php echo esc_html( ucfirst( $status_value ) ); ?>
+				</span>
+			<?php endif; ?>
 			<div class="layout-toggle">
 				<?php if ( $has_accordion ) : ?>
 					<span class="customize-control-flexible-content-accordion">

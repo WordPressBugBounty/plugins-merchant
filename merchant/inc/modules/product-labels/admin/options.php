@@ -56,6 +56,7 @@ Merchant_Admin_Options::create( array(
 				'single-label' => array(
 					'title'       => esc_html__( 'Product label', 'merchant' ),
 					'title-field' => 'label-title',
+					'status-field' => 'campaign_status',
 					'fields'      => array(
 						array(
 							'id'      => 'campaign_status',

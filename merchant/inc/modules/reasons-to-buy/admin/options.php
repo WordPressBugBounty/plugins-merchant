@@ -26,6 +26,7 @@ Merchant_Admin_Options::create( array(
 				'single-reason' => array(
 					'title'       => esc_html__( 'Reasons To Buy', 'merchant' ),
 					'title-field' => 'title',
+					'status-field' => 'campaign_status',
 					'fields'      => array(
 						array(
 							'id'      => 'campaign_status',

@@ -13,7 +13,7 @@
   cursor: pointer;
   line-height: 1;
   position: fixed;
-  z-index: 998;
+  z-index: 1100;
   bottom: var(--merchant-bottom-offset, 30px);
   opacity: 0;
   visibility: hidden;
