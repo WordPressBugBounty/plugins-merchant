@@ -3,7 +3,7 @@ Tags: pre-orders, buy now button, product labels, quick view, clear cart
 Requires at least: 6.4
 Tested up to: 6.9
 Requires PHP: 7.3
-Stable tag: 2.2.6
+Stable tag: 2.2.7
 Contributors: aThemes
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
@@ -218,6 +218,12 @@ Absolutely not. You can enable and customize modules without any coding knowledg
 15. Cookie Banner Module
 
 == Changelog ==
+= 2.2.7 =
+* Added - Bulk discounts: Missing styles for themes Astra, Divi, and Hello Elementor
+* Added - Free shipping progress bar: String registration for multilingual plugins
+* Added - Declare WooCommerce block support
+* Fixed - Recently viewed products: Moved frontend styles to Merchant pro, and keep only the admin preview styles
+
 = 2.2.6 =
 * Added - Admin Options: Clickable Active/Inactive status badge on flexible content row headers for quick campaign toggling
 * Added - Backup & Restore: Drag-and-drop restore with visual success and error feedback

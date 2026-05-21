@@ -74,6 +74,32 @@ class Merchant_Free_Shipping_Progress_Bar extends Merchant_Add_Module {
 		if ( ! Merchant_Modules::is_module_active( self::MODULE_ID ) ) {
 			return;
 		}
+
+		if ( is_admin() ) {
+			// Init translations.
+			$this->init_translations();
+		}
+	}
+
+	/**
+	 * Init translations.
+	 *
+	 * Registers translatable strings with WPML/Polylang via Merchant_Translator.
+	 *
+	 * @return void
+	 */
+	public function init_translations() {
+		$settings = $this->get_module_settings();
+
+		if ( ! empty( $settings['free_shipping_initial_text'] ) ) {
+			Merchant_Translator::register_string( $settings['free_shipping_initial_text'], esc_html__( 'Free shipping bar: Initial message', 'merchant' ) );
+		}
+		if ( ! empty( $settings['free_shipping_text'] ) ) {
+			Merchant_Translator::register_string( $settings['free_shipping_text'], esc_html__( 'Free shipping bar: Free shipping text', 'merchant' ) );
+		}
+		if ( ! empty( $settings['qualified_free_shipping_text'] ) ) {
+			Merchant_Translator::register_string( $settings['qualified_free_shipping_text'], esc_html__( 'Free shipping bar: Qualified text', 'merchant' ) );
+		}
 	}
 
 	/**

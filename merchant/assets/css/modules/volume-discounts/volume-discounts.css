@@ -55,6 +55,13 @@
   font-weight: normal;
   background-image: url("data:image/svg+xml,%3Csvg width%3D%2212%22 height%3D%228%22 viewBox%3D%220 0 12 8%22 fill%3D%22none%22 xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%3Cpath d%3D%22M10.6665 1.81055L5.99984 6.47721L1.33317 1.81055%22 stroke%3D%22%23757575%22 stroke-width%3D%221.8%22 stroke-linecap%3D%22round%22 stroke-linejoin%3D%22round%22/%3E%3C/svg%3E");
   background-position: calc(100% - 10px) center;
+  background-repeat: no-repeat;
+}
+body.theme-Divi .merchant-volume-discounts .merchant-volume-discounts-item .offer-form .variation-form .variation-dropdown select, body.theme-hello-elementor .merchant-volume-discounts .merchant-volume-discounts-item .offer-form .variation-form .variation-dropdown select {
+  background-image: none;
+}
+body.theme-astra .merchant-volume-discounts .merchant-volume-discounts-item .offer-form .variation-form .variation-dropdown select, body.theme-Divi .merchant-volume-discounts .merchant-volume-discounts-item .offer-form .variation-form .variation-dropdown select {
+  width: 100%;
 }
 .merchant-volume-discounts .merchant-volume-discounts-item .offer-form .form-footer {
   display: -webkit-box;
@@ -64,6 +71,12 @@
 }
 .merchant-volume-discounts .merchant-volume-discounts-item .offer-form .form-footer .offer-quantity-input {
   width: 150px;
+}
+body.theme-astra .merchant-volume-discounts .merchant-volume-discounts-item .offer-form .form-footer .offer-quantity-input, body.theme-hello-elementor .merchant-volume-discounts .merchant-volume-discounts-item .offer-form .form-footer .offer-quantity-input {
+  width: unset;
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
 }
 .merchant-volume-discounts .merchant-volume-discounts-item .offer-form .form-footer .offer-quantity-input .quantity {
   height: 45px;
@@ -91,6 +104,12 @@
   -moz-appearance: textfield;
   color: #757575;
 }
+body.theme-astra .merchant-volume-discounts .merchant-volume-discounts-item .offer-form .form-footer .offer-quantity-input .quantity input.qty, body.theme-Divi .merchant-volume-discounts .merchant-volume-discounts-item .offer-form .form-footer .offer-quantity-input .quantity input.qty, body.theme-hello-elementor .merchant-volume-discounts .merchant-volume-discounts-item .offer-form .form-footer .offer-quantity-input .quantity input.qty {
+  background-color: unset;
+  padding: unset;
+  width: 100%;
+  height: 100%;
+}
 .merchant-volume-discounts .merchant-volume-discounts-item .offer-form .form-footer .offer-submit {
   -webkit-box-flex: 4;
       -ms-flex: 4;
@@ -102,6 +121,9 @@
   font-size: 14px;
   padding: 7px 15px;
   border: 2px solid transparent;
+}
+body.theme-astra .merchant-volume-discounts .merchant-volume-discounts-item .offer-form .form-footer .offer-submit button, body.theme-hello-elementor .merchant-volume-discounts .merchant-volume-discounts-item .offer-form .form-footer .offer-submit button {
+  padding: 12px 15px;
 }
 .merchant-volume-discounts .merchant-volume-discounts-item .user-message {
   position: absolute;

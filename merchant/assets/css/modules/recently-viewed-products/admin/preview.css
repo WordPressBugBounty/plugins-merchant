@@ -1,5 +1,5 @@
 /**
- * Recently Viewed Products
+ * Recently Viewed Products - Admin Preview
  *
  */
 .merchant-module-page-preview-browser-inner {
@@ -17,6 +17,30 @@
 
 .merchant-recently-viewed-products-section {
   width: 100%;
+}
+.merchant-recently-viewed-products-section .section-title {
+  margin-bottom: 25px;
+  color: var(--mrc-rvp-section-title-color, #212121);
+}
+.merchant-recently-viewed-products-section.hide-title .section-title {
+  display: none;
+}
+.merchant-recently-viewed-products-section .merchant-recently-viewed-products .products {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  gap: var(--mrc-rvp-columns-gap, 15px);
+}
+.merchant-recently-viewed-products-section .merchant-recently-viewed-products .products .product {
+  -webkit-box-flex: 1;
+      -ms-flex: 1 1 calc(33.3333% - var(--mrc-rvp-columns-gap, 15px));
+          flex: 1 1 calc(33.3333% - var(--mrc-rvp-columns-gap, 15px));
+  max-width: calc(33.3333% - var(--mrc-rvp-columns-gap, 15px));
 }
 .merchant-recently-viewed-products-section .merchant-recently-viewed-products .products .product .image-wrapper {
   background-color: #f5f5f5;
@@ -90,4 +114,12 @@
 .merchant-recently-viewed-products-section.slider-style-preview .merchant-recently-viewed-products .slider-navigation .nav-prev:hover,
 .merchant-recently-viewed-products-section.slider-style-preview .merchant-recently-viewed-products .slider-navigation .nav-next:hover {
   background: var(--mrc-carousel-nav-color-hover, #757575);
+}
+.merchant-recently-viewed-products-section.slider-style-preview.on-hover .merchant-recently-viewed-products .slider-navigation {
+  opacity: 0;
+  -webkit-transition: opacity 0.3s ease;
+  transition: opacity 0.3s ease;
+}
+.merchant-recently-viewed-products-section.slider-style-preview.on-hover .merchant-recently-viewed-products:hover .slider-navigation {
+  opacity: 1;
 }

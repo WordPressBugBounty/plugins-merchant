@@ -8,7 +8,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language-Team: aThemes <team@athemes.com>\n"
 "Last-Translator: aThemes <team@athemes.com>\n"
-"POT-Creation-Date: 2026-05-07 15:18+0000\n"
+"POT-Creation-Date: 2026-05-21 17:48+0000\n"
 "Report-Msgid-Bugs-To: https://athemes.com/contact/\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-KeywordsList: __;_e;_ex:1,2c;_n:1,2;_n_noop:1,2;_nx:1,2,4c;_nx_noop:1,2,3c;_x:1,2c;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c\n"
@@ -17,7 +17,7 @@ msgstr ""
 "X-Poedit-SourceCharset: UTF-8\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: admin/class-merchant-admin-loader.php:157, inc/class-merchant-loader.php:273, admin/classes/class-merchant-admin-menu.php:282, admin/classes/class-merchant-admin-menu.php:283, admin/classes/class-merchant-admin-menu.php:373, admin/classes/class-merchant-admin-menu.php:376, inc/modules/address-autocomplete/admin/options.php:27, inc/modules/agree-to-terms-checkbox/admin/options.php:28, inc/modules/auto-external-links/admin/options.php:16, inc/modules/buy-now/admin/options.php:14, inc/modules/cart-count-favicon/admin/options.php:16, inc/modules/cart-reserved-timer/admin/options.php:30, inc/modules/checkout/admin/options.php:27, inc/modules/clear-cart/admin/options.php:16, inc/modules/cookie-banner/admin/options.php:14, inc/modules/countdown-timer/admin/options.php:14, inc/modules/inactive-tab-message/admin/options.php:16, inc/modules/login-popup/admin/options.php:15, inc/modules/payment-logos/admin/options.php:33, inc/modules/product-audio/admin/options.php:15, inc/modules/product-brand-image/admin/options.php:15, inc/modules/product-labels/admin/options.php:44, inc/modules/product-navigation-links/admin/options.php:16, inc/modules/product-swatches/admin/options.php:17, inc/modules/product-video/admin/options.php:15, inc/modules/quick-social-links/admin/options.php:16, inc/modules/quick-view/admin/options.php:17, inc/modules/real-time-search/admin/options.php:14, inc/modules/reasons-to-buy/admin/options.php:14, inc/modules/recently-viewed-products/admin/options.php:15, inc/modules/size-chart/admin/options.php:15, inc/modules/spending-goal/admin/options.php:15, inc/modules/sticky-add-to-cart/admin/options.php:15, inc/modules/stock-scarcity/admin/options.php:16, inc/modules/trust-badges/admin/options.php:45
+#: admin/class-merchant-admin-loader.php:157, inc/class-merchant-loader.php:273, admin/classes/class-merchant-admin-menu.php:282, admin/classes/class-merchant-admin-menu.php:283, admin/classes/class-merchant-admin-menu.php:373, admin/classes/class-merchant-admin-menu.php:376, inc/modules/address-autocomplete/admin/options.php:27, inc/modules/agree-to-terms-checkbox/admin/options.php:28, inc/modules/auto-external-links/admin/options.php:16, inc/modules/buy-now/admin/options.php:14, inc/modules/cart-count-favicon/admin/options.php:16, inc/modules/cart-reserved-timer/admin/options.php:18, inc/modules/checkout/admin/options.php:27, inc/modules/clear-cart/admin/options.php:16, inc/modules/cookie-banner/admin/options.php:14, inc/modules/countdown-timer/admin/options.php:14, inc/modules/inactive-tab-message/admin/options.php:16, inc/modules/login-popup/admin/options.php:15, inc/modules/payment-logos/admin/options.php:33, inc/modules/product-audio/admin/options.php:15, inc/modules/product-brand-image/admin/options.php:15, inc/modules/product-labels/admin/options.php:44, inc/modules/product-navigation-links/admin/options.php:16, inc/modules/product-swatches/admin/options.php:17, inc/modules/product-video/admin/options.php:15, inc/modules/quick-social-links/admin/options.php:16, inc/modules/quick-view/admin/options.php:17, inc/modules/real-time-search/admin/options.php:14, inc/modules/reasons-to-buy/admin/options.php:14, inc/modules/recently-viewed-products/admin/options.php:15, inc/modules/size-chart/admin/options.php:15, inc/modules/spending-goal/admin/options.php:15, inc/modules/sticky-add-to-cart/admin/options.php:15, inc/modules/stock-scarcity/admin/options.php:16, inc/modules/trust-badges/admin/options.php:45
 msgid "Settings"
 msgstr ""
 
@@ -1837,15 +1837,15 @@ msgstr ""
 msgid "Get %1$s with %2$s off"
 msgstr ""
 
-#: inc/modules/cart-reserved-timer/class-cart-reserved-timer.php:55, inc/modules/cart-reserved-timer/admin/options.php:47
+#: inc/modules/cart-reserved-timer/class-cart-reserved-timer.php:55, inc/modules/cart-reserved-timer/admin/options.php:32
 msgid "An item in your cart is in high demand."
 msgstr ""
 
-#: inc/modules/cart-reserved-timer/class-cart-reserved-timer.php:56, inc/modules/cart-reserved-timer/admin/options.php:54
+#: inc/modules/cart-reserved-timer/class-cart-reserved-timer.php:56, inc/modules/cart-reserved-timer/admin/options.php:39
 msgid "Your cart is saved for {timer} minutes!"
 msgstr ""
 
-#: inc/modules/cart-reserved-timer/class-cart-reserved-timer.php:57, inc/modules/cart-reserved-timer/admin/options.php:61
+#: inc/modules/cart-reserved-timer/class-cart-reserved-timer.php:57, inc/modules/cart-reserved-timer/admin/options.php:46
 msgid "Your cart is saved for {timer} seconds!"
 msgstr ""
 
@@ -2037,16 +2037,28 @@ msgstr ""
 msgid "Spend {amountMore} more in the {tags} to receive this free gift!"
 msgstr ""
 
-#: inc/modules/free-shipping-progress-bar/class-free-shipping-progress-bar.php:274
+#: inc/modules/free-shipping-progress-bar/class-free-shipping-progress-bar.php:95
+msgid "Free shipping bar: Initial message"
+msgstr ""
+
+#: inc/modules/free-shipping-progress-bar/class-free-shipping-progress-bar.php:98
+msgid "Free shipping bar: Free shipping text"
+msgstr ""
+
+#: inc/modules/free-shipping-progress-bar/class-free-shipping-progress-bar.php:101
+msgid "Free shipping bar: Qualified text"
+msgstr ""
+
+#: inc/modules/free-shipping-progress-bar/class-free-shipping-progress-bar.php:300
 msgid "You need to setup free shipping rules with a minimum order value, to do that go to WooCommerce > Settings > Shipping menu in the left sidebar of your WordPress admin area and configure your free shipping method."
 msgstr ""
 
-#: inc/modules/free-shipping-progress-bar/class-free-shipping-progress-bar.php:281
+#: inc/modules/free-shipping-progress-bar/class-free-shipping-progress-bar.php:307
 msgid "Add Shipping"
 msgstr ""
 
 #. translators: %s: Amount.
-#: inc/modules/free-shipping-progress-bar/class-free-shipping-progress-bar.php:305
+#: inc/modules/free-shipping-progress-bar/class-free-shipping-progress-bar.php:331
 msgid "You are %s away from free shipping."
 msgstr ""
 
@@ -3902,15 +3914,15 @@ msgstr ""
 msgid "Modal background color"
 msgstr ""
 
-#: inc/modules/advanced-reviews/admin/options.php:1206, inc/modules/advanced-reviews/admin/options.php:1211, inc/modules/buy-x-get-y/admin/options.php:842, inc/modules/buy-x-get-y/admin/options.php:847, inc/modules/cart-reserved-timer/admin/options.php:103, inc/modules/cart-reserved-timer/admin/options.php:108, inc/modules/clear-cart/admin/options.php:315, inc/modules/clear-cart/admin/options.php:320, inc/modules/complementary-products/admin/options.php:815, inc/modules/complementary-products/admin/options.php:820, inc/modules/countdown-timer/admin/options.php:336, inc/modules/countdown-timer/admin/options.php:341, inc/modules/frequently-bought-together/admin/options.php:862, inc/modules/frequently-bought-together/admin/options.php:867, inc/modules/payment-logos/admin/options.php:125, inc/modules/payment-logos/admin/options.php:130, inc/modules/product-audio/admin/options.php:34, inc/modules/product-audio/admin/options.php:39, inc/modules/product-brand-image/admin/options.php:82, inc/modules/product-brand-image/admin/options.php:87, inc/modules/product-bundles/admin/options.php:170, inc/modules/product-bundles/admin/options.php:175, inc/modules/product-labels/admin/options.php:542, inc/modules/product-labels/admin/options.php:547, inc/modules/product-navigation-links/admin/options.php:144, inc/modules/product-navigation-links/admin/options.php:149, inc/modules/product-video/admin/options.php:52, inc/modules/product-video/admin/options.php:57, inc/modules/quick-social-links/admin/options.php:419, inc/modules/quick-social-links/admin/options.php:424, inc/modules/quick-view/admin/options.php:450, inc/modules/quick-view/admin/options.php:455, inc/modules/real-time-search/admin/options.php:112, inc/modules/real-time-search/admin/options.php:117, inc/modules/reasons-to-buy/admin/options.php:375, inc/modules/reasons-to-buy/admin/options.php:380, inc/modules/recently-viewed-products/admin/options.php:215, inc/modules/recently-viewed-products/admin/options.php:220, inc/modules/size-chart/admin/options.php:215, inc/modules/size-chart/admin/options.php:220, inc/modules/stock-scarcity/admin/options.php:188, inc/modules/stock-scarcity/admin/options.php:193, inc/modules/trust-badges/admin/options.php:144, inc/modules/trust-badges/admin/options.php:149, inc/modules/volume-discounts/admin/options.php:902, inc/modules/volume-discounts/admin/options.php:907, inc/modules/wait-list/admin/options.php:150, inc/modules/wait-list/admin/options.php:155, inc/modules/wishlist/admin/options.php:488, inc/modules/wishlist/admin/options.php:493
+#: inc/modules/advanced-reviews/admin/options.php:1206, inc/modules/advanced-reviews/admin/options.php:1211, inc/modules/buy-x-get-y/admin/options.php:842, inc/modules/buy-x-get-y/admin/options.php:847, inc/modules/cart-reserved-timer/admin/options.php:88, inc/modules/cart-reserved-timer/admin/options.php:93, inc/modules/clear-cart/admin/options.php:315, inc/modules/clear-cart/admin/options.php:320, inc/modules/complementary-products/admin/options.php:815, inc/modules/complementary-products/admin/options.php:820, inc/modules/countdown-timer/admin/options.php:336, inc/modules/countdown-timer/admin/options.php:341, inc/modules/frequently-bought-together/admin/options.php:862, inc/modules/frequently-bought-together/admin/options.php:867, inc/modules/payment-logos/admin/options.php:125, inc/modules/payment-logos/admin/options.php:130, inc/modules/product-audio/admin/options.php:34, inc/modules/product-audio/admin/options.php:39, inc/modules/product-brand-image/admin/options.php:82, inc/modules/product-brand-image/admin/options.php:87, inc/modules/product-bundles/admin/options.php:170, inc/modules/product-bundles/admin/options.php:175, inc/modules/product-labels/admin/options.php:542, inc/modules/product-labels/admin/options.php:547, inc/modules/product-navigation-links/admin/options.php:144, inc/modules/product-navigation-links/admin/options.php:149, inc/modules/product-video/admin/options.php:52, inc/modules/product-video/admin/options.php:57, inc/modules/quick-social-links/admin/options.php:419, inc/modules/quick-social-links/admin/options.php:424, inc/modules/quick-view/admin/options.php:450, inc/modules/quick-view/admin/options.php:455, inc/modules/real-time-search/admin/options.php:112, inc/modules/real-time-search/admin/options.php:117, inc/modules/reasons-to-buy/admin/options.php:375, inc/modules/reasons-to-buy/admin/options.php:380, inc/modules/recently-viewed-products/admin/options.php:215, inc/modules/recently-viewed-products/admin/options.php:220, inc/modules/size-chart/admin/options.php:215, inc/modules/size-chart/admin/options.php:220, inc/modules/stock-scarcity/admin/options.php:188, inc/modules/stock-scarcity/admin/options.php:193, inc/modules/trust-badges/admin/options.php:144, inc/modules/trust-badges/admin/options.php:149, inc/modules/volume-discounts/admin/options.php:902, inc/modules/volume-discounts/admin/options.php:907, inc/modules/wait-list/admin/options.php:150, inc/modules/wait-list/admin/options.php:155, inc/modules/wishlist/admin/options.php:488, inc/modules/wishlist/admin/options.php:493
 msgid "Use shortcode"
 msgstr ""
 
-#: inc/modules/advanced-reviews/admin/options.php:1217, inc/modules/buy-x-get-y/admin/options.php:853, inc/modules/cart-reserved-timer/admin/options.php:114, inc/modules/complementary-products/admin/options.php:826, inc/modules/countdown-timer/admin/options.php:347, inc/modules/frequently-bought-together/admin/options.php:873, inc/modules/payment-logos/admin/options.php:136, inc/modules/product-audio/admin/options.php:45, inc/modules/product-brand-image/admin/options.php:93, inc/modules/product-bundles/admin/options.php:181, inc/modules/product-labels/admin/options.php:553, inc/modules/product-navigation-links/admin/options.php:155, inc/modules/product-video/admin/options.php:63, inc/modules/reasons-to-buy/admin/options.php:386, inc/modules/recently-viewed-products/admin/options.php:226, inc/modules/size-chart/admin/options.php:226, inc/modules/stock-scarcity/admin/options.php:199, inc/modules/trust-badges/admin/options.php:155, inc/modules/volume-discounts/admin/options.php:913, inc/modules/wait-list/admin/options.php:161, inc/modules/wishlist/admin/options.php:499
+#: inc/modules/advanced-reviews/admin/options.php:1217, inc/modules/buy-x-get-y/admin/options.php:853, inc/modules/cart-reserved-timer/admin/options.php:99, inc/modules/complementary-products/admin/options.php:826, inc/modules/countdown-timer/admin/options.php:347, inc/modules/frequently-bought-together/admin/options.php:873, inc/modules/payment-logos/admin/options.php:136, inc/modules/product-audio/admin/options.php:45, inc/modules/product-brand-image/admin/options.php:93, inc/modules/product-bundles/admin/options.php:181, inc/modules/product-labels/admin/options.php:553, inc/modules/product-navigation-links/admin/options.php:155, inc/modules/product-video/admin/options.php:63, inc/modules/reasons-to-buy/admin/options.php:386, inc/modules/recently-viewed-products/admin/options.php:226, inc/modules/size-chart/admin/options.php:226, inc/modules/stock-scarcity/admin/options.php:199, inc/modules/trust-badges/admin/options.php:155, inc/modules/volume-discounts/admin/options.php:913, inc/modules/wait-list/admin/options.php:161, inc/modules/wishlist/admin/options.php:499
 msgid "If you are using a page builder or a theme that supports shortcodes, then you can output the module using the shortcode above. This might be useful if, for example, you find that you want to control the position of the module output more precisely than with the module settings. Note that the shortcodes can only be used on single product pages."
 msgstr ""
 
-#: inc/modules/advanced-reviews/admin/options.php:1223, inc/modules/buy-x-get-y/admin/options.php:859, inc/modules/cart-reserved-timer/admin/options.php:119, inc/modules/clear-cart/admin/options.php:333, inc/modules/complementary-products/admin/options.php:832, inc/modules/countdown-timer/admin/options.php:352, inc/modules/free-shipping-progress-bar/admin/options.php:595, inc/modules/free-shipping-progress-bar/admin/options.php:770, inc/modules/free-shipping-progress-bar/admin/options.php:879, inc/modules/frequently-bought-together/admin/options.php:879, inc/modules/payment-logos/admin/options.php:141, inc/modules/product-audio/admin/options.php:50, inc/modules/product-brand-image/admin/options.php:98, inc/modules/product-bundles/admin/options.php:187, inc/modules/product-labels/admin/options.php:558, inc/modules/product-navigation-links/admin/options.php:160, inc/modules/product-video/admin/options.php:68, inc/modules/quick-social-links/admin/options.php:435, inc/modules/quick-view/admin/options.php:466, inc/modules/real-time-search/admin/options.php:128, inc/modules/reasons-to-buy/admin/options.php:391, inc/modules/recently-viewed-products/admin/options.php:231, inc/modules/size-chart/admin/options.php:231, inc/modules/stock-scarcity/admin/options.php:207, inc/modules/trust-badges/admin/options.php:160, inc/modules/volume-discounts/admin/options.php:919, inc/modules/wait-list/admin/options.php:166, inc/modules/wishlist/admin/options.php:504
+#: inc/modules/advanced-reviews/admin/options.php:1223, inc/modules/buy-x-get-y/admin/options.php:859, inc/modules/cart-reserved-timer/admin/options.php:104, inc/modules/clear-cart/admin/options.php:333, inc/modules/complementary-products/admin/options.php:832, inc/modules/countdown-timer/admin/options.php:352, inc/modules/free-shipping-progress-bar/admin/options.php:595, inc/modules/free-shipping-progress-bar/admin/options.php:770, inc/modules/free-shipping-progress-bar/admin/options.php:879, inc/modules/frequently-bought-together/admin/options.php:879, inc/modules/payment-logos/admin/options.php:141, inc/modules/product-audio/admin/options.php:50, inc/modules/product-brand-image/admin/options.php:98, inc/modules/product-bundles/admin/options.php:187, inc/modules/product-labels/admin/options.php:558, inc/modules/product-navigation-links/admin/options.php:160, inc/modules/product-video/admin/options.php:68, inc/modules/quick-social-links/admin/options.php:435, inc/modules/quick-view/admin/options.php:466, inc/modules/real-time-search/admin/options.php:128, inc/modules/reasons-to-buy/admin/options.php:391, inc/modules/recently-viewed-products/admin/options.php:231, inc/modules/size-chart/admin/options.php:231, inc/modules/stock-scarcity/admin/options.php:207, inc/modules/trust-badges/admin/options.php:160, inc/modules/volume-discounts/admin/options.php:919, inc/modules/wait-list/admin/options.php:166, inc/modules/wishlist/admin/options.php:504
 msgid "Shortcode text"
 msgstr ""
 
@@ -4621,44 +4633,39 @@ msgstr ""
 msgid "5 seconds"
 msgstr ""
 
-#. translators: 1. docs link
-#: inc/modules/cart-reserved-timer/admin/options.php:19
-msgid "Your cart page is being rendered through the new WooCommerce cart block. You must edit the cart page to use the classic cart shortcode instead. Check <a href=\"%1$s\" target=\"_blank\">this documentation</a> to learn more."
-msgstr ""
-
-#: inc/modules/cart-reserved-timer/admin/options.php:39
+#: inc/modules/cart-reserved-timer/admin/options.php:24
 msgid "Count down duration minutes"
 msgstr ""
 
-#: inc/modules/cart-reserved-timer/admin/options.php:46
+#: inc/modules/cart-reserved-timer/admin/options.php:31
 msgid "Cart reserved message"
 msgstr ""
 
-#: inc/modules/cart-reserved-timer/admin/options.php:53
+#: inc/modules/cart-reserved-timer/admin/options.php:38
 msgid "Timer message for > 1 min "
 msgstr ""
 
-#: inc/modules/cart-reserved-timer/admin/options.php:60
+#: inc/modules/cart-reserved-timer/admin/options.php:45
 msgid "Timer message for  < 1 min"
 msgstr ""
 
-#: inc/modules/cart-reserved-timer/admin/options.php:67
+#: inc/modules/cart-reserved-timer/admin/options.php:52
 msgid "What to do after the timer expires?"
 msgstr ""
 
-#: inc/modules/cart-reserved-timer/admin/options.php:69
+#: inc/modules/cart-reserved-timer/admin/options.php:54
 msgid "Hide timer"
 msgstr ""
 
-#: inc/modules/cart-reserved-timer/admin/options.php:70
+#: inc/modules/cart-reserved-timer/admin/options.php:55
 msgid "Clear cart"
 msgstr ""
 
-#: inc/modules/cart-reserved-timer/admin/options.php:78
+#: inc/modules/cart-reserved-timer/admin/options.php:63
 msgid "Choose an icon"
 msgstr ""
 
-#: inc/modules/cart-reserved-timer/admin/options.php:92, inc/modules/free-shipping-progress-bar/admin/options.php:1015
+#: inc/modules/cart-reserved-timer/admin/options.php:77, inc/modules/free-shipping-progress-bar/admin/options.php:1015
 msgid "Background Color"
 msgstr ""
 
